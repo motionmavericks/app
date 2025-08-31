@@ -67,11 +67,11 @@ export async function POST(req: NextRequest) {
   try {
     const url = await getSignedUrl(s3, put, { expiresIn });
     return NextResponse.json({ url, bucket: targetBucket, key, expiresIn });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
     return NextResponse.json(
-      { error: "Failed to presign", detail: err?.message ?? String(err) },
+      { error: "Failed to presign", detail: message },
       { status: 500 }
     );
   }
 }
-

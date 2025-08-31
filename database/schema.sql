@@ -24,8 +24,19 @@ CREATE TABLE IF NOT EXISTS versions (
   asset_id uuid NOT NULL REFERENCES assets(id) ON DELETE CASCADE,
   master_key text NOT NULL,
   checksum text,
+  preview_prefix text,
+  metadata jsonb,
   created_at timestamptz NOT NULL DEFAULT now()
 );
+
+-- Backfill/ensure columns for evolving schema
+ALTER TABLE versions ADD COLUMN IF NOT EXISTS preview_prefix text;
+ALTER TABLE versions ADD COLUMN IF NOT EXISTS metadata jsonb;
+
+-- Indexes and idempotency helpers
+CREATE UNIQUE INDEX IF NOT EXISTS ux_versions_asset_master ON versions(asset_id, master_key);
+CREATE INDEX IF NOT EXISTS ix_versions_preview_prefix ON versions(preview_prefix);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_assets_staging_key ON assets(staging_key);
 
 CREATE TABLE IF NOT EXISTS comments (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -35,4 +46,3 @@ CREATE TABLE IF NOT EXISTS comments (
   ts_seconds numeric,
   created_at timestamptz NOT NULL DEFAULT now()
 );
-

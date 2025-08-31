@@ -2,7 +2,7 @@
 
 Ladder (initial)
 - 720p: ~2.5 Mbps, 2s segments, closed GOP, keyint aligned to segment.
-- Low MP4 proxy for quick scrubbing.
+- 1080p: ~5.0 Mbps, same GOP/segmenting.
 
 Encoding (ffmpeg NVENC example)
 ```
@@ -18,6 +18,10 @@ Watermarking
 
 Security
 - Signed URLs for manifests/segments; no previews stored in masters.
+
+Implementation Notes
+- Worker reads `PREVIEW_VARIANTS` (e.g., `720p,1080p`) and emits sub-playlists per variant plus a master `index.m3u8`.
+- NVENC used when available; falls back to libx264 automatically.
 
 Dynamic Keyframe Planning
 - For input FPS `F`, use `g = keyint_min = round(2 * F)` to align to 2s segments.

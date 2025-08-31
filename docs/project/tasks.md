@@ -35,7 +35,7 @@ Each task lists Inputs, Files, Commands, Acceptance.
 
 7) UI screens
 - Inputs: frontend/* docs
-- Files: `apps/ui/src/app/*` pages; components per specs.
+- Files: `frontend/src/app/*` pages; components per specs.
 - Acceptance: Grid renders; player works; comments CRUD; share view loads.
 
 8) CI/CD & Ops

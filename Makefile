@@ -1,17 +1,20 @@
 .PHONY: help install dev build lint typecheck test clean \
 backend-install backend-dev backend-build \
-worker-install worker-dev worker-build
+worker-install worker-dev worker-build \
+edge-install edge-dev edge-build
 
-# Top-level wrappers for the Next.js UI in ui/
+# Top-level wrappers for the Next.js UI in frontend/
 
 help:
 	@echo "Targets: install dev build lint typecheck test clean"
 	@echo "Backend: backend-install backend-dev backend-build"
 	@echo "Worker: worker-install worker-dev worker-build"
+	@echo "DB: backend-migrate"
+	@echo "Edge: edge-install edge-dev edge-build"
 
 install:
-	@echo "Installing frontend dependencies (npm ci)"
-	cd frontend && npm ci
+	@echo "Installing frontend dependencies (npm install)"
+	cd frontend && npm install
 
 dev:
 	@echo "Starting frontend dev server (http://localhost:3001)"
@@ -27,7 +30,7 @@ lint:
 
 typecheck:
 	@echo "Type-checking frontend"
-	npm --prefix frontend exec tsc -p tsconfig.json
+	cd frontend && npx tsc -p tsconfig.json
 
 test:
 	@echo "No tests defined yet; add Jest/Vitest to frontend/"
@@ -39,7 +42,7 @@ clean:
 
 backend-install:
 	@echo "Installing backend deps"
-	cd backend && npm ci
+	cd backend && npm install
 
 backend-dev:
 	@echo "Starting backend dev on :3000"
@@ -49,9 +52,13 @@ backend-build:
 	@echo "Building backend"
 	npm --prefix backend run build
 
+backend-migrate:
+	@echo "Running DB migration"
+	npm --prefix backend run migrate
+
 worker-install:
 	@echo "Installing worker deps"
-	cd worker && npm ci
+	cd worker && npm install
 
 worker-dev:
 	@echo "Starting preview worker"
@@ -60,3 +67,15 @@ worker-dev:
 worker-build:
 	@echo "Building preview worker"
 	npm --prefix worker run build
+
+edge-install:
+	@echo "Installing edge deps"
+	cd edge && npm install
+
+edge-dev:
+	@echo "Starting edge verifier on :8080"
+	npm --prefix edge run dev
+
+edge-build:
+	@echo "Building edge"
+	npm --prefix edge run build

@@ -14,3 +14,8 @@ Artifacts
 
 Health
 - Heartbeats; queue depth; success/failure rates.
+
+Runtime Notes
+- Image includes FFmpeg (Alpine package). Hardware encoder NVENC is detected at runtime; falls back to `libx264` if unavailable.
+- Redis Streams consumer group: `PREVIEW_STREAM` (default `previews:build`), `PREVIEW_CONSUMER_GROUP` (default `previewers`).
+- Configure HLS via `PREVIEW_PRESET` (e.g., `720p`) or `PREVIEW_VARIANTS` (comma-separated labels).

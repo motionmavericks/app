@@ -1,5 +1,5 @@
-name: media-review-suite
-region: nyc
+name: motionmavericks
+region: syd1
 services:
   - name: frontend
     dockerfile_path: ./frontend/Dockerfile
@@ -10,15 +10,15 @@ services:
       - path: /
     envs:
       - key: NEXT_PUBLIC_API_BASE
-        value: https://api.example.com
+        value: https://api.motionmavericks.com.au
       - key: NEXT_PUBLIC_EDGE_BASE
-        value: https://edge.example.com
+        value: https://edge.motionmavericks.com.au
       - key: WASABI_ENDPOINT
         scope: RUN_AND_BUILD_TIME
-        value: https://s3.wasabisys.com
+        value: https://s3.ap-southeast-2.wasabisys.com
       - key: WASABI_REGION
         scope: RUN_AND_BUILD_TIME
-        value: us-east-1
+        value: ap-southeast-2
   - name: backend
     dockerfile_path: ./backend/Dockerfile
     http_port: 3000
@@ -26,7 +26,6 @@ services:
     instance_size_slug: basic-xxs
     routes:
       - path: /
-        domain: api.example.com
     envs:
       - key: POSTGRES_URL
         scope: RUN_TIME
@@ -35,9 +34,11 @@ services:
         scope: RUN_TIME
         value: ${redis.REDIS_URL}
       - key: WASABI_ENDPOINT
-        value: https://s3.wasabisys.com
+        value: https://s3.ap-southeast-2.wasabisys.com
       - key: WASABI_REGION
-        value: us-east-1
+        value: ap-southeast-2
+      - key: EDGE_PUBLIC_BASE
+        value: https://edge.motionmavericks.com.au
       - key: WASABI_STAGING_ACCESS_KEY
         type: SECRET
         value: ""
@@ -45,7 +46,7 @@ services:
         type: SECRET
         value: ""
       - key: STAGING_BUCKET
-        value: ""
+        value: mm-staging-au
       - key: WASABI_MASTERS_ACCESS_KEY
         type: SECRET
         value: ""
@@ -53,7 +54,7 @@ services:
         type: SECRET
         value: ""
       - key: MASTERS_BUCKET
-        value: ""
+        value: mm-masters-au
       - key: WASABI_PREVIEWS_ACCESS_KEY
         type: SECRET
         value: ""
@@ -61,7 +62,7 @@ services:
         type: SECRET
         value: ""
       - key: PREVIEWS_BUCKET
-        value: ""
+        value: mm-previews-au
       - key: EDGE_SIGNING_KEY
         type: SECRET
         value: ""
@@ -78,9 +79,9 @@ services:
       - key: PREVIEW_CONSUMER_GROUP
         value: previewers
       - key: WASABI_ENDPOINT
-        value: https://s3.wasabisys.com
+        value: https://s3.ap-southeast-2.wasabisys.com
       - key: WASABI_REGION
-        value: us-east-1
+        value: ap-southeast-2
       - key: WASABI_MASTERS_ACCESS_KEY
         type: SECRET
         value: ""
@@ -88,7 +89,7 @@ services:
         type: SECRET
         value: ""
       - key: MASTERS_BUCKET
-        value: ""
+        value: mm-masters-au
       - key: WASABI_PREVIEWS_ACCESS_KEY
         type: SECRET
         value: ""
@@ -96,7 +97,11 @@ services:
         type: SECRET
         value: ""
       - key: PREVIEWS_BUCKET
-        value: ""
+        value: mm-previews-au
+      - key: PREVIEW_PRESET
+        value: 480p
+      - key: HLS_SEGMENT_SEC
+        value: "4"
 databases:
   - name: db
     engine: PG
@@ -105,7 +110,7 @@ databases:
     cluster_name: app-db
     db_name: app
     db_user: app
-    db_password: ""
-redis:
   - name: redis
+    engine: REDIS
+    production: false
     version: "7"

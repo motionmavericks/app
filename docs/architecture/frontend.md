@@ -12,7 +12,7 @@ Stack
 
 App Structure (monorepo)
 ```
-apps/ui/src/
+frontend/src/
   app/
     (dashboard)/page.tsx            # grid view
     projects/[projectId]/page.tsx   # project overview

@@ -3,7 +3,7 @@
 Monorepo Layout
 ```
 apps/
-  ui/                # Next.js frontend (existing)
+  frontend/          # Next.js frontend
   web/               # Web/API service (Next.js or Fastify)
   worker/            # GPU/CPU workers (BullMQ + ffmpeg)
   edge/              # Edge cache (Caddy/Nginx conf + small signer)

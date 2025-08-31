@@ -7,6 +7,7 @@ Quick Links
 - Architecture Blueprint: `architecture/blueprint.md`
 - Architecture Diagrams: `architecture/diagrams.md`
 - Service Plan: `architecture/services-plan.md`
+ - Edge Signing: `edge/hmac-signing.md`
 - Frontend Architecture: `architecture/frontend.md`
 - Backend Architecture: `architecture/backend.md`
 - Storage Plan: `storage/buckets.md`
@@ -19,5 +20,4 @@ Live Inventory
 
 Notes
 - Keep this index updated as new docs land.
- - Current state: frontend-only. Backend/worker/edge docs are draft until implemented.
- - See `dev-setup.md` for local development.
+- MVP-ready: frontend, backend API, preview worker, and edge proxy are implemented. See `dev-setup.md` for local development and `deploy/digitalocean.md` for deployment.

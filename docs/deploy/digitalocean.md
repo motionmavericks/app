@@ -31,21 +31,28 @@ App Platform Spec
   - `doctl apps update <APP_ID> --spec deploy/do-app.yaml`
 
 Container Images
-- Each service includes a Dockerfile (`frontend/Dockerfile`, `backend/Dockerfile`, `worker/Dockerfile`). App Platform builds from repo by default.
+- Each service includes a Dockerfile (`frontend/Dockerfile`, `backend/Dockerfile`, `worker/Dockerfile`). App Platform builds from repo by default. The worker image installs FFmpeg in its runtime stage.
 
 Environment
 - Map Managed DB/Redis connection strings to `POSTGRES_URL` and `REDIS_URL` in App Platform.
 - Fill Wasabi keys and bucket names as secrets for backend and worker.
 - Frontend uses `NEXT_PUBLIC_API_BASE` and `NEXT_PUBLIC_EDGE_BASE` for routing.
+- Backend sets `EDGE_PUBLIC_BASE` (edge domain) and `EDGE_SIGNING_KEY` to enable signed playback URLs.
 
 Edge Cache (Droplet)
-- Provision a Droplet with NVMe storage; install Caddy/Nginx; configure on-disk cache (`edge/.env.example`).
+- Optional for MVP. If omitted, backend returns presigned Wasabi URLs and the player still works.
+- For production, provision a Droplet with NVMe storage; install Caddy/Nginx; configure on-disk cache (`edge/.env.example`).
 - Restrict egress to Wasabi Previews endpoint; require HMAC signed URLs.
 
 Zero Downtime
-- Enable health checks: `/health` for backend. Set timeouts and autoscaling policies.
+- Enable health checks: `/api/health` for backend. Set timeouts and autoscaling policies.
 
 Post-Deploy Checks
 - Frontend resolves and loads.
-- Backend `/health` returns `{ ok: true }`.
+- Backend `/api/health` returns `{ ok: true }`.
 - Presign flow returns valid PUT URL; PUT succeeds; object appears in Staging bucket.
+- Promote copies to Masters; preview worker builds; signed playback works (edge or fallback).
+
+MCP (DigitalOcean)
+- The MCP server is launched via `scripts/mcp_digitalocean.sh`, which sources the DO token from `DIGITALOCEAN_ACCESS_TOKEN` or `~/.config/doctl/config.yaml`.
+- Restart Codex CLI to reload MCP servers after config changes. Use MCP to inspect apps/services during rollout.

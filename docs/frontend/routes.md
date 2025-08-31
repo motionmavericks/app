@@ -3,6 +3,8 @@
 App Router Map
 ```
 /                      → Dashboard (grid)
+/upload               → Upload to staging (dev tool)
+/play                 → HLS player (query `?p=<preview_prefix>`)
 /projects/[id]         → Project overview
 /assets/[id]           → Asset detail/player
 /shares/[token]        → Public share

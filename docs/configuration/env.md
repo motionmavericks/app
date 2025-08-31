@@ -13,6 +13,7 @@ Backend/API
 - `MASTERS_BUCKET`, `PREVIEWS_BUCKET`, `STAGING_BUCKET`, `DOCS_BUCKET`, `BACKUPS_BUCKET`
 - `OBJECT_LOCK_DEFAULT_DAYS` (e.g., 365)
 - `EDGE_SIGNING_KEY` (HMAC secret)
+- `EDGE_PUBLIC_BASE` (e.g., https://edge.example.com)
 - `AUTH_SECRET`, `AUTH_PROVIDERS...`
 
 Workers (Preview)
@@ -34,3 +35,6 @@ Templates
 - `worker/.env.example`
 - `edge/.env.example`
 - `database/.env.example`
+
+Notes
+- The example files are kept up-to-date with the running services. Use them as a starting point in local dev and map the same variables as App Platform envs/secrets in production.

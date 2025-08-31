@@ -22,6 +22,13 @@ Agent Workflow
 - Prefer minimal, scoped changes; avoid touching unrelated areas.
 - Always keep the user informed of the next immediate step.
 
+Docs Discipline (Always)
+- Treat `/docs/` as the source of truth. Any code/config change must be reflected in the relevant docs before the task is done.
+- Update env templates and `docs/configuration/env.md` together; add new variables to `.env.example` files and document them.
+- When adding endpoints/features, update `docs/api/*` and link usage from `docs/dev-setup.md` or runbooks as needed.
+- For deployment/runtime changes, update `deploy/*` and relevant service docs under `docs/backend/services/*` and `docs/architecture/*`.
+- Prefer linking to specific doc files in your updates and summaries.
+
 Planning (`update_plan`)
 - Use when tasks are non-trivial or multi-phase.
 - Keep steps short (≤7 words), one `in_progress` at a time.
@@ -88,6 +95,10 @@ Security & Configuration
 - Use runtime env vars. For UI, only `NEXT_PUBLIC_*` are exposed to the browser.
 - Pin dependencies where reasonable; address critical audit issues.
 
+Data Safety (Wasabi)
+- Treat existing production buckets as read-only. Do not alter or delete any production data during development or migration.
+- Create new buckets for the MVP (`mm-staging-au`, `mm-masters-au`, `mm-previews-au`) in `ap-southeast-2` and wire least-privilege IAM per function.
+
 Validation
 - After changes to UI code: `make typecheck`, `make lint`, `make build`, and optionally `make dev` to verify HMR.
 - After docs changes: ensure links resolve and commands are accurate/copy‑pasteable.
@@ -103,6 +114,41 @@ Repo-Specific Notes
 - Env example: `frontend/.env.example` (start with `NEXT_PUBLIC_EDGE_BASE`)
 - Service inventory and connectivity: `docs/architecture/services-plan.md`
 - Compose plan (draft): `docs/infra/compose.md`
+
+**MCP Tools**
+- Exa: web search and content lookup; prefer for web queries instead of ad‑hoc curl.
+- Ref: documentation search and URL read; use for API/library docs before browsing.
+- GitHub: repo, code, and issue searches across GitHub.
+- Browserbase: cloud browser automation (navigate/extract/act) when page rendering is required.
+- DigitalOcean: manage DO Apps/Droplets/Networking via MCP.
+- DigitalOcean: manage DO Apps/Droplets/Networking via MCP.
+
+**MCP Usage Policy**
+- Prefer MCP tools over hand‑rolled HTTP when available (search, docs, GitHub, browsing).
+- For browsing workflows, first try Ref/Exa to locate exact docs; escalate to Browserbase only when DOM interaction is needed.
+- Keep actions atomic (navigate → extract → act) and narrate with short preambles.
+- Respect approval policy; group related actions to minimize prompts.
+
+**MCP Configuration**
+- Config file: `/home/maverick/.codex/config.toml` (servers defined under `[mcp_servers.*]`).
+- Browserbase requires `BROWSERBASE_API_KEY` and `BROWSERBASE_PROJECT_ID` (already set here). If changed, restart the client.
+- Ref requires `REF_API_KEY`; Exa requires `EXA_API_KEY`; GitHub requires `GITHUB_TOKEN`.
+- DigitalOcean uses `scripts/mcp_digitalocean.sh` wrapper to source `DIGITALOCEAN_ACCESS_TOKEN` (or `~/.config/doctl/config.yaml`). Restart Codex CLI after edits.
+
+Always Maintain Docs
+- Any change to deployment, scaling, or data policy must be reflected in `/docs/` (e.g., `docs/infra/growth-plan.md`, `docs/deploy/*`, `docs/storage/buckets.md`).
+- DigitalOcean uses `scripts/mcp_digitalocean.sh` wrapper to source `DIGITALOCEAN_ACCESS_TOKEN` (or `~/.config/doctl/config.yaml`).
+
+DigitalOcean MCP
+- Ensure auth: run `doctl auth init` or export `DIGITALOCEAN_ACCESS_TOKEN`.
+- Wrapper: `scripts/mcp_digitalocean.sh` supplies `-digitalocean-api-token` to `@digitalocean/mcp`.
+- Config: `[mcp_servers.digitalocean]` points to the wrapper. Restart Codex CLI after edits.
+
+**MCP Troubleshooting**
+- Tools missing after config changes: restart Codex CLI to reload MCP servers.
+- Browserbase session errors (HTTP 400): verify API key, project ID, and account limits; consider SHTTP remote per vendor docs.
+- Ref/Exa rate limits: back off and summarize partial results; avoid rapid loops.
+- Always avoid logging secrets; never echo API keys.
 
 Appendix: Common Commands
 - List files: `rg --files -n`

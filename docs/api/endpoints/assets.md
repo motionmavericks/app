@@ -1,13 +1,14 @@
 # Endpoint: Get Asset
 
 GET /api/assets/:id
-- Output: `{ asset, versions[], metadata, shares[] }`
+- Output: `{ asset, versions[], ready }`
 
-Query
-- `?include=comments,sidecars` optional.
+Behavior
+- Returns asset row and versions (latest first).
+- Field `ready` reflects whether `index.m3u8` exists under the latest version's `preview_prefix`.
 
 Errors
 - 404 not found; 403 unauthorized.
 
 Acceptance
-- Returns latest version first; metadata includes EBUCore JSON.
+- `ready` toggles to true shortly after preview build completes.

@@ -1,0 +1,15 @@
+{
+  auto_https off
+}
+:8080 {
+  encode zstd gzip
+  header Access-Control-Allow-Origin "*"
+  @hls path_regexp hls \.m3u8|\.ts$
+  handle @hls {
+    # TODO: validate HMAC signature on query params before proxy
+    reverse_proxy https://s3.wasabisys.com
+  }
+  handle {
+    respond 404
+  }
+}

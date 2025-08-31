@@ -1,14 +1,23 @@
 # Endpoint: Preview Build
 
 POST /api/preview
-- Input: `{ versionSha }`
-- Output: `{ jobId }`
+- Input:
+```
+{
+  "asset_id": "optional-uuid",
+  "master_bucket": "...",
+  "master_key": "...",
+  "previews_bucket": "...",
+  "preview_prefix": "asset/<id>/default"
+}
+```
+- Output: `{ "enqueued": true, "id": "job-id" }`
 
 Behavior
 - Enqueues GPU job if preview not present; otherwise returns "already-ready".
 
 Errors
-- 404 version not found; 409 already enqueued; 500 queue failure.
+- 400 validation error; 501 queue not configured; 500 queue failure.
 
 Acceptance
 - Idempotent; job appears in queue; events notify UI.

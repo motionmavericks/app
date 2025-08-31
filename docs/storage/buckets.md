@@ -33,3 +33,17 @@ staging/uploads/0b1a…/myfile.mov
 Naming Rules
 - `client` and `project` are kebab‑case ASCII slugs.
 - `asset-id` is a stable UUIDv7; `version-sha` is a sha256 hex.
+
+Motion Mavericks (AU) — Bucket Plan
+- Region: `ap-southeast-2`
+- Endpoint: `https://s3.ap-southeast-2.wasabisys.com`
+- New buckets for this application:
+  - `mm-staging-au`
+  - `mm-masters-au`
+  - `mm-previews-au`
+
+Data Safety Policy
+- Do not alter or delete any existing production buckets or data; treat current production as read-only.
+- Create and use the new buckets above for all MVP operations.
+- Apply least-privilege IAM: separate keys for staging PUT, masters COPY, previews WRITE/READ.
+- Enable Object Lock default retention on Masters.

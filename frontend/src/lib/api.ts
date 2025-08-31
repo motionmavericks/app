@@ -6,7 +6,7 @@ export async function presign(input: {
   bucket?: string;
   expires?: number;
 }) {
-  const res = await fetch(`${API_BASE}/presign`, {
+  const res = await fetch(`${API_BASE}/api/presign`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(input),
@@ -17,4 +17,3 @@ export async function presign(input: {
   }
   return (await res.json()) as { url: string; bucket: string; key: string; expiresIn: number };
 }
-
