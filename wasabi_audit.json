@@ -1,0 +1,3174 @@
+{
+  "default_endpoint": "https://s3.ap-southeast-2.wasabisys.com",
+  "buckets": [
+    {
+      "bucket": "fast",
+      "endpoint": "https://s3.ap-southeast-2.wasabisys.com",
+      "objects": 4,
+      "bytes": 673083530,
+      "bytes_human": "641.90 MB",
+      "last_modified": "2025-05-18T02:22:34+00:00",
+      "top_prefixes": [
+        {
+          "prefix": "uploads",
+          "count": 3,
+          "bytes": 672508707,
+          "bytes_human": "641.35 MB"
+        },
+        {
+          "prefix": "test-uploads",
+          "count": 1,
+          "bytes": 574823,
+          "bytes_human": "561.35 KB"
+        }
+      ],
+      "ext_histogram": [
+        [
+          "mp4",
+          3
+        ],
+        [
+          "_none",
+          1
+        ]
+      ],
+      "groups": {
+        "video": {
+          "count": 3,
+          "bytes": 667450335,
+          "bytes_human": "636.53 MB"
+        },
+        "_none": {
+          "count": 1,
+          "bytes": 5633195,
+          "bytes_human": "5.37 MB"
+        }
+      },
+      "year_histogram": {
+        "2025": {
+          "count": 4,
+          "bytes": 673083530,
+          "bytes_human": "641.90 MB"
+        }
+      },
+      "depth2": {
+        "test-uploads": [
+          {
+            "second": "1747534953252_test_video.mp4",
+            "count": 1,
+            "bytes": 574823,
+            "bytes_human": "561.35 KB"
+          }
+        ],
+        "uploads": [
+          {
+            "second": "562JWHrEeM",
+            "count": 3,
+            "bytes": 672508707,
+            "bytes_human": "641.35 MB"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "key": "test-uploads/1747534953252_test_video.mp4",
+          "size": 574823
+        },
+        {
+          "key": "uploads/562JWHrEeM/1747212027859_GSBxCarlton_HCA25_Ep02_Draft01_Full.mp4",
+          "size": 333437756
+        },
+        {
+          "key": "uploads/562JWHrEeM/GSBxCarlton_HCA25_Ep02_Draft01_Full.mp4",
+          "size": 333437756
+        },
+        {
+          "key": "uploads/562JWHrEeM/OruYurry0e_placeholder",
+          "size": 5633195
+        }
+      ],
+      "region": "ap-southeast-2"
+    },
+    {
+      "bucket": "ice-mavericks",
+      "endpoint": "https://s3.ap-southeast-2.wasabisys.com",
+      "objects": 135816,
+      "bytes": 12132554207761,
+      "bytes_human": "11.03 TB",
+      "last_modified": "2025-08-02T08:59:46+00:00",
+      "top_prefixes": [
+        {
+          "prefix": "Project Files",
+          "count": 131798,
+          "bytes": 9744548162075,
+          "bytes_human": "8.86 TB"
+        },
+        {
+          "prefix": "020425 Great Southern Bank HCA Miniseries Ep02",
+          "count": 668,
+          "bytes": 1555425962644,
+          "bytes_human": "1.41 TB"
+        },
+        {
+          "prefix": "Cadbury Tour",
+          "count": 2427,
+          "bytes": 821491831426,
+          "bytes_human": "765.07 GB"
+        },
+        {
+          "prefix": "250601 MKTG Cricket Ashes Preview UK Edit",
+          "count": 55,
+          "bytes": 10225465629,
+          "bytes_human": "9.52 GB"
+        },
+        {
+          "prefix": "Marketing & Advertising",
+          "count": 360,
+          "bytes": 519535200,
+          "bytes_human": "495.47 MB"
+        },
+        {
+          "prefix": "Team Documents",
+          "count": 481,
+          "bytes": 336513953,
+          "bytes_human": "320.92 MB"
+        },
+        {
+          "prefix": "Company Documents",
+          "count": 24,
+          "bytes": 6736834,
+          "bytes_human": "6.42 MB"
+        },
+        {
+          "prefix": "Equipment and Technology",
+          "count": 3,
+          "bytes": 0,
+          "bytes_human": "0.00 B"
+        }
+      ],
+      "ext_histogram": [
+        [
+          "arw",
+          73746
+        ],
+        [
+          "dng",
+          28141
+        ],
+        [
+          "jpg",
+          13871
+        ],
+        [
+          "gpr",
+          4433
+        ],
+        [
+          "xmp",
+          3469
+        ],
+        [
+          "mov",
+          1983
+        ],
+        [
+          "mp4",
+          1894
+        ],
+        [
+          "png",
+          1612
+        ],
+        [
+          "hif",
+          1108
+        ],
+        [
+          "tif",
+          1003
+        ],
+        [
+          "xml",
+          742
+        ],
+        [
+          "pek",
+          541
+        ],
+        [
+          "wav",
+          540
+        ],
+        [
+          "cfa",
+          431
+        ],
+        [
+          "svg",
+          420
+        ],
+        [
+          "mxf",
+          403
+        ],
+        [
+          "prproj",
+          230
+        ],
+        [
+          "braw",
+          205
+        ],
+        [
+          "cube",
+          146
+        ],
+        [
+          "aep",
+          133
+        ],
+        [
+          "ttf",
+          68
+        ],
+        [
+          "mp3",
+          56
+        ],
+        [
+          "json",
+          50
+        ],
+        [
+          "ini",
+          49
+        ],
+        [
+          "txt",
+          46
+        ],
+        [
+          "sidecar",
+          44
+        ],
+        [
+          "jpeg",
+          38
+        ],
+        [
+          "ai",
+          34
+        ],
+        [
+          "heic",
+          34
+        ],
+        [
+          "pdf",
+          33
+        ],
+        [
+          "_none",
+          32
+        ],
+        [
+          "obj",
+          24
+        ],
+        [
+          "db",
+          21
+        ],
+        [
+          "bin",
+          13
+        ],
+        [
+          "avi",
+          13
+        ],
+        [
+          "bim",
+          13
+        ],
+        [
+          "srt",
+          10
+        ],
+        [
+          "lrv",
+          9
+        ],
+        [
+          "thm",
+          9
+        ],
+        [
+          "m4a",
+          8
+        ],
+        [
+          "css",
+          8
+        ],
+        [
+          "ind",
+          7
+        ],
+        [
+          "zip",
+          7
+        ],
+        [
+          "prin",
+          6
+        ],
+        [
+          "look",
+          6
+        ],
+        [
+          "psd",
+          6
+        ],
+        [
+          "eps",
+          5
+        ],
+        [
+          "ds_store",
+          5
+        ],
+        [
+          "webp",
+          4
+        ],
+        [
+          "_leeming lut athena iii",
+          4
+        ]
+      ],
+      "groups": {
+        "video": {
+          "count": 4295,
+          "bytes": 7581812623864,
+          "bytes_human": "6.90 TB"
+        },
+        "raw_photo": {
+          "count": 106320,
+          "bytes": 2940649054590,
+          "bytes_human": "2.67 TB"
+        },
+        "raw_video": {
+          "count": 205,
+          "bytes": 1472676974133,
+          "bytes_human": "1.34 TB"
+        },
+        "image": {
+          "count": 16667,
+          "bytes": 77859185215,
+          "bytes_human": "72.51 GB"
+        },
+        "audio": {
+          "count": 604,
+          "bytes": 49116264161,
+          "bytes_human": "45.74 GB"
+        },
+        "other": {
+          "count": 840,
+          "bytes": 4188707420,
+          "bytes_human": "3.90 GB"
+        },
+        "archive": {
+          "count": 7,
+          "bytes": 2782252368,
+          "bytes_human": "2.59 GB"
+        },
+        "sidecar": {
+          "count": 5339,
+          "bytes": 1406680108,
+          "bytes_human": "1.31 GB"
+        },
+        "project": {
+          "count": 367,
+          "bytes": 1388494532,
+          "bytes_human": "1.29 GB"
+        },
+        "image_high": {
+          "count": 1004,
+          "bytes": 575064288,
+          "bytes_human": "548.42 MB"
+        },
+        "doc": {
+          "count": 86,
+          "bytes": 98517338,
+          "bytes_human": "93.95 MB"
+        },
+        "_none": {
+          "count": 32,
+          "bytes": 328681,
+          "bytes_human": "320.98 KB"
+        },
+        "code": {
+          "count": 50,
+          "bytes": 61063,
+          "bytes_human": "59.63 KB"
+        }
+      },
+      "year_histogram": {
+        "2024": {
+          "count": 8517,
+          "bytes": 1292857348207,
+          "bytes_human": "1.18 TB"
+        },
+        "2025": {
+          "count": 127299,
+          "bytes": 10839696859554,
+          "bytes_human": "9.86 TB"
+        }
+      },
+      "depth2": {
+        "020425 Great Southern Bank HCA Miniseries Ep02": [
+          {
+            "second": "01 Footage",
+            "count": 514,
+            "bytes": 1528790011829,
+            "bytes_human": "1.39 TB"
+          },
+          {
+            "second": "00 Exports",
+            "count": 107,
+            "bytes": 20076390994,
+            "bytes_human": "18.70 GB"
+          },
+          {
+            "second": "02 Audio",
+            "count": 21,
+            "bytes": 5092057732,
+            "bytes_human": "4.74 GB"
+          },
+          {
+            "second": "03 Graphics",
+            "count": 14,
+            "bytes": 1458768298,
+            "bytes_human": "1.36 GB"
+          },
+          {
+            "second": "00 Project",
+            "count": 12,
+            "bytes": 8733791,
+            "bytes_human": "8.33 MB"
+          }
+        ],
+        "250601 MKTG Cricket Ashes Preview UK Edit": [
+          {
+            "second": "Highlights version 1.mov",
+            "count": 1,
+            "bytes": 1335050656,
+            "bytes_human": "1.24 GB"
+          },
+          {
+            "second": "Highlights version 1_S003.mov",
+            "count": 1,
+            "bytes": 927247324,
+            "bytes_human": "884.29 MB"
+          },
+          {
+            "second": "Highlights version 1_S004.mov",
+            "count": 1,
+            "bytes": 810278750,
+            "bytes_human": "772.74 MB"
+          },
+          {
+            "second": "The Test A New Era For Australia's Team - S03e02 - The Spirit Of Cricket_S007.mov",
+            "count": 1,
+            "bytes": 532587148,
+            "bytes_human": "507.91 MB"
+          },
+          {
+            "second": "Highlights version 1_S000.mov",
+            "count": 1,
+            "bytes": 493785875,
+            "bytes_human": "470.91 MB"
+          },
+          {
+            "second": "Highlights version 1_S001.mov",
+            "count": 1,
+            "bytes": 462150051,
+            "bytes_human": "440.74 MB"
+          },
+          {
+            "second": "Highlights version 1_S002.mov",
+            "count": 1,
+            "bytes": 454693657,
+            "bytes_human": "433.63 MB"
+          },
+          {
+            "second": "Top 10 Best Ashes deliveries in Australia, 1990-2020   NuPure Top 10.mov",
+            "count": 1,
+            "bytes": 318920412,
+            "bytes_human": "304.15 MB"
+          },
+          {
+            "second": "The Test A New Era For Australia's Team - S03e02 - The Spirit Of Cricket_S004.mov",
+            "count": 1,
+            "bytes": 244754601,
+            "bytes_human": "233.42 MB"
+          },
+          {
+            "second": "The Test A New Era For Australia's Team - S03e02 - The Spirit Of Cricket.mov",
+            "count": 1,
+            "bytes": 235716555,
+            "bytes_human": "224.80 MB"
+          },
+          {
+            "second": "The Test A New Era For Australia's Team - S03e01 - It May As Well Be You_S000.mov",
+            "count": 1,
+            "bytes": 224610178,
+            "bytes_human": "214.20 MB"
+          },
+          {
+            "second": "The Test A New Era For Australia's Team - S03e02 - The Spirit Of Cricket_S013.mov",
+            "count": 1,
+            "bytes": 224496500,
+            "bytes_human": "214.10 MB"
+          },
+          {
+            "second": "The Test A New Era For Australia's Team - S03e02 - The Spirit Of Cricket_S010.mov",
+            "count": 1,
+            "bytes": 194362948,
+            "bytes_human": "185.36 MB"
+          },
+          {
+            "second": "The Test A New Era For Australia's Team - S03e02 - The Spirit Of Cricket_S008.mov",
+            "count": 1,
+            "bytes": 188077876,
+            "bytes_human": "179.37 MB"
+          },
+          {
+            "second": "The Test A New Era For Australia's Team - S03e02 - The Spirit Of Cricket_S006.mov",
+            "count": 1,
+            "bytes": 176645138,
+            "bytes_human": "168.46 MB"
+          },
+          {
+            "second": "The Test A New Era For Australia's Team - S03e02 - The Spirit Of Cricket_S012.mov",
+            "count": 1,
+            "bytes": 151251316,
+            "bytes_human": "144.24 MB"
+          },
+          {
+            "second": "The Test A New Era For Australia's Team - S03e01 - It May As Well Be You_S005.mov",
+            "count": 1,
+            "bytes": 149666413,
+            "bytes_human": "142.73 MB"
+          },
+          {
+            "second": "Freddie At His Best Flintoff's Greatest Ashes Moments As They Happened.mov",
+            "count": 1,
+            "bytes": 149587669,
+            "bytes_human": "142.66 MB"
+          },
+          {
+            "second": "Top 10 Best Ashes deliveries in Australia, 1990-2020   NuPure Top 10_S001.mov",
+            "count": 1,
+            "bytes": 148973906,
+            "bytes_human": "142.07 MB"
+          },
+          {
+            "second": "The Test A New Era For Australia's Team - S03e02 - The Spirit Of Cricket_S000.mov",
+            "count": 1,
+            "bytes": 143264481,
+            "bytes_human": "136.63 MB"
+          }
+        ],
+        "Cadbury Tour": [
+          {
+            "second": "Camera A",
+            "count": 78,
+            "bytes": 352711621132,
+            "bytes_human": "328.49 GB"
+          },
+          {
+            "second": "Camera B",
+            "count": 58,
+            "bytes": 287015931432,
+            "bytes_human": "267.30 GB"
+          },
+          {
+            "second": "Photography",
+            "count": 2242,
+            "bytes": 143797052325,
+            "bytes_human": "133.92 GB"
+          },
+          {
+            "second": "Camera C",
+            "count": 9,
+            "bytes": 33205606761,
+            "bytes_human": "30.93 GB"
+          },
+          {
+            "second": "Audio",
+            "count": 19,
+            "bytes": 4722060056,
+            "bytes_human": "4.40 GB"
+          },
+          {
+            "second": "Project",
+            "count": 21,
+            "bytes": 39559720,
+            "bytes_human": "37.73 MB"
+          }
+        ],
+        "Company Documents": [
+          {
+            "second": "Financial",
+            "count": 7,
+            "bytes": 3732257,
+            "bytes_human": "3.56 MB"
+          },
+          {
+            "second": "Legal",
+            "count": 13,
+            "bytes": 2644316,
+            "bytes_human": "2.52 MB"
+          },
+          {
+            "second": "Business Plan",
+            "count": 2,
+            "bytes": 360261,
+            "bytes_human": "351.82 KB"
+          },
+          {
+            "second": "Contracts",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          },
+          {
+            "second": "Insurance",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "Equipment and Technology": [
+          {
+            "second": "Equipment",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          },
+          {
+            "second": "Maintenance Records",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          },
+          {
+            "second": "Software Licenses",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "Marketing & Advertising": [
+          {
+            "second": "Media",
+            "count": 241,
+            "bytes": 500460050,
+            "bytes_human": "477.28 MB"
+          },
+          {
+            "second": "Branding",
+            "count": 116,
+            "bytes": 19075150,
+            "bytes_human": "18.19 MB"
+          },
+          {
+            "second": "Advertising Campaigns",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          },
+          {
+            "second": "Public Relations",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          },
+          {
+            "second": "Social Media",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "Project Files": [
+          {
+            "second": "Archive",
+            "count": 131797,
+            "bytes": 9744548162075,
+            "bytes_human": "8.86 TB"
+          },
+          {
+            "second": "",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "Team Documents": [
+          {
+            "second": "Training Materials",
+            "count": 478,
+            "bytes": 336513953,
+            "bytes_human": "320.92 MB"
+          },
+          {
+            "second": "Employee Files",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          },
+          {
+            "second": "Employee Handbooks",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          },
+          {
+            "second": "Job Descriptions",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-01.jpg",
+          "size": 4276172
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-02.jpg",
+          "size": 2093265
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-03.jpg",
+          "size": 3990022
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-04.jpg",
+          "size": 3632723
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-05.jpg",
+          "size": 3587307
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-06.jpg",
+          "size": 3752581
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-07.jpg",
+          "size": 3177698
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-08.jpg",
+          "size": 3134699
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-09.jpg",
+          "size": 3425173
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-10.jpg",
+          "size": 3130151
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-11.jpg",
+          "size": 2860151
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-12.jpg",
+          "size": 2226760
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-13.jpg",
+          "size": 3350469
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-14.jpg",
+          "size": 2801479
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-15.jpg",
+          "size": 3151177
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-16.jpg",
+          "size": 2989001
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-17.jpg",
+          "size": 3093393
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-18.jpg",
+          "size": 2549833
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-19.jpg",
+          "size": 3153030
+        },
+        {
+          "key": "020425 Great Southern Bank HCA Miniseries Ep02/00 Exports/Frames/GSBxCarlton-EP02-20.jpg",
+          "size": 3288060
+        }
+      ],
+      "region": "ap-southeast-2"
+    },
+    {
+      "bucket": "mirror-mavericks",
+      "endpoint": "https://s3.ap-southeast-2.wasabisys.com",
+      "objects": 565243,
+      "bytes": 23811688913296,
+      "bytes_human": "21.66 TB",
+      "last_modified": "2025-08-31T06:59:48+00:00",
+      "top_prefixes": [
+        {
+          "prefix": "_Active Projects",
+          "count": 378667,
+          "bytes": 10265111505886,
+          "bytes_human": "9.34 TB"
+        },
+        {
+          "prefix": "Ingest",
+          "count": 32737,
+          "bytes": 9902768427972,
+          "bytes_human": "9.01 TB"
+        },
+        {
+          "prefix": "To Archive",
+          "count": 3903,
+          "bytes": 2827210165791,
+          "bytes_human": "2.57 TB"
+        },
+        {
+          "prefix": "Media",
+          "count": 312,
+          "bytes": 610937255331,
+          "bytes_human": "568.98 GB"
+        },
+        {
+          "prefix": "Client Files",
+          "count": 8507,
+          "bytes": 94032781272,
+          "bytes_human": "87.57 GB"
+        },
+        {
+          "prefix": "Production Elements",
+          "count": 12503,
+          "bytes": 79032147730,
+          "bytes_human": "73.60 GB"
+        },
+        {
+          "prefix": "",
+          "count": 2820,
+          "bytes": 29854517288,
+          "bytes_human": "27.80 GB"
+        },
+        {
+          "prefix": "Motion-Mavericks",
+          "count": 114030,
+          "bytes": 1581056617,
+          "bytes_human": "1.47 GB"
+        },
+        {
+          "prefix": ".pnpm-store",
+          "count": 11750,
+          "bytes": 1101701455,
+          "bytes_human": "1.03 GB"
+        },
+        {
+          "prefix": "Snap Captions Template",
+          "count": 9,
+          "bytes": 58923980,
+          "bytes_human": "56.19 MB"
+        },
+        {
+          "prefix": "[Long] Help Desk 2024-Sep-03_11-31-22.log",
+          "count": 1,
+          "bytes": 425328,
+          "bytes_human": "415.36 KB"
+        },
+        {
+          "prefix": ".bashrc",
+          "count": 1,
+          "bytes": 3526,
+          "bytes_human": "3.44 KB"
+        },
+        {
+          "prefix": ".profile",
+          "count": 1,
+          "bytes": 807,
+          "bytes_human": "807.00 B"
+        },
+        {
+          "prefix": ".bash_logout",
+          "count": 1,
+          "bytes": 220,
+          "bytes_human": "220.00 B"
+        },
+        {
+          "prefix": ".ssh",
+          "count": 1,
+          "bytes": 93,
+          "bytes_human": "93.00 B"
+        }
+      ],
+      "ext_histogram": [
+        [
+          "js",
+          151589
+        ],
+        [
+          "tif",
+          91038
+        ],
+        [
+          "ts",
+          53187
+        ],
+        [
+          "map",
+          45652
+        ],
+        [
+          "arw",
+          26696
+        ],
+        [
+          "jpg",
+          24254
+        ],
+        [
+          "_none",
+          22453
+        ],
+        [
+          "json",
+          18508
+        ],
+        [
+          "dng",
+          13384
+        ],
+        [
+          "png",
+          12440
+        ],
+        [
+          "xmp",
+          11295
+        ],
+        [
+          "md",
+          10130
+        ],
+        [
+          "mov",
+          5974
+        ],
+        [
+          "mjs",
+          5690
+        ],
+        [
+          "wav",
+          5667
+        ],
+        [
+          "mp4",
+          5291
+        ],
+        [
+          "gpr",
+          4433
+        ],
+        [
+          "py",
+          3616
+        ],
+        [
+          "pyc",
+          3307
+        ],
+        [
+          "pek",
+          2788
+        ],
+        [
+          "tsx",
+          2678
+        ],
+        [
+          "mts",
+          2678
+        ],
+        [
+          "flow",
+          2663
+        ],
+        [
+          "gif",
+          2626
+        ],
+        [
+          "prproj",
+          2418
+        ],
+        [
+          "cr3",
+          2324
+        ],
+        [
+          "mogrt",
+          2143
+        ],
+        [
+          "xml",
+          1952
+        ],
+        [
+          "cjs",
+          1782
+        ],
+        [
+          "yml",
+          1459
+        ],
+        [
+          "cfa",
+          1433
+        ],
+        [
+          "txt",
+          1288
+        ],
+        [
+          "tx",
+          1258
+        ],
+        [
+          "fbx",
+          1147
+        ],
+        [
+          "mxf",
+          1093
+        ],
+        [
+          "eslintrc",
+          1049
+        ],
+        [
+          "ico",
+          1000
+        ],
+        [
+          "cube",
+          834
+        ],
+        [
+          "nycrc",
+          784
+        ],
+        [
+          "aep",
+          775
+        ],
+        [
+          "h",
+          736
+        ],
+        [
+          "mp3",
+          626
+        ],
+        [
+          "mdx",
+          599
+        ],
+        [
+          "hif",
+          580
+        ],
+        [
+          "aegraphic",
+          533
+        ],
+        [
+          "svg",
+          517
+        ],
+        [
+          "cts",
+          469
+        ],
+        [
+          "editorconfig",
+          412
+        ],
+        [
+          "exr",
+          391
+        ],
+        [
+          "ps1",
+          365
+        ]
+      ],
+      "groups": {
+        "video": {
+          "count": 12408,
+          "bytes": 19236336568793,
+          "bytes_human": "17.50 TB"
+        },
+        "raw_video": {
+          "count": 41,
+          "bytes": 1788285798735,
+          "bytes_human": "1.63 TB"
+        },
+        "raw_photo": {
+          "count": 46843,
+          "bytes": 1210559246918,
+          "bytes_human": "1.10 TB"
+        },
+        "image_high": {
+          "count": 91429,
+          "bytes": 760133420345,
+          "bytes_human": "707.93 GB"
+        },
+        "archive": {
+          "count": 346,
+          "bytes": 232120292837,
+          "bytes_human": "216.18 GB"
+        },
+        "image": {
+          "count": 37541,
+          "bytes": 226403203588,
+          "bytes_human": "210.85 GB"
+        },
+        "other": {
+          "count": 33329,
+          "bytes": 154766141786,
+          "bytes_human": "144.14 GB"
+        },
+        "audio": {
+          "count": 6384,
+          "bytes": 112347879584,
+          "bytes_human": "104.63 GB"
+        },
+        "sidecar": {
+          "count": 18509,
+          "bytes": 32961526533,
+          "bytes_human": "30.70 GB"
+        },
+        "_none": {
+          "count": 22453,
+          "bytes": 31006152268,
+          "bytes_human": "28.88 GB"
+        },
+        "project": {
+          "count": 3199,
+          "bytes": 22869862352,
+          "bytes_human": "21.30 GB"
+        },
+        "code": {
+          "count": 280920,
+          "bytes": 2337586618,
+          "bytes_human": "2.18 GB"
+        },
+        "doc": {
+          "count": 11841,
+          "bytes": 1561232939,
+          "bytes_human": "1.45 GB"
+        }
+      },
+      "year_histogram": {
+        "2024": {
+          "count": 512769,
+          "bytes": 14617633590140,
+          "bytes_human": "13.29 TB"
+        },
+        "2025": {
+          "count": 52474,
+          "bytes": 9194055323156,
+          "bytes_human": "8.36 TB"
+        }
+      },
+      "depth2": {
+        ".pnpm-store": [
+          {
+            "second": "v3",
+            "count": 11750,
+            "bytes": 1101701455,
+            "bytes_human": "1.03 GB"
+          }
+        ],
+        ".ssh": [
+          {
+            "second": "authorized_keys",
+            "count": 1,
+            "bytes": 93,
+            "bytes_human": "93.00 B"
+          }
+        ],
+        "": [
+          {
+            "second": "-2025-01-13-13-17-24-YJQKWYRRIUG4SU3B",
+            "count": 1,
+            "bytes": 21977301,
+            "bytes_human": "20.96 MB"
+          },
+          {
+            "second": "-2024-12-15-20-28-35-S9CFDOZMCDFE6RXF",
+            "count": 1,
+            "bytes": 21658173,
+            "bytes_human": "20.65 MB"
+          },
+          {
+            "second": "-2025-03-06-13-05-45-K0P3859W28K53KL6",
+            "count": 1,
+            "bytes": 20984166,
+            "bytes_human": "20.01 MB"
+          },
+          {
+            "second": "-2025-02-08-13-03-34-V9QEA10MJX5XEDAH",
+            "count": 1,
+            "bytes": 20932189,
+            "bytes_human": "19.96 MB"
+          },
+          {
+            "second": "-2024-12-15-20-56-35-MWTDK7I3EGSA4TX3",
+            "count": 1,
+            "bytes": 20843753,
+            "bytes_human": "19.88 MB"
+          },
+          {
+            "second": "-2025-01-23-13-08-20-K7EF5J71AAC8EBVE",
+            "count": 1,
+            "bytes": 20575173,
+            "bytes_human": "19.62 MB"
+          },
+          {
+            "second": "-2025-04-08-14-02-11-IN8UP87EBAMZIH5C",
+            "count": 1,
+            "bytes": 20370110,
+            "bytes_human": "19.43 MB"
+          },
+          {
+            "second": "-2025-03-06-13-07-45-0OM44KS46XFVYBEQ",
+            "count": 1,
+            "bytes": 20350467,
+            "bytes_human": "19.41 MB"
+          },
+          {
+            "second": "-2025-04-27-14-04-53-RKV7RJT8N1JL7T8O",
+            "count": 1,
+            "bytes": 20340534,
+            "bytes_human": "19.40 MB"
+          },
+          {
+            "second": "-2025-03-11-13-14-48-AEMMXCYGR8AIFYHO",
+            "count": 1,
+            "bytes": 20256517,
+            "bytes_human": "19.32 MB"
+          },
+          {
+            "second": "-2024-12-15-20-32-34-VW5HWFYRIBUO2UQU",
+            "count": 1,
+            "bytes": 20182474,
+            "bytes_human": "19.25 MB"
+          },
+          {
+            "second": "-2025-01-27-13-06-09-YIOX59U4M2QX8RJA",
+            "count": 1,
+            "bytes": 20147987,
+            "bytes_human": "19.21 MB"
+          },
+          {
+            "second": "-2025-04-08-14-05-12-QK4DVNCVE6X4R9P4",
+            "count": 1,
+            "bytes": 19997919,
+            "bytes_human": "19.07 MB"
+          },
+          {
+            "second": "-2025-02-10-13-06-57-JP8KO3IVDV4CQQBK",
+            "count": 1,
+            "bytes": 19602260,
+            "bytes_human": "18.69 MB"
+          },
+          {
+            "second": "-2025-04-27-14-06-53-CB1T7IFNHDVE5HFO",
+            "count": 1,
+            "bytes": 19601675,
+            "bytes_human": "18.69 MB"
+          },
+          {
+            "second": "-2025-01-27-13-02-09-EQ4AUMGTOPP4LKPU",
+            "count": 1,
+            "bytes": 19537810,
+            "bytes_human": "18.63 MB"
+          },
+          {
+            "second": "-2024-12-15-20-54-35-LHN6X4PUPHUBKBSE",
+            "count": 1,
+            "bytes": 19482880,
+            "bytes_human": "18.58 MB"
+          },
+          {
+            "second": "-2025-01-27-13-04-09-PPZFM7UY8EV9XL0J",
+            "count": 1,
+            "bytes": 19391327,
+            "bytes_human": "18.49 MB"
+          },
+          {
+            "second": "-2025-01-29-13-06-33-BI60RXAB0V5Y6X2K",
+            "count": 1,
+            "bytes": 19319463,
+            "bytes_human": "18.42 MB"
+          },
+          {
+            "second": "-2025-01-23-13-04-20-3OXUUDDJXQK85QGX",
+            "count": 1,
+            "bytes": 19270123,
+            "bytes_human": "18.38 MB"
+          }
+        ],
+        "Client Files": [
+          {
+            "second": "Efficient App",
+            "count": 8301,
+            "bytes": 90179080894,
+            "bytes_human": "83.99 GB"
+          },
+          {
+            "second": "Cadbury",
+            "count": 43,
+            "bytes": 1854652927,
+            "bytes_human": "1.73 GB"
+          },
+          {
+            "second": "Great Southern Bank",
+            "count": 4,
+            "bytes": 1339833032,
+            "bytes_human": "1.25 GB"
+          },
+          {
+            "second": "TAC",
+            "count": 37,
+            "bytes": 307214801,
+            "bytes_human": "292.98 MB"
+          },
+          {
+            "second": "Back & Body Clinic",
+            "count": 65,
+            "bytes": 202779799,
+            "bytes_human": "193.39 MB"
+          },
+          {
+            "second": "VISA",
+            "count": 21,
+            "bytes": 145016467,
+            "bytes_human": "138.30 MB"
+          },
+          {
+            "second": "+Motion Mavericks",
+            "count": 33,
+            "bytes": 4178260,
+            "bytes_human": "3.98 MB"
+          },
+          {
+            "second": "Breeew",
+            "count": 1,
+            "bytes": 24652,
+            "bytes_human": "24.07 KB"
+          },
+          {
+            "second": "Sherpa",
+            "count": 2,
+            "bytes": 440,
+            "bytes_human": "440.00 B"
+          }
+        ],
+        "Ingest": [
+          {
+            "second": "WB Footage",
+            "count": 551,
+            "bytes": 1193416247508,
+            "bytes_human": "1.09 TB"
+          },
+          {
+            "second": "VISA",
+            "count": 4424,
+            "bytes": 1104419760002,
+            "bytes_human": "1.00 TB"
+          },
+          {
+            "second": "WB Footage_converted",
+            "count": 54,
+            "bytes": 689563907274,
+            "bytes_human": "642.21 GB"
+          },
+          {
+            "second": "TAC All Abilities Day",
+            "count": 739,
+            "bytes": 686751313981,
+            "bytes_human": "639.59 GB"
+          },
+          {
+            "second": "(2025) Melbourne Renegades V Melbourne Stars",
+            "count": 5251,
+            "bytes": 436642407397,
+            "bytes_human": "406.65 GB"
+          },
+          {
+            "second": "The 19th 2024",
+            "count": 769,
+            "bytes": 427969768340,
+            "bytes_human": "398.58 GB"
+          },
+          {
+            "second": "A005_06281318_C001.braw",
+            "count": 1,
+            "bytes": 426572689260,
+            "bytes_human": "397.28 GB"
+          },
+          {
+            "second": "(2024) Jez MCG ANZAC Videography",
+            "count": 307,
+            "bytes": 422340165348,
+            "bytes_human": "393.33 GB"
+          },
+          {
+            "second": "R4D",
+            "count": 89,
+            "bytes": 395000087560,
+            "bytes_human": "367.87 GB"
+          },
+          {
+            "second": "A005_06281604_C006.braw",
+            "count": 1,
+            "bytes": 336690143224,
+            "bytes_human": "313.57 GB"
+          },
+          {
+            "second": "MKTG Good Friday (2024)",
+            "count": 8772,
+            "bytes": 336523822045,
+            "bytes_human": "313.41 GB"
+          },
+          {
+            "second": "250528 Cadbury Matildas Factory Tour",
+            "count": 58,
+            "bytes": 287015931432,
+            "bytes_human": "267.30 GB"
+          },
+          {
+            "second": "250514",
+            "count": 455,
+            "bytes": 220623911692,
+            "bytes_human": "205.47 GB"
+          },
+          {
+            "second": "Back & Body Clinic",
+            "count": 156,
+            "bytes": 213809450255,
+            "bytes_human": "199.13 GB"
+          },
+          {
+            "second": "PRIVATE",
+            "count": 156,
+            "bytes": 213809450255,
+            "bytes_human": "199.13 GB"
+          },
+          {
+            "second": "Kabaddi Ingest",
+            "count": 276,
+            "bytes": 197532937280,
+            "bytes_human": "183.97 GB"
+          },
+          {
+            "second": "A005_06281745_C008.braw",
+            "count": 1,
+            "bytes": 197027799900,
+            "bytes_human": "183.50 GB"
+          },
+          {
+            "second": "Drone Stock",
+            "count": 268,
+            "bytes": 182653451974,
+            "bytes_human": "170.11 GB"
+          },
+          {
+            "second": "A005_06281443_C003.braw",
+            "count": 1,
+            "bytes": 157818438252,
+            "bytes_human": "146.98 GB"
+          },
+          {
+            "second": "Yarraville",
+            "count": 237,
+            "bytes": 155579289404,
+            "bytes_human": "144.89 GB"
+          }
+        ],
+        "Media": [
+          {
+            "second": "Sports",
+            "count": 44,
+            "bytes": 428283803357,
+            "bytes_human": "398.87 GB"
+          },
+          {
+            "second": "Stock Footage",
+            "count": 268,
+            "bytes": 182653451974,
+            "bytes_human": "170.11 GB"
+          }
+        ],
+        "Motion-Mavericks": [
+          {
+            "second": "Apps",
+            "count": 72453,
+            "bytes": 1019686272,
+            "bytes_human": "972.45 MB"
+          },
+          {
+            "second": "Websites",
+            "count": 40594,
+            "bytes": 410156120,
+            "bytes_human": "391.16 MB"
+          },
+          {
+            "second": "Custom Icons",
+            "count": 981,
+            "bytes": 151207196,
+            "bytes_human": "144.20 MB"
+          },
+          {
+            "second": "Plugins",
+            "count": 2,
+            "bytes": 7029,
+            "bytes_human": "6.86 KB"
+          }
+        ],
+        "Production Elements": [
+          {
+            "second": "Greyscale Gorilla",
+            "count": 7806,
+            "bytes": 57316059347,
+            "bytes_human": "53.38 GB"
+          },
+          {
+            "second": "Audio",
+            "count": 2475,
+            "bytes": 17317155974,
+            "bytes_human": "16.13 GB"
+          },
+          {
+            "second": "Transitions",
+            "count": 12,
+            "bytes": 1568981060,
+            "bytes_human": "1.46 GB"
+          },
+          {
+            "second": "AEJuice",
+            "count": 81,
+            "bytes": 831910829,
+            "bytes_human": "793.37 MB"
+          },
+          {
+            "second": "LUTs",
+            "count": 788,
+            "bytes": 649877994,
+            "bytes_human": "619.77 MB"
+          },
+          {
+            "second": "Megascans",
+            "count": 1141,
+            "bytes": 566472909,
+            "bytes_human": "540.23 MB"
+          },
+          {
+            "second": "HDRIs",
+            "count": 6,
+            "bytes": 384345920,
+            "bytes_human": "366.54 MB"
+          },
+          {
+            "second": "SFX",
+            "count": 23,
+            "bytes": 220054352,
+            "bytes_human": "209.86 MB"
+          },
+          {
+            "second": "Captions",
+            "count": 113,
+            "bytes": 78415555,
+            "bytes_human": "74.78 MB"
+          },
+          {
+            "second": "Presets",
+            "count": 24,
+            "bytes": 62814886,
+            "bytes_human": "59.90 MB"
+          },
+          {
+            "second": "Envato Elements",
+            "count": 7,
+            "bytes": 34433278,
+            "bytes_human": "32.84 MB"
+          },
+          {
+            "second": "Social Safe Areas",
+            "count": 5,
+            "bytes": 1597719,
+            "bytes_human": "1.52 MB"
+          },
+          {
+            "second": "Ingest",
+            "count": 1,
+            "bytes": 27907,
+            "bytes_human": "27.25 KB"
+          },
+          {
+            "second": "VFX",
+            "count": 21,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "Snap Captions Template": [
+          {
+            "second": "Assets",
+            "count": 6,
+            "bytes": 58446083,
+            "bytes_human": "55.74 MB"
+          },
+          {
+            "second": "Snap Captions Template.drp",
+            "count": 1,
+            "bytes": 441090,
+            "bytes_human": "430.75 KB"
+          },
+          {
+            "second": "Snap Captions.lua",
+            "count": 1,
+            "bytes": 36172,
+            "bytes_human": "35.32 KB"
+          },
+          {
+            "second": "README.text",
+            "count": 1,
+            "bytes": 635,
+            "bytes_human": "635.00 B"
+          }
+        ],
+        "To Archive": [
+          {
+            "second": "MKTG Australia",
+            "count": 1742,
+            "bytes": 1518569489770,
+            "bytes_human": "1.38 TB"
+          },
+          {
+            "second": "Anthony Riera",
+            "count": 900,
+            "bytes": 862254313600,
+            "bytes_human": "803.04 GB"
+          },
+          {
+            "second": "240409 Long Efficient App Expense Management",
+            "count": 46,
+            "bytes": 308291705464,
+            "bytes_human": "287.12 GB"
+          },
+          {
+            "second": "Efficient App Motion Edit (2024)",
+            "count": 1215,
+            "bytes": 138094656957,
+            "bytes_human": "128.61 GB"
+          }
+        ],
+        "_Active Projects": [
+          {
+            "second": "Efficient App",
+            "count": 101149,
+            "bytes": 3161044878345,
+            "bytes_human": "2.87 TB"
+          },
+          {
+            "second": "MKTG Australia",
+            "count": 40147,
+            "bytes": 2978583677094,
+            "bytes_human": "2.71 TB"
+          },
+          {
+            "second": "Other",
+            "count": 21159,
+            "bytes": 1493951239108,
+            "bytes_human": "1.36 TB"
+          },
+          {
+            "second": "Back & Body Clinic",
+            "count": 10343,
+            "bytes": 1431742730194,
+            "bytes_human": "1.30 TB"
+          },
+          {
+            "second": "Aiper",
+            "count": 1777,
+            "bytes": 410756392164,
+            "bytes_human": "382.55 GB"
+          },
+          {
+            "second": "Cadbury",
+            "count": 123,
+            "bytes": 320721430463,
+            "bytes_human": "298.70 GB"
+          },
+          {
+            "second": "Great Southern Bank",
+            "count": 630,
+            "bytes": 144734987241,
+            "bytes_human": "134.79 GB"
+          },
+          {
+            "second": "Jodi Lee",
+            "count": 527,
+            "bytes": 122789054862,
+            "bytes_human": "114.36 GB"
+          },
+          {
+            "second": "Charming Cherubs",
+            "count": 1988,
+            "bytes": 66142114948,
+            "bytes_human": "61.60 GB"
+          },
+          {
+            "second": "TAC",
+            "count": 104,
+            "bytes": 59193666350,
+            "bytes_human": "55.13 GB"
+          },
+          {
+            "second": "Quick Hits",
+            "count": 179,
+            "bytes": 55941376966,
+            "bytes_human": "52.10 GB"
+          },
+          {
+            "second": "Buzz Energy",
+            "count": 1182,
+            "bytes": 10746839928,
+            "bytes_human": "10.01 GB"
+          },
+          {
+            "second": "Motion Mavericks",
+            "count": 163690,
+            "bytes": 6779739579,
+            "bytes_human": "6.31 GB"
+          },
+          {
+            "second": "VISA",
+            "count": 99,
+            "bytes": 1066322501,
+            "bytes_human": "1016.92 MB"
+          },
+          {
+            "second": "DubleBee",
+            "count": 28,
+            "bytes": 469176878,
+            "bytes_human": "447.44 MB"
+          },
+          {
+            "second": "Newsie",
+            "count": 35494,
+            "bytes": 416164526,
+            "bytes_human": "396.89 MB"
+          },
+          {
+            "second": "Motion Graphics Template Media",
+            "count": 6,
+            "bytes": 17060982,
+            "bytes_human": "16.27 MB"
+          },
+          {
+            "second": "Adobe Premiere Pro (Beta) Auto-Save",
+            "count": 28,
+            "bytes": 12443418,
+            "bytes_human": "11.87 MB"
+          },
+          {
+            "second": "Adobe Premiere Pro Auto-Save",
+            "count": 9,
+            "bytes": 2025511,
+            "bytes_human": "1.93 MB"
+          },
+          {
+            "second": ".isg",
+            "count": 1,
+            "bytes": 180224,
+            "bytes_human": "176.00 KB"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "key": ".bash_logout",
+          "size": 220
+        },
+        {
+          "key": ".bashrc",
+          "size": 3526
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/1377af901bf1d1f10c0faae490e8d0f568866637ff4723f45534ae8a9c05386e3d8302dbc19bbb91f33a7535356ae33687fbbb7605f33a2ab4cc5d4a9782be",
+          "size": 1044
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/13bbf511091fbf717c4e78b0b0e674e1958b86c4806748625a736463aa7c02ef5bfab3f21efb8563b5f8f949f4b19dc3ae8638169a2c45ba7e209f94abffe0",
+          "size": 1045
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/211174078e75223c06cff929bd18316f533f9a496741376ca6b2fe1e19dcae17a52694fdacdfee31d7e88f54c288e92a30c90bc484e6ac42c8ce07ed81511a",
+          "size": 817
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/23ee152865b0541db3017369b360ad7372ca9fcffb072a7fae07b5374503ddd9e631a101552c623d5579e46ab98b7e2c294f8f5fb8a8ecd358661bf9951ea7",
+          "size": 254
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/271553b2749452e70fb431f1490248a844c6e217d358bea8856947630b93be7e7da516a7a10462bccbc91aa1ed6418df3fe010958b4b23f127ee6bf4a388d8",
+          "size": 597
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/29e5ff6f6bdedc207ea934b22b10f319bbab71e5dcce7e5d1c02d5977dbb8e4165c091e105846b374e8746514b248f92beb6ddca39a7f44596d05152a56e34",
+          "size": 130
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/338814cd70fa62fd872d398aa3f8c1e02b62584efb16444e2f7081a2f1f3c156c8cc4bdd6fde3d9b958cdecabdaceca88528ccd084f6dbeab28d1fd47bfd9d",
+          "size": 180
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/3f32aa548e99dc9957ed891bb90f18ee624a01c71bcfa0a531b621cdb00cf9f824da57a1ba91140e729e06805fa1b2816946c6d8e8e43258b8ff3a400dd7db",
+          "size": 1227
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/42e10e73ce6b1edba24f9f70a5daaef1d2915c776149b53bdd5ec253185f1d383d9248907f78447a29bf3fea7a2d6ad36f10a0cac5586d8b54686acc878471",
+          "size": 7780
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/44e7c43527a86f6f116069d2b4dd72c13411a7164ae8f818f99be28fd31d5b9505376248fcf14c6516bb3e611aa41120aaf96165dd45098985f0899b50c205",
+          "size": 885
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/4c9c6a3d3ae1748e29c76a363a1d5e2d6914740e2f30fc35fee1007fd6ab4bd285cb72913994d4cfefc9919c909549ae5988a7a09c419f064df19e51b74277",
+          "size": 106
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/615b733a15e72f1c8ac1b58250a542c1b8615eed61e35885be280d27d5c2dd9b9d8faa2e43377cca8874d873407c4c859a79c62787e870da66913153257b46",
+          "size": 5391
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/627339d11ed253bc5cc73dd957e38d8ecf61f6b170022c48c5b45aa8365ca35daace8ca477e2146ebe7c742ad7768a7ed4fef8435eee8c1bcb1b61041f4906",
+          "size": 706
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/67863504a94061b5ee481c257cfea24d4667588f9f11bf671325fc965af1d9085eea309b9281dc08a5949adad7102652ac5d4bbda72a2068d195471e3f7286",
+          "size": 15880
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/783ce68d26e8508ef044a24da12c7e63e598acb8da73820ec0759c65ae7c31deff6d5102e7e0202e696255dc15e1956303c506537f033cd732d37b2e607c6d-exec",
+          "size": 7744
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/81325dcce252ee09f77d3de460d8aad921183fc3e6d86380eeff355ac318ca565f0cc1c2293da8259025f3478743153fa00597f9ba26e29c6105f4ce5e03b5",
+          "size": 542
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/9530fc7b936783b8c08f83efc065b4b49b6eba10ec493a5725527d98b889a19ef0e98ae732d3812967d9bd31b3d1f062577b260945d9363c34c5c0ffa4a61d",
+          "size": 599
+        },
+        {
+          "key": ".pnpm-store/v3/files/00/998b909341dd1c70a2e0793c5c9dc4c8a44f17f299a1e35edf7b19e917476288d92b9cc8fe99bab3d1a6c2e58366243c0fec8fbf2c39b341fc553426f2ffe8",
+          "size": 9546
+        }
+      ],
+      "region": "ap-southeast-2"
+    },
+    {
+      "bucket": "mirror-mavericks-active",
+      "endpoint": "https://s3.ap-southeast-2.wasabisys.com",
+      "objects": 3602,
+      "bytes": 2384325315429,
+      "bytes_human": "2.17 TB",
+      "last_modified": "2025-08-28T07:00:06+00:00",
+      "top_prefixes": [
+        {
+          "prefix": "active-projects",
+          "count": 3418,
+          "bytes": 2374814690455,
+          "bytes_human": "2.16 TB"
+        },
+        {
+          "prefix": "ingest-landing",
+          "count": 80,
+          "bytes": 8387096552,
+          "bytes_human": "7.81 GB"
+        },
+        {
+          "prefix": "automation-workspace",
+          "count": 36,
+          "bytes": 1078876069,
+          "bytes_human": "1.00 GB"
+        },
+        {
+          "prefix": ".system",
+          "count": 61,
+          "bytes": 43752615,
+          "bytes_human": "41.73 MB"
+        },
+        {
+          "prefix": "performance-cache",
+          "count": 7,
+          "bytes": 899738,
+          "bytes_human": "878.65 KB"
+        }
+      ],
+      "ext_histogram": [
+        [
+          "arw",
+          1846
+        ],
+        [
+          "mp4",
+          434
+        ],
+        [
+          "mov",
+          356
+        ],
+        [
+          "wav",
+          236
+        ],
+        [
+          "mxf",
+          172
+        ],
+        [
+          "xml",
+          167
+        ],
+        [
+          "prproj",
+          83
+        ],
+        [
+          "db",
+          62
+        ],
+        [
+          "cfa",
+          34
+        ],
+        [
+          "pek",
+          34
+        ],
+        [
+          "jpg",
+          33
+        ],
+        [
+          "pkf",
+          32
+        ],
+        [
+          "drx",
+          31
+        ],
+        [
+          "png",
+          18
+        ],
+        [
+          "zip",
+          8
+        ],
+        [
+          "tdb",
+          6
+        ],
+        [
+          "mp3",
+          5
+        ],
+        [
+          "ts",
+          5
+        ],
+        [
+          "_none",
+          3
+        ],
+        [
+          "prin",
+          3
+        ],
+        [
+          "bin",
+          3
+        ],
+        [
+          "m3u8",
+          3
+        ],
+        [
+          "braw",
+          3
+        ],
+        [
+          "pfl",
+          2
+        ],
+        [
+          "ttml",
+          2
+        ],
+        [
+          "bdm",
+          2
+        ],
+        [
+          "txt",
+          2
+        ],
+        [
+          "mdb",
+          2
+        ],
+        [
+          "lock",
+          1
+        ],
+        [
+          "sqlite",
+          1
+        ],
+        [
+          "ds_store",
+          1
+        ],
+        [
+          "prodset",
+          1
+        ],
+        [
+          "lastscanned",
+          1
+        ],
+        [
+          "drp",
+          1
+        ],
+        [
+          "ind",
+          1
+        ],
+        [
+          "cube",
+          1
+        ],
+        [
+          "tmp",
+          1
+        ],
+        [
+          "db-journal",
+          1
+        ],
+        [
+          "md",
+          1
+        ],
+        [
+          "active",
+          1
+        ],
+        [
+          "rdb",
+          1
+        ],
+        [
+          "fs_integrity_marker",
+          1
+        ],
+        [
+          "cfg",
+          1
+        ]
+      ],
+      "groups": {
+        "video": {
+          "count": 962,
+          "bytes": 2198238973884,
+          "bytes_human": "2.00 TB"
+        },
+        "raw_photo": {
+          "count": 1846,
+          "bytes": 114417225216,
+          "bytes_human": "106.56 GB"
+        },
+        "audio": {
+          "count": 241,
+          "bytes": 62439176487,
+          "bytes_human": "58.15 GB"
+        },
+        "raw_video": {
+          "count": 3,
+          "bytes": 7022075720,
+          "bytes_human": "6.54 GB"
+        },
+        "other": {
+          "count": 160,
+          "bytes": 1145788759,
+          "bytes_human": "1.07 GB"
+        },
+        "archive": {
+          "count": 8,
+          "bytes": 602998233,
+          "bytes_human": "575.06 MB"
+        },
+        "image": {
+          "count": 51,
+          "bytes": 309918267,
+          "bytes_human": "295.56 MB"
+        },
+        "sidecar": {
+          "count": 236,
+          "bytes": 79893646,
+          "bytes_human": "76.19 MB"
+        },
+        "project": {
+          "count": 84,
+          "bytes": 65734612,
+          "bytes_human": "62.69 MB"
+        },
+        "code": {
+          "count": 5,
+          "bytes": 3512028,
+          "bytes_human": "3.35 MB"
+        },
+        "doc": {
+          "count": 3,
+          "bytes": 16034,
+          "bytes_human": "15.66 KB"
+        },
+        "_none": {
+          "count": 3,
+          "bytes": 2543,
+          "bytes_human": "2.48 KB"
+        }
+      },
+      "year_histogram": {
+        "2025": {
+          "count": 3602,
+          "bytes": 2384325315429,
+          "bytes_human": "2.17 TB"
+        }
+      },
+      "depth2": {
+        ".system": [
+          {
+            "second": "configs-ae32c386e13840b2bf9c0083275e7941",
+            "count": 50,
+            "bytes": 41172992,
+            "bytes_human": "39.27 MB"
+          },
+          {
+            "second": "samba4",
+            "count": 6,
+            "bytes": 2544312,
+            "bytes_human": "2.43 MB"
+          },
+          {
+            "second": "nfs",
+            "count": 5,
+            "bytes": 35311,
+            "bytes_human": "34.48 KB"
+          }
+        ],
+        "active-projects": [
+          {
+            "second": "Cadbury Tour",
+            "count": 2156,
+            "bytes": 863574293185,
+            "bytes_human": "804.27 GB"
+          },
+          {
+            "second": "250810 Motion Mavericks - Showreel 2025",
+            "count": 342,
+            "bytes": 712817335082,
+            "bytes_human": "663.86 GB"
+          },
+          {
+            "second": "Cadbuey Matildas Tour.dra",
+            "count": 188,
+            "bytes": 689174390397,
+            "bytes_human": "641.84 GB"
+          },
+          {
+            "second": "250708 MDB Building Solutions Video",
+            "count": 262,
+            "bytes": 84724266195,
+            "bytes_human": "78.91 GB"
+          },
+          {
+            "second": "250811 GSBxCFC Ep3 BTS",
+            "count": 321,
+            "bytes": 15551610805,
+            "bytes_human": "14.48 GB"
+          },
+          {
+            "second": "Cadbury Tour Audio",
+            "count": 32,
+            "bytes": 7271081812,
+            "bytes_human": "6.77 GB"
+          },
+          {
+            "second": "melbourne-vic-australia-mcg-melbourne-cricket-grou-2024-11-29-22-37-17-utc.mov",
+            "count": 1,
+            "bytes": 929217804,
+            "bytes_human": "886.17 MB"
+          },
+          {
+            "second": "GSBxCarlton-Endframe 9x16.mov",
+            "count": 1,
+            "bytes": 449198516,
+            "bytes_human": "428.39 MB"
+          },
+          {
+            "second": "GSBxCarlton-Endframe.mov",
+            "count": 1,
+            "bytes": 157029956,
+            "bytes_human": "149.76 MB"
+          },
+          {
+            "second": "Resolve Project Library",
+            "count": 100,
+            "bytes": 148347920,
+            "bytes_human": "141.48 MB"
+          },
+          {
+            "second": "1",
+            "count": 7,
+            "bytes": 12807785,
+            "bytes_human": "12.21 MB"
+          },
+          {
+            "second": "250801 MKTG CA Woolworth Blast Off TVC",
+            "count": 3,
+            "bytes": 3438333,
+            "bytes_human": "3.28 MB"
+          },
+          {
+            "second": "CacheClip",
+            "count": 3,
+            "bytes": 1651153,
+            "bytes_human": "1.57 MB"
+          },
+          {
+            "second": "Screenshot 2025-08-26 131758.png",
+            "count": 1,
+            "bytes": 21512,
+            "bytes_human": "21.01 KB"
+          }
+        ],
+        "automation-workspace": [
+          {
+            "second": "temp",
+            "count": 18,
+            "bytes": 703785725,
+            "bytes_human": "671.18 MB"
+          },
+          {
+            "second": "masters",
+            "count": 2,
+            "bytes": 305325146,
+            "bytes_human": "291.18 MB"
+          },
+          {
+            "second": "proxies",
+            "count": 2,
+            "bytes": 64726106,
+            "bytes_human": "61.73 MB"
+          },
+          {
+            "second": "projects",
+            "count": 11,
+            "bytes": 5010794,
+            "bytes_human": "4.78 MB"
+          },
+          {
+            "second": "media-manager",
+            "count": 1,
+            "bytes": 16016,
+            "bytes_human": "15.64 KB"
+          },
+          {
+            "second": "redis-data",
+            "count": 1,
+            "bytes": 12282,
+            "bytes_human": "11.99 KB"
+          },
+          {
+            "second": "prometheus-data",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "ingest-landing": [
+          {
+            "second": "new",
+            "count": 79,
+            "bytes": 8387096547,
+            "bytes_human": "7.81 GB"
+          },
+          {
+            "second": "test.txt",
+            "count": 1,
+            "bytes": 5,
+            "bytes_human": "5.00 B"
+          }
+        ],
+        "performance-cache": [
+          {
+            "second": "proxies",
+            "count": 3,
+            "bytes": 854232,
+            "bytes_human": "834.21 KB"
+          },
+          {
+            "second": "lucidlink",
+            "count": 4,
+            "bytes": 45506,
+            "bytes_human": "44.44 KB"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250608.db",
+          "size": 819200
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250609.db",
+          "size": 819200
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250610.db",
+          "size": 819200
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250611.db",
+          "size": 819200
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250612.db",
+          "size": 831488
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250613.db",
+          "size": 831488
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250614.db",
+          "size": 831488
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250615.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250616.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250617.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250618.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250619.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250620.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250621.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250622.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250623.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250624.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250625.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250626.db",
+          "size": 823296
+        },
+        {
+          "key": ".system/configs-ae32c386e13840b2bf9c0083275e7941/TrueNAS-25.04.1/20250627.db",
+          "size": 823296
+        }
+      ],
+      "region": "ap-southeast-2"
+    },
+    {
+      "bucket": "motion-mavericks-archive",
+      "endpoint": "https://s3.ap-southeast-2.wasabisys.com",
+      "objects": 11,
+      "bytes": 387973120,
+      "bytes_human": "370.00 MB",
+      "last_modified": "2025-06-11T14:41:30+00:00",
+      "top_prefixes": [
+        {
+          "prefix": "speed-tests",
+          "count": 3,
+          "bytes": 220200960,
+          "bytes_human": "210.00 MB"
+        },
+        {
+          "prefix": "performance-tests",
+          "count": 3,
+          "bytes": 157286400,
+          "bytes_human": "150.00 MB"
+        },
+        {
+          "prefix": "ingest",
+          "count": 2,
+          "bytes": 10485760,
+          "bytes_human": "10.00 MB"
+        },
+        {
+          "prefix": "active-archive",
+          "count": 1,
+          "bytes": 0,
+          "bytes_human": "0.00 B"
+        },
+        {
+          "prefix": "proxy-library",
+          "count": 1,
+          "bytes": 0,
+          "bytes_human": "0.00 B"
+        },
+        {
+          "prefix": "reference-library",
+          "count": 1,
+          "bytes": 0,
+          "bytes_human": "0.00 B"
+        }
+      ],
+      "ext_histogram": [
+        [
+          "bin",
+          6
+        ],
+        [
+          "_none",
+          4
+        ],
+        [
+          "mp4",
+          1
+        ]
+      ],
+      "groups": {
+        "other": {
+          "count": 6,
+          "bytes": 377487360,
+          "bytes_human": "360.00 MB"
+        },
+        "video": {
+          "count": 1,
+          "bytes": 10485760,
+          "bytes_human": "10.00 MB"
+        },
+        "_none": {
+          "count": 4,
+          "bytes": 0,
+          "bytes_human": "0.00 B"
+        }
+      },
+      "year_histogram": {
+        "2025": {
+          "count": 11,
+          "bytes": 387973120,
+          "bytes_human": "370.00 MB"
+        }
+      },
+      "depth2": {
+        "active-archive": [
+          {
+            "second": "",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "ingest": [
+          {
+            "second": "test-video.mp4",
+            "count": 1,
+            "bytes": 10485760,
+            "bytes_human": "10.00 MB"
+          },
+          {
+            "second": "",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "performance-tests": [
+          {
+            "second": "baseline",
+            "count": 1,
+            "bytes": 52428800,
+            "bytes_human": "50.00 MB"
+          },
+          {
+            "second": "max-parallel",
+            "count": 1,
+            "bytes": 52428800,
+            "bytes_human": "50.00 MB"
+          },
+          {
+            "second": "optimized-conn",
+            "count": 1,
+            "bytes": 52428800,
+            "bytes_human": "50.00 MB"
+          }
+        ],
+        "proxy-library": [
+          {
+            "second": "",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "reference-library": [
+          {
+            "second": "",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "speed-tests": [
+          {
+            "second": "max-speed",
+            "count": 1,
+            "bytes": 104857600,
+            "bytes_human": "100.00 MB"
+          },
+          {
+            "second": "optimized",
+            "count": 1,
+            "bytes": 104857600,
+            "bytes_human": "100.00 MB"
+          },
+          {
+            "second": "test_10mb.bin",
+            "count": 1,
+            "bytes": 10485760,
+            "bytes_human": "10.00 MB"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "key": "active-archive/",
+          "size": 0
+        },
+        {
+          "key": "ingest/",
+          "size": 0
+        },
+        {
+          "key": "ingest/test-video.mp4",
+          "size": 10485760
+        },
+        {
+          "key": "performance-tests/baseline/test_50mb.bin",
+          "size": 52428800
+        },
+        {
+          "key": "performance-tests/max-parallel/test_50mb.bin",
+          "size": 52428800
+        },
+        {
+          "key": "performance-tests/optimized-conn/test_50mb.bin",
+          "size": 52428800
+        },
+        {
+          "key": "proxy-library/",
+          "size": 0
+        },
+        {
+          "key": "reference-library/",
+          "size": 0
+        },
+        {
+          "key": "speed-tests/max-speed/test_100mb.bin",
+          "size": 104857600
+        },
+        {
+          "key": "speed-tests/optimized/test_100mb.bin",
+          "size": 104857600
+        },
+        {
+          "key": "speed-tests/test_10mb.bin",
+          "size": 10485760
+        }
+      ],
+      "region": "ap-southeast-2"
+    },
+    {
+      "bucket": "motion-mavericks-backup",
+      "endpoint": "https://s3.ap-southeast-2.wasabisys.com",
+      "objects": 0,
+      "bytes": 0,
+      "bytes_human": "0.00 B",
+      "last_modified": null,
+      "top_prefixes": [],
+      "ext_histogram": [],
+      "groups": {},
+      "year_histogram": {},
+      "depth2": {},
+      "samples": [],
+      "region": "ap-southeast-2"
+    },
+    {
+      "bucket": "motion-mavericks-delivery",
+      "endpoint": "https://s3.ap-southeast-2.wasabisys.com",
+      "objects": 0,
+      "bytes": 0,
+      "bytes_human": "0.00 B",
+      "last_modified": null,
+      "top_prefixes": [],
+      "ext_histogram": [],
+      "groups": {},
+      "year_histogram": {},
+      "depth2": {},
+      "samples": [],
+      "region": "ap-southeast-2"
+    },
+    {
+      "bucket": "mvrx-logs",
+      "endpoint": "https://s3.ap-southeast-2.wasabisys.com",
+      "objects": 6,
+      "bytes": 10927,
+      "bytes_human": "10.67 KB",
+      "last_modified": "2025-06-09T07:26:05+00:00",
+      "top_prefixes": [
+        {
+          "prefix": "logfile_-2025-06-09-05-15-25-IDUII176KOB35ITG",
+          "count": 1,
+          "bytes": 7033,
+          "bytes_human": "6.87 KB"
+        },
+        {
+          "prefix": "logfile_-2025-06-09-05-15-28-BTKW4DPRM666UP9R",
+          "count": 1,
+          "bytes": 3828,
+          "bytes_human": "3.74 KB"
+        },
+        {
+          "prefix": "test",
+          "count": 1,
+          "bytes": 66,
+          "bytes_human": "66.00 B"
+        },
+        {
+          "prefix": "n8n",
+          "count": 1,
+          "bytes": 0,
+          "bytes_human": "0.00 B"
+        },
+        {
+          "prefix": "system",
+          "count": 1,
+          "bytes": 0,
+          "bytes_human": "0.00 B"
+        },
+        {
+          "prefix": "tdarr",
+          "count": 1,
+          "bytes": 0,
+          "bytes_human": "0.00 B"
+        }
+      ],
+      "ext_histogram": [
+        [
+          "_none",
+          5
+        ],
+        [
+          "txt",
+          1
+        ]
+      ],
+      "groups": {
+        "_none": {
+          "count": 5,
+          "bytes": 10861,
+          "bytes_human": "10.61 KB"
+        },
+        "doc": {
+          "count": 1,
+          "bytes": 66,
+          "bytes_human": "66.00 B"
+        }
+      },
+      "year_histogram": {
+        "2025": {
+          "count": 6,
+          "bytes": 10927,
+          "bytes_human": "10.67 KB"
+        }
+      },
+      "depth2": {
+        "n8n": [
+          {
+            "second": "",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "system": [
+          {
+            "second": "",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "tdarr": [
+          {
+            "second": "",
+            "count": 1,
+            "bytes": 0,
+            "bytes_human": "0.00 B"
+          }
+        ],
+        "test": [
+          {
+            "second": "test-wasabi.txt",
+            "count": 1,
+            "bytes": 66,
+            "bytes_human": "66.00 B"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "key": "logfile_-2025-06-09-05-15-25-IDUII176KOB35ITG",
+          "size": 7033
+        },
+        {
+          "key": "logfile_-2025-06-09-05-15-28-BTKW4DPRM666UP9R",
+          "size": 3828
+        },
+        {
+          "key": "n8n/",
+          "size": 0
+        },
+        {
+          "key": "system/",
+          "size": 0
+        },
+        {
+          "key": "tdarr/",
+          "size": 0
+        },
+        {
+          "key": "test/test-wasabi.txt",
+          "size": 66
+        }
+      ],
+      "region": "ap-southeast-2"
+    },
+    {
+      "bucket": "mvrx-media-archive",
+      "endpoint": "https://s3.wasabisys.com",
+      "objects": 1,
+      "bytes": 300275,
+      "bytes_human": "293.24 KB",
+      "last_modified": "2025-06-26T05:12:37+00:00",
+      "top_prefixes": [
+        {
+          "prefix": "archive",
+          "count": 1,
+          "bytes": 300275,
+          "bytes_human": "293.24 KB"
+        }
+      ],
+      "ext_histogram": [
+        [
+          "mp4",
+          1
+        ]
+      ],
+      "groups": {
+        "video": {
+          "count": 1,
+          "bytes": 300275,
+          "bytes_human": "293.24 KB"
+        }
+      },
+      "year_histogram": {
+        "2025": {
+          "count": 1,
+          "bytes": 300275,
+          "bytes_human": "293.24 KB"
+        }
+      },
+      "depth2": {
+        "archive": [
+          {
+            "second": "ingest",
+            "count": 1,
+            "bytes": 300275,
+            "bytes_human": "293.24 KB"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "key": "archive/ingest/2025/06/26/test_ingest_20250626_014624.mp4",
+          "size": 300275
+        }
+      ],
+      "region": "us-east-1"
+    },
+    {
+      "bucket": "mvrx-test-bucket-1750913890",
+      "endpoint": "https://s3.wasabisys.com",
+      "objects": 2,
+      "bytes": 300288,
+      "bytes_human": "293.25 KB",
+      "last_modified": "2025-06-26T05:01:58+00:00",
+      "top_prefixes": [
+        {
+          "prefix": "archive",
+          "count": 1,
+          "bytes": 300275,
+          "bytes_human": "293.24 KB"
+        },
+        {
+          "prefix": "test.txt",
+          "count": 1,
+          "bytes": 13,
+          "bytes_human": "13.00 B"
+        }
+      ],
+      "ext_histogram": [
+        [
+          "mp4",
+          1
+        ],
+        [
+          "txt",
+          1
+        ]
+      ],
+      "groups": {
+        "video": {
+          "count": 1,
+          "bytes": 300275,
+          "bytes_human": "293.24 KB"
+        },
+        "doc": {
+          "count": 1,
+          "bytes": 13,
+          "bytes_human": "13.00 B"
+        }
+      },
+      "year_histogram": {
+        "2025": {
+          "count": 2,
+          "bytes": 300288,
+          "bytes_human": "293.25 KB"
+        }
+      },
+      "depth2": {
+        "archive": [
+          {
+            "second": "ingest",
+            "count": 1,
+            "bytes": 300275,
+            "bytes_human": "293.24 KB"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "key": "archive/ingest/2025/06/26/test_ingest_20250626_014624.mp4",
+          "size": 300275
+        },
+        {
+          "key": "test.txt",
+          "size": 13
+        }
+      ],
+      "region": "us-east-1"
+    },
+    {
+      "bucket": "temp-project-db",
+      "endpoint": "https://s3.ap-southeast-2.wasabisys.com",
+      "objects": 164,
+      "bytes": 231076490,
+      "bytes_human": "220.37 MB",
+      "last_modified": "2025-06-07T07:34:20+00:00",
+      "top_prefixes": [
+        {
+          "prefix": "Resolve Projects",
+          "count": 107,
+          "bytes": 195486448,
+          "bytes_human": "186.43 MB"
+        },
+        {
+          "prefix": "Resolve Project Library",
+          "count": 47,
+          "bytes": 23894514,
+          "bytes_human": "22.79 MB"
+        },
+        {
+          "prefix": "Resolve Project Library 2",
+          "count": 10,
+          "bytes": 11695528,
+          "bytes_human": "11.15 MB"
+        }
+      ],
+      "ext_histogram": [
+        [
+          "xml",
+          125
+        ],
+        [
+          "db",
+          39
+        ]
+      ],
+      "groups": {
+        "other": {
+          "count": 39,
+          "bytes": 230191104,
+          "bytes_human": "219.53 MB"
+        },
+        "sidecar": {
+          "count": 125,
+          "bytes": 885386,
+          "bytes_human": "864.63 KB"
+        }
+      },
+      "year_histogram": {
+        "2025": {
+          "count": 164,
+          "bytes": 231076490,
+          "bytes_human": "220.37 MB"
+        }
+      },
+      "depth2": {
+        "Resolve Project Library 2": [
+          {
+            "second": "Resolve Projects",
+            "count": 6,
+            "bytes": 8760019,
+            "bytes_human": "8.35 MB"
+          },
+          {
+            "second": "Resolve Project Library",
+            "count": 4,
+            "bytes": 2935509,
+            "bytes_human": "2.80 MB"
+          }
+        ],
+        "Resolve Project Library": [
+          {
+            "second": "Resolve Project Library",
+            "count": 43,
+            "bytes": 20959007,
+            "bytes_human": "19.99 MB"
+          },
+          {
+            "second": "Resolve Projects",
+            "count": 4,
+            "bytes": 2935507,
+            "bytes_human": "2.80 MB"
+          }
+        ],
+        "Resolve Projects": [
+          {
+            "second": "Users",
+            "count": 96,
+            "bytes": 189635694,
+            "bytes_human": "180.85 MB"
+          },
+          {
+            "second": "Resolve Project Library",
+            "count": 4,
+            "bytes": 2935509,
+            "bytes_human": "2.80 MB"
+          },
+          {
+            "second": "SoundLib.db",
+            "count": 1,
+            "bytes": 2912256,
+            "bytes_human": "2.78 MB"
+          },
+          {
+            "second": "Settings",
+            "count": 6,
+            "bytes": 2989,
+            "bytes_human": "2.92 KB"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "key": "Resolve Project Library 2/Resolve Project Library/Resolve Projects/Settings/SYSTEM CONFIG.xml",
+          "size": 1365
+        },
+        {
+          "key": "Resolve Project Library 2/Resolve Project Library/Resolve Projects/Users/guest/Configs/User Default Config.xml",
+          "size": 1408
+        },
+        {
+          "key": "Resolve Project Library 2/Resolve Project Library/Resolve Projects/Users/guest/ProjectMetadataCache/Metadata.db",
+          "size": 20480
+        },
+        {
+          "key": "Resolve Project Library 2/Resolve Project Library/Resolve Projects/Users/guest/User.db",
+          "size": 2912256
+        },
+        {
+          "key": "Resolve Project Library 2/Resolve Projects/Settings/SYSTEM CONFIG.xml",
+          "size": 1354
+        },
+        {
+          "key": "Resolve Project Library 2/Resolve Projects/SoundLib.db",
+          "size": 2912256
+        },
+        {
+          "key": "Resolve Project Library 2/Resolve Projects/Users/guest/Configs/User Default Config.xml",
+          "size": 1417
+        },
+        {
+          "key": "Resolve Project Library 2/Resolve Projects/Users/guest/ProjectMetadataCache/Metadata.db",
+          "size": 20480
+        },
+        {
+          "key": "Resolve Project Library 2/Resolve Projects/Users/guest/Projects/Efficient App Sounds/Project.db",
+          "size": 2912256
+        },
+        {
+          "key": "Resolve Project Library 2/Resolve Projects/Users/guest/User.db",
+          "size": 2912256
+        },
+        {
+          "key": "Resolve Project Library/Resolve Project Library/Resolve Projects/Settings/DeliverPresetList.xml",
+          "size": 208
+        },
+        {
+          "key": "Resolve Project Library/Resolve Project Library/Resolve Projects/Settings/PTZRInputPresetList.xml",
+          "size": 501
+        },
+        {
+          "key": "Resolve Project Library/Resolve Project Library/Resolve Projects/Settings/PTZROutputPresetList.xml",
+          "size": 503
+        },
+        {
+          "key": "Resolve Project Library/Resolve Project Library/Resolve Projects/Settings/SYSTEM CONFIG.xml",
+          "size": 1351
+        },
+        {
+          "key": "Resolve Project Library/Resolve Project Library/Resolve Projects/Settings/SlatePresetList.xml",
+          "size": 204
+        },
+        {
+          "key": "Resolve Project Library/Resolve Project Library/Resolve Projects/Settings/WindowsPresetList.xml",
+          "size": 210
+        },
+        {
+          "key": "Resolve Project Library/Resolve Project Library/Resolve Projects/Users/guest/Configs/User Default Config.xml",
+          "size": 1412
+        },
+        {
+          "key": "Resolve Project Library/Resolve Project Library/Resolve Projects/Users/guest/ProjectMetadataCache/Metadata.db",
+          "size": 20480
+        },
+        {
+          "key": "Resolve Project Library/Resolve Project Library/Resolve Projects/Users/guest/Projects/Aiper Grade/Batch Renders/69295499-e2d7-4455-b0b2-143bf8f7e69d.xml",
+          "size": 9313
+        },
+        {
+          "key": "Resolve Project Library/Resolve Project Library/Resolve Projects/Users/guest/Projects/Aiper Grade/Batch Renders/87384b58-34f1-4546-9f9e-aabd19936b58.xml",
+          "size": 6521
+        }
+      ],
+      "region": "ap-southeast-2"
+    },
+    {
+      "bucket": "transfer-mavericks",
+      "endpoint": "https://s3.ap-southeast-2.wasabisys.com",
+      "objects": 0,
+      "bytes": 0,
+      "bytes_human": "0.00 B",
+      "last_modified": null,
+      "top_prefixes": [],
+      "ext_histogram": [],
+      "groups": {},
+      "year_histogram": {},
+      "depth2": {},
+      "samples": [],
+      "region": "ap-southeast-2"
+    }
+  ]
+}

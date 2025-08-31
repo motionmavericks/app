@@ -1,0 +1,77 @@
+import type { Asset } from "./asset-card";
+
+export const assets: Asset[] = [
+  {
+    id: "1",
+    title: "DRP_B004_081606_V1_0099.mov",
+    author: "Alissa Morris",
+    date: "Oct 14th, 2024",
+    duration: "0:10",
+    tag: "Role",
+    thumb: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1200&auto=format&fit=crop",
+    selected: true,
+  },
+  {
+    id: "2",
+    title: "DRP_A015_0815OF_V1_0023.mov",
+    author: "Alissa Morris",
+    date: "Oct 14th, 2024",
+    duration: "0:30",
+    tag: "Coloring",
+    thumb: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "3",
+    title: "DRP_B004_081606_V1_0099.mov",
+    author: "Alissa Morris",
+    date: "Oct 14th, 2024",
+    duration: "0:05",
+    thumb: "https://images.unsplash.com/photo-1542377676-9087f40c2d07?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "4",
+    title: "DRP_B005_08155V_V1_0029.mov",
+    author: "Alissa Morris",
+    date: "Oct 14th, 2024",
+    duration: "0:09",
+    tag: "Social",
+    thumb: "https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1200&auto=format&fit=crop",
+  },
+  // second row
+  {
+    id: "5",
+    title: "DRP_A002_0816PS_V1_0080.mov",
+    author: "Alissa Morris",
+    date: "Oct 14th, 2024",
+    duration: "0:11",
+    tag: "Retouching",
+    thumb: "https://images.unsplash.com/photo-1519750157634-b6d493a0f77e?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "6",
+    title: "DRP_B027_0815Y6_V1_0049.mov",
+    author: "Alissa Morris",
+    date: "Oct 14th, 2024",
+    duration: "0:21",
+    tag: "Coloring",
+    thumb: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "7",
+    title: "DRP_B026_0815HR_V1_0047.mov",
+    author: "Alissa Morris",
+    date: "Oct 14th, 2024",
+    duration: "0:32",
+    thumb: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "8",
+    title: "DRP_B014_08155T_V1_0039.mov",
+    author: "Alissa Morris",
+    date: "Oct 14th, 2024",
+    duration: "0:03",
+    selected: true,
+    thumb: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1200&auto=format&fit=crop",
+  },
+];
+

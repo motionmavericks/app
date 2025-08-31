@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "last_updated": "2025-08-31T00:00:00Z",
+  "entrypoints": {
+    "docs_index": "docs/index.md",
+    "tasks": "docs/project/tasks.md",
+    "architecture": "docs/architecture/blueprint.md",
+    "database": "docs/database/overview.md"
+  },
+  "decisions": [
+    "Masters in Wasabi with Object Lock; previews ephemeral",
+    "Region ap-southeast-2; signed preview URLs (10m TTL)",
+    "Version identity is sha256; GOP aligned to 2s segments"
+  ],
+  "next_actions": [
+    "Generate SQL migrations from docs/database DDL sketches",
+    "Scaffold apps/web, apps/worker, apps/edge, packages/shared per docs/project/structure.md",
+    "Write docker-compose.yml and .env.example per docs/configuration/env.md"
+  ],
+  "artifacts": {
+    "wasabi_audit": "wasabi_audit.json"
+  }
+}
