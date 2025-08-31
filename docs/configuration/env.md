@@ -1,8 +1,9 @@
 # Configuration Matrix (Env Vars)
 
 Current (Frontend)
-- `NEXT_PUBLIC_EDGE_BASE`: optional public base URL for future API/edge.
-- Standard Next.js vars: only those prefixed with `NEXT_PUBLIC_` are exposed to the browser.
+- `NEXT_PUBLIC_API_BASE`: base URL for backend API (e.g., https://api.example.com)
+- `NEXT_PUBLIC_EDGE_BASE`: public base URL for edge cache (e.g., https://edge.example.com)
+- Standard Next.js: only `NEXT_PUBLIC_*` are exposed to the browser.
 
 Backend/API
 - `POSTGRES_URL`, `REDIS_URL`

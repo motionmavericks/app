@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import Fastify from 'fastify';
+import crypto from 'node:crypto';
 import cors from '@fastify/cors';
 import { z } from 'zod';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
@@ -55,9 +56,26 @@ app.post('/presign', async (req, reply) => {
   }
 });
 
+// Minimal in-memory assets stub to unblock frontend during early phases
+type Asset = { id: string; title?: string; staging_key?: string; created_at: string };
+const assets: Record<string, Asset> = {};
+
+app.get('/assets', async () => {
+  return { items: Object.values(assets) };
+});
+
+app.post('/assets', async (req, reply) => {
+  const schema = z.object({ title: z.string().optional(), staging_key: z.string().optional() });
+  const parsed = schema.safeParse(req.body);
+  if (!parsed.success) return reply.code(400).send({ error: 'Invalid body', issues: parsed.error.issues });
+  const id = crypto.randomUUID();
+  const asset: Asset = { id, ...parsed.data, created_at: new Date().toISOString() };
+  assets[id] = asset;
+  return reply.code(201).send(asset);
+});
+
 const port = Number(process.env.PORT || 3000);
 app.listen({ port, host: '0.0.0.0' }).catch((err) => {
   app.log.error(err);
   process.exit(1);
 });
-

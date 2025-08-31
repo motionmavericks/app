@@ -1,0 +1,111 @@
+name: media-review-suite
+region: nyc
+services:
+  - name: frontend
+    dockerfile_path: ./frontend/Dockerfile
+    http_port: 3001
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+    envs:
+      - key: NEXT_PUBLIC_API_BASE
+        value: https://api.example.com
+      - key: NEXT_PUBLIC_EDGE_BASE
+        value: https://edge.example.com
+      - key: WASABI_ENDPOINT
+        scope: RUN_AND_BUILD_TIME
+        value: https://s3.wasabisys.com
+      - key: WASABI_REGION
+        scope: RUN_AND_BUILD_TIME
+        value: us-east-1
+  - name: backend
+    dockerfile_path: ./backend/Dockerfile
+    http_port: 3000
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+        domain: api.example.com
+    envs:
+      - key: POSTGRES_URL
+        scope: RUN_TIME
+        value: ${db.DATABASE_URL}
+      - key: REDIS_URL
+        scope: RUN_TIME
+        value: ${redis.REDIS_URL}
+      - key: WASABI_ENDPOINT
+        value: https://s3.wasabisys.com
+      - key: WASABI_REGION
+        value: us-east-1
+      - key: WASABI_STAGING_ACCESS_KEY
+        type: SECRET
+        value: ""
+      - key: WASABI_STAGING_SECRET
+        type: SECRET
+        value: ""
+      - key: STAGING_BUCKET
+        value: ""
+      - key: WASABI_MASTERS_ACCESS_KEY
+        type: SECRET
+        value: ""
+      - key: WASABI_MASTERS_SECRET
+        type: SECRET
+        value: ""
+      - key: MASTERS_BUCKET
+        value: ""
+      - key: WASABI_PREVIEWS_ACCESS_KEY
+        type: SECRET
+        value: ""
+      - key: WASABI_PREVIEWS_SECRET
+        type: SECRET
+        value: ""
+      - key: PREVIEWS_BUCKET
+        value: ""
+      - key: EDGE_SIGNING_KEY
+        type: SECRET
+        value: ""
+  - name: preview-worker
+    dockerfile_path: ./worker/Dockerfile
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    run_command: node dist/worker.js
+    envs:
+      - key: REDIS_URL
+        value: ${redis.REDIS_URL}
+      - key: PREVIEW_STREAM
+        value: previews:build
+      - key: PREVIEW_CONSUMER_GROUP
+        value: previewers
+      - key: WASABI_ENDPOINT
+        value: https://s3.wasabisys.com
+      - key: WASABI_REGION
+        value: us-east-1
+      - key: WASABI_MASTERS_ACCESS_KEY
+        type: SECRET
+        value: ""
+      - key: WASABI_MASTERS_SECRET
+        type: SECRET
+        value: ""
+      - key: MASTERS_BUCKET
+        value: ""
+      - key: WASABI_PREVIEWS_ACCESS_KEY
+        type: SECRET
+        value: ""
+      - key: WASABI_PREVIEWS_SECRET
+        type: SECRET
+        value: ""
+      - key: PREVIEWS_BUCKET
+        value: ""
+databases:
+  - name: db
+    engine: PG
+    production: false
+    version: "16"
+    cluster_name: app-db
+    db_name: app
+    db_user: app
+    db_password: ""
+redis:
+  - name: redis
+    version: "7"
