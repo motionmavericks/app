@@ -20,7 +20,7 @@ if (!redisUrl) {
 try {
   const u = new URL(redisUrl);
   const redacted = `${u.protocol}//${u.hostname}:${u.port || (u.protocol === 'rediss:' ? '6379' : '6379')}`;
-  log.info({ redis: redacted }, 'connecting to Redis');
+  log.info({ redis: redacted }, 'preview-worker connecting to Redis');
 } catch {}
 const redis = new Redis(redisUrl);
 const stream = process.env.PREVIEW_STREAM || 'previews:build';
