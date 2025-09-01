@@ -58,6 +58,8 @@ services:
         value: mm-masters-au
       - key: PREVIEWS_BUCKET
         value: mm-previews-au
+      - key: REDIS_URL
+        value: ${redis-cache.DATABASE_URL}
 workers:
   - name: preview-worker
     image:
@@ -85,4 +87,11 @@ workers:
         value: 480p
       - key: HLS_SEGMENT_SEC
         value: "4"
-databases: []
+      - key: REDIS_URL
+        value: ${redis-cache.DATABASE_URL}
+databases:
+  - name: redis-cache
+    engine: REDIS
+    version: "7"
+    size: db-s-1vcpu-1gb
+    num_nodes: 1
