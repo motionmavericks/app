@@ -1,4 +1,4 @@
-.PHONY: help install dev build lint typecheck test clean \
+.PHONY: help install dev build lint typecheck test clean init \
 backend-install backend-dev backend-build \
 worker-install worker-dev worker-build \
 edge-install edge-dev edge-build \
@@ -14,6 +14,7 @@ claude-audit-overview claude-audit-backend claude-audit-worker claude-audit-edge
 
 help:
 	@echo "Targets: install dev build lint typecheck test clean"
+	@echo "Init: init (run scripts/codex_init.sh)"
 	@echo "Backend: backend-install backend-dev backend-build"
 	@echo "Worker: worker-install worker-dev worker-build"
 	@echo "DB: backend-migrate"
@@ -50,6 +51,10 @@ test:
 clean:
 	@echo "Cleaning frontend build artifacts"
 	rm -rf frontend/.next
+
+init:
+	@echo "Running Codex /init (scripts/codex_init.sh)"
+	bash scripts/codex_init.sh
 
 backend-install:
 	@echo "Installing backend deps"
@@ -134,31 +139,31 @@ claude:
 
 claude-plan:
 	@echo "Claude (non-interactive print) — generating plan"
-	claude -p "Using the entire repository context at ./, produce a prioritized, end-to-end task list to finish coding and deploying all services (frontend, backend, worker, edge). For each task, include: purpose, inputs, files to change, acceptance checks, and dependencies. Respond in concise Markdown bullets." --max-turns 3 || true
+	claude -p "Using the entire repository context at ./, produce a prioritized, end-to-end task list to finish coding and deploying all services (frontend, backend, worker, edge). For each task, include: purpose, inputs, files to change, acceptance checks, and dependencies. Respond in concise Markdown bullets." || true
 
 claude-audit-overview:
-	@echo "Claude audit overview (areas only, 30s timeout)";
-	timeout 30s claude -p "List the key areas to review in this monorepo to ensure a fully working system (no details, 8-12 bullets max). Use short area names only, e.g., Backend API, Worker Pipeline, Edge Proxy, Frontend UX, Database Schema, Config/Env, Deploy Spec, Observability, Security, Performance, Docs/Runbooks." --max-turns 2 || true
+	@echo "Claude audit overview (areas only)";
+	claude -p "List the key areas to review in this monorepo to ensure a fully working system (no details, 8-12 bullets max). Use short area names only, e.g., Backend API, Worker Pipeline, Edge Proxy, Frontend UX, Database Schema, Config/Env, Deploy Spec, Observability, Security, Performance, Docs/Runbooks." || true
 
 claude-audit-backend:
-	@echo "Claude audit: backend (60s timeout)";
-	cd backend && timeout 60s claude -p "Audit ONLY the backend service in ./backend. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." --max-turns 2 || true
+	@echo "Claude audit: backend";
+	cd backend && claude -p "Audit ONLY the backend service in ./backend. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." || true
 
 claude-audit-worker:
-	@echo "Claude audit: worker (60s timeout)";
-	cd worker && timeout 60s claude -p "Audit ONLY the preview worker in ./worker. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." --max-turns 2 || true
+	@echo "Claude audit: worker";
+	cd worker && claude -p "Audit ONLY the preview worker in ./worker. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." || true
 
 claude-audit-edge:
-	@echo "Claude audit: edge (60s timeout)";
-	cd edge && timeout 60s claude -p "Audit ONLY the edge service in ./edge. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." --max-turns 2 || true
+	@echo "Claude audit: edge";
+	cd edge && claude -p "Audit ONLY the edge service in ./edge. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." || true
 
 claude-audit-frontend:
-	@echo "Claude audit: frontend (60s timeout)";
-	cd frontend && timeout 60s claude -p "Audit ONLY the frontend in ./frontend. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." --max-turns 2 || true
+	@echo "Claude audit: frontend";
+	cd frontend && claude -p "Audit ONLY the frontend in ./frontend. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." || true
 
 claude-audit-deploy:
-	@echo "Claude audit: deploy/spec/docs (60s timeout)";
-	timeout 60s claude -p "Audit deploy/do-app.yaml and docs/deploy/*.md. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." --max-turns 2 || true
+	@echo "Claude audit: deploy/spec/docs";
+	claude -p "Audit deploy/do-app.yaml and docs/deploy/*.md. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." || true
 
 # Multi-pass audit — pass 2: topics per component
 qwen-audit-backend-topics:
