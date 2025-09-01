@@ -42,6 +42,8 @@ jobs:
       - name: Prepare spec from live app (preserve envs)
         id: spec
         shell: bash
+        env:
+          DEPLOY_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
         run: |
           set -e
           # Fetch current live spec to preserve secrets like REDIS_URL
@@ -53,7 +55,7 @@ jobs:
             doctl apps get "$APP_ID" -o json | jq '.[0].spec' > spec.json
             yq -P spec.json > spec.yaml
           fi
-          TAG="sha-${GITHUB_SHA}"
+          TAG="sha-${DEPLOY_SHA}"
           # Update image tags only for changed services
           if [ "${{ steps.changes.outputs.backend }}" = "true" ]; then
             yq -i ".services[] |= (select(.name==\"backend\") | .image.tag = \"$TAG\")" spec.yaml
