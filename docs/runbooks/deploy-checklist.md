@@ -1,4 +1,5 @@
 # Deploy Checklist
+_Note: checklist updated after backend ESM fix; use to retrigger CI when needed._
 
 Pre-reqs
 - Wasabi buckets ready: `mm-staging-au`, `mm-masters-au` (Object Lock), `mm-previews-au`
@@ -25,4 +26,3 @@ Post-Deploy
 - Monitor logs & metrics
 - Rotate keys on schedule; enforce branch protections
 - Backups snapshot schedule confirmed for DB
-
