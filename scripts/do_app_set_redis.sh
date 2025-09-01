@@ -57,9 +57,9 @@ yq -i '
     (. // []) |
     (map(select(.key=="REDIS_URL")) | length) as $has |
     (if $has>0 then
-      map(if .key=="REDIS_URL" then .type="SECRET" | .scope="RUN_AND_BUILD_TIME" | .value=strenv(REDIS_SAFE) else . end)
+      map(if .key=="REDIS_URL" then .type="SECRET" | .scope="RUN_TIME" | .value=strenv(REDIS_SAFE) else . end)
     else
-      . + [{"key":"REDIS_URL","type":"SECRET","scope":"RUN_AND_BUILD_TIME","value": strenv(REDIS_SAFE)}]
+      . + [{"key":"REDIS_URL","type":"SECRET","scope":"RUN_TIME","value": strenv(REDIS_SAFE)}]
     end)
   )
 ' "$SPECYAML"
@@ -70,9 +70,9 @@ yq -i '
     (. // []) |
     (map(select(.key=="REDIS_URL")) | length) as $has |
     (if $has>0 then
-      map(if .key=="REDIS_URL" then .type="SECRET" | .scope="RUN_AND_BUILD_TIME" | .value=strenv(REDIS_SAFE) else . end)
+      map(if .key=="REDIS_URL" then .type="SECRET" | .scope="RUN_TIME" | .value=strenv(REDIS_SAFE) else . end)
     else
-      . + [{"key":"REDIS_URL","type":"SECRET","scope":"RUN_AND_BUILD_TIME","value": strenv(REDIS_SAFE)}]
+      . + [{"key":"REDIS_URL","type":"SECRET","scope":"RUN_TIME","value": strenv(REDIS_SAFE)}]
     end)
   )
 ' "$SPECYAML"

@@ -11,17 +11,11 @@ import { join } from 'node:path';
 import http from 'node:http';
 
 const log = pino({ level: process.env.LOG_LEVEL || 'info' });
-const redisUrl = process.env.REDIS_URL;
+const redisUrl = process.env.REDIS_URL || process.env.VALKEY_URL;
 if (!redisUrl) {
-  log.error('REDIS_URL is not set; cannot start preview-worker. Set a valid Redis connection URL.');
+  log.error('REDIS_URL/VALKEY_URL not set; cannot start preview-worker.');
   process.exit(1);
 }
-// Parse for safe logging (without credentials)
-try {
-  const u = new URL(redisUrl);
-  const redacted = `${u.protocol}//${u.hostname}:${u.port || (u.protocol === 'rediss:' ? '6379' : '6379')}`;
-  log.info({ redis: redacted }, 'preview-worker connecting to Redis');
-} catch {}
 const redis = new Redis(redisUrl);
 const stream = process.env.PREVIEW_STREAM || 'previews:build';
 const group = process.env.PREVIEW_CONSUMER_GROUP || 'previewers';
@@ -46,6 +40,21 @@ async function ensureGroup() {
       throw err;
     }
   }
+}
+
+async function waitForRedis(maxRetries = 30, retryDelayMs = 1000) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      await redis.ping();
+      log.info('Redis ping OK');
+      return;
+    } catch {
+      if (i === maxRetries - 1) break;
+      await new Promise((r) => setTimeout(r, retryDelayMs));
+    }
+  }
+  log.error('Failed to connect to Redis after retries');
+  process.exit(1);
 }
 
 async function handle(msgId: string, fields: string[]) {
@@ -107,8 +116,8 @@ async function handle(msgId: string, fields: string[]) {
 }
 
 async function presignGet(bucket: string, key: string): Promise<string> {
-  const endpoint = process.env.WASABI_ENDPOINT || 'https://s3.wasabisys.com';
-  const region = process.env.WASABI_REGION || 'us-east-1';
+  const endpoint = process.env.WASABI_ENDPOINT || '';
+  const region = process.env.WASABI_REGION || '';
   const s3 = new S3Client({ region, endpoint, forcePathStyle: true, credentials: {
     accessKeyId: process.env.WASABI_MASTERS_ACCESS_KEY || '',
     secretAccessKey: process.env.WASABI_MASTERS_SECRET || ''
@@ -209,6 +218,7 @@ async function uploadDir(s3: S3Client, bucket: string, prefix: string, dir: stri
 }
 
 async function main() {
+  await waitForRedis();
   await ensureGroup();
   log.info({ stream, group, consumer }, 'preview worker started');
   // Optional HTTP health endpoint
