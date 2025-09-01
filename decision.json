@@ -1,0 +1,77 @@
+{
+  "task": "Refactor GitHub Actions (CI, build/push, deploy) into a structured, reliable workflow that builds only what changed and deploys safely while preserving DO App secrets.",
+  "context_summary": "Repo uses DOCR and DO App Platform. Current issues: CI YAML was corrupted; deploy workflow’s tag-gating used wrong DOCR repo names; no concurrency guard. Goal: clean CI, harden deploy, keep secrets intact via live spec.",
+  "proposals": {
+    "qwen": {
+      "proposal": {
+        "title": "Rebuild CI with filters",
+        "approach": "Replace corrupted CI with clean per-service jobs, gated by paths-filter, with npm caching for speed.",
+        "steps": ["Add changes detector", "Split jobs per service", "Enable node cache"],
+        "tradeoffs": ["More jobs visible in UI"],
+        "risks": ["Filter miss edge-case paths"],
+        "mitigations": ["Keep globs broad; adjust as needed"],
+        "est_time": "30m",
+        "est_cost": "$0",
+        "tooling": ["GitHub Actions"],
+        "dependencies": ["dorny/paths-filter"],
+        "testing": ["PR touching backend runs backend job only"],
+        "security_privacy": ["No secrets involved"],
+        "maintainability": "Simple per-service jobs",
+        "perf_targets": "Skip unchanged services"
+      },
+      "scores": {"correctness": 5, "feasibility": 5, "maintainability": 5, "simplicity": 5, "security": 5, "performance": 4, "cost_efficiency": 5, "tooling_fit": 5, "time_to_deliver": 5}
+    },
+    "claude": {
+      "proposal": {
+        "title": "Harden deploy (concurrency + gating)",
+        "approach": "Add concurrency guard, correct DOCR repo names for tag gating, and echo gates for visibility while preserving secrets via live spec.",
+        "steps": ["Add concurrency block", "Fix has_tag repo names to include namespace", "Add debug of gates"],
+        "tradeoffs": ["Slightly longer script"],
+        "risks": ["Namespace drift"],
+        "mitigations": ["Document namespace"],
+        "est_time": "20m",
+        "est_cost": "$0",
+        "tooling": ["GitHub Actions", "doctl", "yq"],
+        "dependencies": ["DOCR repos"],
+        "testing": ["Dispatch worker_only; confirm only worker image tag bumped"],
+        "security_privacy": ["Secrets preserved by live spec"],
+        "maintainability": "Small, clear changes",
+        "perf_targets": "Skip unchanged services"
+      },
+      "scores": {"correctness": 5, "feasibility": 5, "maintainability": 5, "simplicity": 5, "security": 5, "performance": 4, "cost_efficiency": 5, "tooling_fit": 5, "time_to_deliver": 5}
+    },
+    "codex": {
+      "proposal": {
+        "title": "CI cleanup + deploy hardening",
+        "approach": "Replace CI with filtered per-service jobs, add deploy concurrency, fix DOCR repo gating, improve debug. Keep build-push workflow intact.",
+        "steps": ["Clean CI YAML", "paths-filter per service", "concurrency in deploy", "correct repo names"],
+        "tradeoffs": ["More YAML but clearer"],
+        "risks": ["None significant"],
+        "mitigations": ["Minimal edits"],
+        "est_time": "45m",
+        "est_cost": "$0",
+        "tooling": ["GitHub Actions", "doctl", "yq"],
+        "dependencies": ["paths-filter action", "DOCR"],
+        "testing": ["PR touches frontend only → frontend CI", "Dispatch deploy worker_only"],
+        "security_privacy": ["Secrets untouched"],
+        "maintainability": "Improved structure",
+        "perf_targets": "Build/deploy only what changed"
+      },
+      "scores": {"correctness": 5, "feasibility": 5, "maintainability": 5, "simplicity": 5, "security": 5, "performance": 5, "cost_efficiency": 5, "tooling_fit": 5, "time_to_deliver": 5}
+    }
+  },
+  "critiques": {
+    "qwen_on_claude": "Good deploy guardrails; ensure concurrency present.",
+    "qwen_on_codex": "Comprehensive; keep changes minimal.",
+    "claude_on_qwen": "CI cleanup is essential; ensure gating works.",
+    "claude_on_codex": "Solid combo; secrets preserved.",
+    "codex_on_qwen": "CI-only incomplete without deploy fixes.",
+    "codex_on_claude": "Deploy hardening pairs well with CI fix."
+  },
+  "votes": {"qwen": "codex", "claude": "codex", "codex": "codex"},
+  "tally": {"qwen": 0, "claude": 0, "codex": 3},
+  "winner": "codex",
+  "tie_break": "none",
+  "merge_notes": "Winner merges CI cleanup with deploy hardening (concurrency + correct DOCR repo names)."
+}
+

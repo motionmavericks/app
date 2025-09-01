@@ -62,10 +62,10 @@ jobs:
           WORKER_CHANGED=false
           FRONTEND_CHANGED=false
 
-          # DOCR CLI expects repository name only (not registry prefix)
-          if has_tag "backend" "$TAG"; then BACKEND_CHANGED=true; fi
-          if has_tag "worker" "$TAG";  then WORKER_CHANGED=true;  fi
-          if has_tag "frontend" "$TAG"; then FRONTEND_CHANGED=true; fi
+          # DOCR CLI expects the registry namespace + repository name
+          if has_tag "mm-motionmav-reg/backend" "$TAG"; then BACKEND_CHANGED=true; fi
+          if has_tag "mm-motionmav-reg/worker"  "$TAG"; then WORKER_CHANGED=true;  fi
+          if has_tag "mm-motionmav-reg/frontend" "$TAG"; then FRONTEND_CHANGED=true; fi
 
           echo "backend_changed=$BACKEND_CHANGED" >> $GITHUB_OUTPUT
           echo "worker_changed=$WORKER_CHANGED"   >> $GITHUB_OUTPUT
@@ -94,6 +94,10 @@ jobs:
           set -e
           echo "--- spec.yaml (head) ---"
           sed -n '1,120p' spec.yaml
+          echo "--- tag gates ---"
+          echo "backend_changed=${{ steps.spec.outputs.backend_changed }}"
+          echo "worker_changed=${{ steps.spec.outputs.worker_changed }}"
+          echo "frontend_changed=${{ steps.spec.outputs.frontend_changed }}"
           echo "--- services image blocks ---"
           yq '.services[].image' spec.yaml
           echo "--- workers image blocks ---"
@@ -107,6 +111,9 @@ jobs:
             echo "Updating App $APP_ID from prepared spec.yaml"
             doctl apps update "$APP_ID" --spec spec.yaml --wait || exit 1
           else
+concurrency:
+  group: deploy-do-app
+  cancel-in-progress: false
             echo "Creating App from prepared spec.yaml"
             doctl apps create --spec spec.yaml --wait || exit 1
           fi
