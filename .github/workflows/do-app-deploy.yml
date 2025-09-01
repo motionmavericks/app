@@ -1,0 +1,30 @@
+name: deploy-do-app
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["build-push-docr"]
+    types: ["completed"]
+
+jobs:
+  deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_ACCESS_TOKEN }}
+      - name: Try update existing app, else create
+        shell: bash
+        run: |
+          set -e
+          APP_ID=$(doctl apps list --no-header --format ID,Spec.Name | awk '$2=="motionmavericks"{print $1}' | head -n1 || true)
+          if [ -n "$APP_ID" ]; then
+            echo "Updating App $APP_ID from deploy/do-app.yaml"
+            doctl apps update "$APP_ID" --spec deploy/do-app.yaml --wait || exit 1
+          else
+            echo "Creating App from deploy/do-app.yaml"
+            doctl apps create --spec deploy/do-app.yaml --wait || exit 1
+          fi
+          echo "Apps summary:" && doctl apps list --no-header --format ID,Spec.Name,DefaultIngress,UpdatedAt | head -n 5

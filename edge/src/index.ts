@@ -22,7 +22,7 @@ if (!previewsBucket || !endpoint || !key || key.length < 32) {
   process.exit(1);
 }
 
-import { validSig as _validSig } from './sign';
+import { validSig as _validSig } from './sign.js';
 function validSig(path: string, exp: number, sig: string) { return _validSig(path, exp, sig, key); }
 
 app.get('/s/*', async (req, reply) => {

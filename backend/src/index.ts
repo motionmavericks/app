@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import Fastify from 'fastify';
 import crypto from 'node:crypto';
-import Redis from 'ioredis';
+import IORedis from 'ioredis';
 import { Pool } from 'pg';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
@@ -11,7 +11,7 @@ import { z } from 'zod';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { CopyObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
-import { signEdgeUrl } from './sign';
+import { signEdgeUrl } from './sign.js';
 
 const app = Fastify({ logger: { level: process.env.LOG_LEVEL || 'info' } });
 // CORS: allowlist via env ALLOWED_ORIGINS (comma-separated); fallback to true for dev
@@ -41,7 +41,9 @@ await app.register(swaggerUi, {
 const pgUrl = process.env.POSTGRES_URL;
 const pool = pgUrl ? new Pool({ connectionString: pgUrl }) : undefined;
 const redisUrl = process.env.REDIS_URL;
-const redis = redisUrl ? new Redis(redisUrl) : undefined;
+// ioredis typing under NodeNext can appear non-constructable; coerce to any
+const RedisCtor: any = (IORedis as any);
+const redis = redisUrl ? new RedisCtor(redisUrl) : undefined;
 const previewStream = process.env.PREVIEW_STREAM || 'previews:build';
 
 app.get('/api/health', async () => {

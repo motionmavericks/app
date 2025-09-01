@@ -4,7 +4,7 @@ services:
   - name: frontend
     image:
       registry_type: DOCR
-      repository: mm-motionmav-reg/frontend
+      repository: frontend
       tag: latest
     http_port: 3001
     instance_count: 1
@@ -31,7 +31,7 @@ services:
   - name: backend
     image:
       registry_type: DOCR
-      repository: mm-motionmav-reg/backend
+      repository: backend
       tag: latest
     http_port: 3000
     instance_count: 1
@@ -46,11 +46,13 @@ services:
       failure_threshold: 5
     envs:
       - key: POSTGRES_URL
-        scope: RUN_TIME
-        value: ${db.DATABASE_URL}
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: ""
       - key: REDIS_URL
-        scope: RUN_TIME
-        value: ${redis.REDIS_URL}
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: ""
       - key: WASABI_ENDPOINT
         value: https://s3.ap-southeast-2.wasabisys.com
       - key: WASABI_REGION
@@ -84,17 +86,20 @@ services:
       - key: EDGE_SIGNING_KEY
         type: SECRET
         value: ""
+workers:
   - name: preview-worker
     image:
       registry_type: DOCR
-      repository: mm-motionmav-reg/worker
+      repository: worker
       tag: latest
     instance_count: 1
     instance_size_slug: basic-xxs
     run_command: node dist/worker.js
     envs:
       - key: REDIS_URL
-        value: ${redis.REDIS_URL}
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: ""
       - key: PREVIEW_STREAM
         value: previews:build
       - key: PREVIEW_CONSUMER_GROUP
