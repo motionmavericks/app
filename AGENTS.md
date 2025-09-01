@@ -30,6 +30,14 @@ Agent Workflow
 - Prefer minimal, scoped changes; avoid touching unrelated areas.
 - Always keep the user informed of the next immediate step.
 
+Init
+- Start a fresh Codex instance and run `/init` (or `make init`).
+- `/init` executes `scripts/codex_init.sh` which:
+  - Checks required tools (rg, jq, doctl, gh, yq) and prints versions.
+  - Verifies presence of `deploy/do-app.yaml` and CI workflows.
+  - Summarizes services/workers and reminds required envs.
+  - Prints quick commands for CI watch, DO logs, and health.
+
 Qwen + Codex Operating Model
 - Qwen Code: Perform repo‑scale discovery, summarize architecture, propose diffs/tests/docs, and automate high‑level refactors.
 - Codex (this agent): Convert human/Qwen inputs into precise action items and plans; implement minimal `apply_patch` changes; keep `/docs/` and env templates in sync; run `make typecheck`, `make lint`, `make build` to validate; orchestrate MCP tooling for deploys.
@@ -42,14 +50,17 @@ Claude Code — Guardrails & Usage
   - Hard‑fail on drift; do not let Claude modify unrelated files.
   - Prefer yq/jq over awk/sed for YAML/JSON edits.
 - Canonical prompts (copy/paste):
-  - DO App spec image parsing fix:
-    - `claude -p "You are Claude Code. Modify ONLY deploy/do-app.yaml and .github/workflows/do-app-deploy.yml. Fix DOCR image parsing by ensuring image.registry is a full DOCR URL (registry.digitalocean.com/<registry>), and pin backend image.tag to sha-\${GITHUB_SHA} using yq. Output unified diffs for those two files only, then a 3-line Validation with doctl/yq commands." --max-turns 6`
+  - DO App spec image parsing fix (DOCR):
+    - For DOCR, omit `image.registry` (leave blank). Required fields: `registry_type: DOCR`, `repository`, `tag`.
+    - Pin backend `image.tag` to `sha-\${GITHUB_SHA}` using yq in CI.
+    - Example prompt:
+      - `claude -p "Modify ONLY deploy/do-app.yaml and .github/workflows/do-app-deploy.yml. Ensure DOCR image blocks omit image.registry, and pin backend image.tag to sha-\${GITHUB_SHA} with yq. Output unified diffs for those two files only + a 3-line Validation (doctl/yq)." --max-turns 6`
   - CI watcher (don’t poll arrays incorrectly):
     - `gh run watch $(gh run list --workflow build-push-docr --limit 1 -q '.[0].databaseId') --interval 5 --exit-status`
     - `gh run watch $(gh run list --workflow deploy-do-app --limit 1 -q '.[0].databaseId') --interval 5 --exit-status`
 - Validation checklist after applying Claude’s diffs:
   - `yq eval '.services[] | {name: .name, image: .image}' spec.yaml`
-  - `doctl apps update "$APP_ID" --spec spec.yaml --wait=false --validate-only`
+  - `doctl apps update "$APP_ID" --spec spec.yaml --wait` (validate-only varies by doctl version)
   - `doctl apps logs "$APP_ID" backend --type deploy --tail 200`
 
 

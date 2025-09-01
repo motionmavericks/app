@@ -62,9 +62,10 @@ jobs:
           WORKER_CHANGED=false
           FRONTEND_CHANGED=false
 
-          if has_tag "mm-motionmav-reg/backend" "$TAG"; then BACKEND_CHANGED=true; fi
-          if has_tag "mm-motionmav-reg/worker" "$TAG";  then WORKER_CHANGED=true;  fi
-          if has_tag "mm-motionmav-reg/frontend" "$TAG"; then FRONTEND_CHANGED=true; fi
+          # DOCR CLI expects repository name only (not registry prefix)
+          if has_tag "backend" "$TAG"; then BACKEND_CHANGED=true; fi
+          if has_tag "worker" "$TAG";  then WORKER_CHANGED=true;  fi
+          if has_tag "frontend" "$TAG"; then FRONTEND_CHANGED=true; fi
 
           echo "backend_changed=$BACKEND_CHANGED" >> $GITHUB_OUTPUT
           echo "worker_changed=$WORKER_CHANGED"   >> $GITHUB_OUTPUT

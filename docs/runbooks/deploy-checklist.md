@@ -3,8 +3,9 @@ _Note: checklist updated after backend ESM fix; use to retrigger CI when needed.
 
 Pre-reqs
 - Wasabi buckets ready: `mm-staging-au`, `mm-masters-au` (Object Lock), `mm-previews-au`
-- Secrets in DO App: Wasabi creds, `EDGE_SIGNING_KEY` (if edge), DB/Redis
+- Secrets in DO App: Wasabi creds, `EDGE_SIGNING_KEY` (if edge)
 - Managed Postgres created; URL set as `POSTGRES_URL`
+- Valkey/Redis provisioned; `REDIS_URL` secret set on backend and preview-worker (format `rediss://…`)
 
 Steps
 - App Platform: `scripts/deploy_do_app.sh` (creates/updates app from `deploy/do-app.yaml`)
@@ -26,3 +27,9 @@ Post-Deploy
 - Monitor logs & metrics
 - Rotate keys on schedule; enforce branch protections
 - Backups snapshot schedule confirmed for DB
+ - CI watch:
+   - `gh run watch $(gh run list --workflow build-push-docr --limit 1 -q '.[0].databaseId') --interval 5 --exit-status`
+   - `gh run watch $(gh run list --workflow deploy-do-app --limit 1 -q '.[0].databaseId') --interval 5 --exit-status`
+ - DO logs:
+   - `doctl apps logs <APP_ID> backend --type deploy --tail 200`
+   - `doctl apps logs <APP_ID> preview-worker --type run --tail 200`

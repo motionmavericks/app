@@ -20,7 +20,7 @@ Endpoints (selected)
 
 Environment
 - Wasabi: `WASABI_ENDPOINT`, `WASABI_REGION`, Staging/Masters/Previews credentials and buckets
-- DB/Cache: `POSTGRES_URL`, `REDIS_URL`
+- DB/Cache: `POSTGRES_URL` (Managed Postgres), `REDIS_URL` (Valkey/Redis, `rediss://…`)
 - Edge signing: `EDGE_SIGNING_KEY` (HMAC), `EDGE_PUBLIC_BASE`
 - CORS/limits: `ALLOWED_ORIGINS`, `RATE_LIMIT_MAX`, `RATE_LIMIT_WINDOW`
 - Per-route limits: `RL_PRESIGN_MAX/_WINDOW`, `RL_PROMOTE_MAX/_WINDOW`
@@ -38,4 +38,4 @@ Do/Don’t
 - Do: update `docs/backend/services/web.md` when adding/modifying endpoints.
 - Do: keep Swagger in sync, validate inputs with Zod.
 - Don’t: return stack traces; log details safely.
-
+- Note: Fastify plugins must match Fastify v4. `@fastify/cors` is pinned to v8.

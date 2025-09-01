@@ -6,7 +6,8 @@ Current (Frontend)
 - Standard Next.js: only `NEXT_PUBLIC_*` are exposed to the browser.
 
 Backend/API
-- `POSTGRES_URL`, `REDIS_URL`
+- `POSTGRES_URL` (Managed Postgres)
+- `REDIS_URL` (Valkey/Redis). Use TLS URI format (e.g., `rediss://user:pass@host:port`). Set as a secret in App Platform.
 - `WASABI_ENDPOINT`, `WASABI_REGION`
 - `WASABI_STAGING_ACCESS_KEY`, `WASABI_STAGING_SECRET`
 - `WASABI_MASTERS_ACCESS_KEY`, `WASABI_MASTERS_SECRET` (promotion only)
@@ -22,6 +23,7 @@ Backend/API
 - `AUTH_SECRET`, `AUTH_PROVIDERS...`
 
 Workers (Preview)
+- `REDIS_URL` (required). Worker exits on startup if missing.
 - `WASABI_MASTERS_ACCESS_KEY/SECRET` (read), `WASABI_PREVIEWS_ACCESS_KEY/SECRET` (write)
 - `PREVIEW_PRESET` (720p), `HLS_SEGMENT_SEC` (2)
 - `QUEUE_CONCURRENCY`, `GPU_DEVICE`
