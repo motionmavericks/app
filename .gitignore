@@ -24,3 +24,14 @@ npm-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 bun.lockb
+
+# AWS CLI
+awscliv2.zip
+aws/dist/
+
+# Binaries
+bin/yq
+*.exe
+*.dll
+*.so
+*.dylib
