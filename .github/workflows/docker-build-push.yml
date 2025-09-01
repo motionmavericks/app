@@ -28,7 +28,9 @@ jobs:
             BUILD_SHA=${{ github.sha }}
           no-cache: true
           push: true
-          tags: registry.digitalocean.com/mm-motionmav-reg/backend:latest
+          tags: |
+            registry.digitalocean.com/mm-motionmav-reg/backend:latest
+            registry.digitalocean.com/mm-motionmav-reg/backend:sha-${{ github.sha }}
 
       - name: Build and push worker
         uses: docker/build-push-action@v6
