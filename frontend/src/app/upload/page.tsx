@@ -1,6 +1,21 @@
 "use client";
 import { useState } from "react";
-import { presign } from "@/lib/api";
+import { presign, API_BASE } from "@/lib/api";
+
+function sanitizeName(name: string): string {
+  // Remove any path separators and restrict to safe chars
+  const base = name.split(/[/\\]/).pop() || "file";
+  const cleaned = base.replace(/[^A-Za-z0-9._-]/g, "_");
+  return cleaned.length > 128 ? cleaned.slice(-128) : cleaned || "file";
+}
+
+const ALLOWED_MIME = [
+  "video/mp4",
+  "video/quicktime",
+  "video/x-matroska",
+  "video/webm",
+  "audio/mpeg",
+];
 
 export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -9,24 +24,30 @@ export default function UploadPage() {
 
   async function onUpload() {
     if (!file) return;
+    // Basic MIME validation
+    if (file.type && !ALLOWED_MIME.includes(file.type)) {
+      setStatus("Unsupported file type. Please choose a common video/audio file.");
+      return;
+    }
     setStatus("Requesting presign...");
-    const key = `staging/${crypto.randomUUID()}/${file.name}`;
+    const safeName = sanitizeName(file.name || "upload");
+    const key = `staging/${crypto.randomUUID()}/${safeName}`;
     const { url } = await presign({ key, contentType: file.type || "application/octet-stream" });
     setStatus("Uploading...");
     const put = await fetch(url, { method: "PUT", body: file, headers: { "content-type": file.type || "application/octet-stream" } });
     if (!put.ok) {
-      const text = await put.text();
-      throw new Error(`PUT failed: ${put.status} ${text}`);
+      setStatus("Upload failed. Please try again.");
+      return;
     }
     setStatus("Uploaded to staging. Promoting to masters...");
-    const promoteRes = await fetch((process.env.NEXT_PUBLIC_API_BASE || "http://localhost:3000") + "/api/promote", {
+    const promoteRes = await fetch(API_BASE + "/api/promote", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ stagingKey: key })
     });
     if (!promoteRes.ok) {
-      const txt = await promoteRes.text();
-      throw new Error(`Promote failed: ${promoteRes.status} ${txt}`);
+      setStatus("Promotion failed. Please contact support.");
+      return;
     }
     const pr = await promoteRes.json();
     const previewPrefix = `previews/${key.replace(/^staging\//, '')}`;

@@ -14,6 +14,8 @@ Quick Links
 - Migration Plan: `migration/plan.md`
 - Dev Setup: `dev-setup.md`
 - Env Matrix: `configuration/env.md`
+ - Codex CLI: `ai/codex-cli-guidance.md`
+ - Qwen Code: `ai/qwen-code.md`
 
 Live Inventory
 - Wasabi audit (read‑only JSON snapshot): `../wasabi_audit.json`

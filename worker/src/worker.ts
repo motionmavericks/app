@@ -1,18 +1,28 @@
 import 'dotenv/config';
 import Redis from 'ioredis';
+import { hostname } from 'node:os';
 import pino from 'pino';
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { spawn } from 'node:child_process';
 import { mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import http from 'node:http';
 
 const log = pino({ level: process.env.LOG_LEVEL || 'info' });
 const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 const stream = process.env.PREVIEW_STREAM || 'previews:build';
 const group = process.env.PREVIEW_CONSUMER_GROUP || 'previewers';
-const consumer = process.env.INSTANCE_ID || `worker-${Math.random().toString(36).slice(2, 8)}`;
+const consumer = process.env.INSTANCE_ID || `worker-${hostname()}-${cryptoRandom()}`;
+
+function cryptoRandom() {
+  try {
+    return (globalThis as any).crypto?.randomUUID?.() || Math.random().toString(36).slice(2, 10);
+  } catch {
+    return Math.random().toString(36).slice(2, 10);
+  }
+}
 
 async function ensureGroup() {
   try {
@@ -43,6 +53,14 @@ async function handle(msgId: string, fields: string[]) {
   const previewPrefix = data['preview_prefix'];
   if (!masterBucket || !masterKey || !previewsBucket || !previewPrefix) {
     throw new Error('missing required fields');
+  }
+  // Idempotency: if preview already exists, skip work
+  try {
+    await s3.send(new HeadObjectCommand({ Bucket: previewsBucket, Key: `${previewPrefix.replace(/\/$/, '')}/index.m3u8` }));
+    log.info({ previewPrefix }, 'preview already exists; skipping');
+    return;
+  } catch {
+    // not found → proceed
   }
 
   // Detect NVENC support
@@ -135,10 +153,10 @@ async function buildVariants(inputUrl: string, outRoot: string, vcodec: string, 
   writeFileSync(join(outRoot, 'index.m3u8'), master);
 }
 
+function jitter(ms: number) { return Math.floor(ms * (0.5 + Math.random())); }
 async function ffmpegRun(args: string[]) {
   const maxAttempts = Number(process.env.FFMPEG_RETRIES || 2);
-  let attempt = 0;
-  while (true) {
+  for (let attempt = 0; attempt <= maxAttempts; attempt++) {
     try {
       await new Promise((resolve, reject) => {
         const p = spawn('ffmpeg', args, { stdio: 'inherit' });
@@ -146,8 +164,9 @@ async function ffmpegRun(args: string[]) {
       });
       return;
     } catch (e) {
-      if (attempt++ >= maxAttempts) throw e;
-      await new Promise(r => setTimeout(r, 1000 * attempt));
+      if (attempt >= maxAttempts) throw e;
+      const base = 750 * Math.pow(2, attempt);
+      await new Promise(r => setTimeout(r, jitter(base)));
     }
   }
 }
@@ -163,16 +182,16 @@ async function uploadDir(s3: S3Client, bucket: string, prefix: string, dir: stri
     }
     const body = readFileSync(full);
     const maxAttempts = Number(process.env.UPLOAD_RETRIES || 3);
-    let attempt = 0;
-    while (true) {
+    for (let attempt = 0; attempt <= maxAttempts; attempt++) {
       try {
         const contentType = name.endsWith('.m3u8') ? 'application/x-mpegURL' : (name.endsWith('.ts') ? 'video/MP2T' : 'application/octet-stream');
-        await s3.send(new PutObjectCommand({ Bucket: bucket, Key: keyBase, Body: body, ContentType: contentType }));
+        await s3.send(new PutObjectCommand({ Bucket: bucket, Key: keyBase, Body: body, ContentType: contentType, ServerSideEncryption: 'AES256' }));
         log.info({ key: keyBase }, 'uploaded');
         break;
       } catch (e) {
-        if (attempt++ >= maxAttempts) throw e;
-        await new Promise(r => setTimeout(r, 500 * attempt));
+        if (attempt >= maxAttempts) throw e;
+        const base = 400 * Math.pow(2, attempt);
+        await new Promise(r => setTimeout(r, jitter(base)));
       }
     }
   }
@@ -181,6 +200,26 @@ async function uploadDir(s3: S3Client, bucket: string, prefix: string, dir: stri
 async function main() {
   await ensureGroup();
   log.info({ stream, group, consumer }, 'preview worker started');
+  // Optional HTTP health endpoint
+  const healthPort = process.env.WORKER_HEALTH_PORT ? Number(process.env.WORKER_HEALTH_PORT) : undefined;
+  let server: http.Server | undefined;
+  if (healthPort && Number.isFinite(healthPort)) {
+    server = http.createServer((req, res) => {
+      if (req.url === '/health') {
+        res.writeHead(200, { 'content-type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, service: 'worker' }));
+        return;
+      }
+      res.statusCode = 404; res.end();
+    }).listen(healthPort, '0.0.0.0', () => log.info({ port: healthPort }, 'worker health server listening'));
+  }
+  const shutdown = async () => {
+    try { await redis.quit(); } catch {}
+    try { server?.close(); } catch {}
+    process.exit(0);
+  };
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
   while (true) {
     const res = await redis.xreadgroup('GROUP', group, consumer, 'COUNT', 1, 'BLOCK', 5000, 'STREAMS', stream, '>') as any;
     if (!res) continue;

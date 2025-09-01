@@ -2,12 +2,21 @@ name: motionmavericks
 region: syd1
 services:
   - name: frontend
-    dockerfile_path: ./frontend/Dockerfile
+    image:
+      registry_type: DOCR
+      repository: mm-motionmav-reg/frontend
+      tag: latest
     http_port: 3001
     instance_count: 1
     instance_size_slug: basic-xxs
     routes:
       - path: /
+    health_check:
+      http_path: /
+      initial_delay_seconds: 5
+      period_seconds: 10
+      timeout_seconds: 3
+      failure_threshold: 5
     envs:
       - key: NEXT_PUBLIC_API_BASE
         value: https://api.motionmavericks.com.au
@@ -20,12 +29,21 @@ services:
         scope: RUN_AND_BUILD_TIME
         value: ap-southeast-2
   - name: backend
-    dockerfile_path: ./backend/Dockerfile
+    image:
+      registry_type: DOCR
+      repository: mm-motionmav-reg/backend
+      tag: latest
     http_port: 3000
     instance_count: 1
     instance_size_slug: basic-xxs
     routes:
-      - path: /
+      - path: /api
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 5
+      period_seconds: 10
+      timeout_seconds: 3
+      failure_threshold: 5
     envs:
       - key: POSTGRES_URL
         scope: RUN_TIME
@@ -67,7 +85,10 @@ services:
         type: SECRET
         value: ""
   - name: preview-worker
-    dockerfile_path: ./worker/Dockerfile
+    image:
+      registry_type: DOCR
+      repository: mm-motionmav-reg/worker
+      tag: latest
     instance_count: 1
     instance_size_slug: basic-xxs
     run_command: node dist/worker.js
@@ -102,15 +123,4 @@ services:
         value: 480p
       - key: HLS_SEGMENT_SEC
         value: "4"
-databases:
-  - name: db
-    engine: PG
-    production: false
-    version: "16"
-    cluster_name: app-db
-    db_name: app
-    db_user: app
-  - name: redis
-    engine: REDIS
-    production: false
-    version: "7"
+databases: []

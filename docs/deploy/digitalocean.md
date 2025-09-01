@@ -25,7 +25,7 @@ Firewalls
 
 App Platform Spec
 - Spec file: `deploy/do-app.yaml`
-- Contains services: `frontend`, `backend`, `preview-worker`, and attachments for Managed Postgres and Redis.
+- Contains services: `frontend`, `backend`, `preview-worker`, and attachments for Managed Postgres and Redis. Health checks are configured for `frontend` and `backend`.
 - Customize domains and secrets, then create/update the app:
   - `doctl apps create --spec deploy/do-app.yaml`
   - `doctl apps update <APP_ID> --spec deploy/do-app.yaml`
@@ -38,6 +38,7 @@ Environment
 - Fill Wasabi keys and bucket names as secrets for backend and worker.
 - Frontend uses `NEXT_PUBLIC_API_BASE` and `NEXT_PUBLIC_EDGE_BASE` for routing.
 - Backend sets `EDGE_PUBLIC_BASE` (edge domain) and `EDGE_SIGNING_KEY` to enable signed playback URLs.
+- Rate limits and CORS (optional): set `ALLOWED_ORIGINS`, `RATE_LIMIT_MAX`, `RATE_LIMIT_WINDOW`, `RL_PRESIGN_*`, `RL_PROMOTE_*` for backend; `RATE_LIMIT_*` and `FETCH_TIMEOUT_MS` for edge.
 
 Edge Cache (Droplet)
 - Optional for MVP. If omitted, backend returns presigned Wasabi URLs and the player still works.
@@ -46,13 +47,19 @@ Edge Cache (Droplet)
 
 Zero Downtime
 - Enable health checks: `/api/health` for backend. Set timeouts and autoscaling policies.
+ - Frontend health check at `/` (App Platform spec includes these).
 
 Post-Deploy Checks
 - Frontend resolves and loads.
 - Backend `/api/health` returns `{ ok: true }`.
 - Presign flow returns valid PUT URL; PUT succeeds; object appears in Staging bucket.
 - Promote copies to Masters; preview worker builds; signed playback works (edge or fallback).
+- API docs available at `/api/docs` on backend.
 
 MCP (DigitalOcean)
 - The MCP server is launched via `scripts/mcp_digitalocean.sh`, which sources the DO token from `DIGITALOCEAN_ACCESS_TOKEN` or `~/.config/doctl/config.yaml`.
 - Restart Codex CLI to reload MCP servers after config changes. Use MCP to inspect apps/services during rollout.
+
+GPU Workers (Droplets)
+- See `docs/deploy/do-gpu-workers.md` for GPU provisioning in `nyc2`/`tor1`.
+- Scripts: `scripts/provision_gpu_worker.sh` (provision + systemd) and `scripts/gpu_reserved_ip.sh` (reserved IP lifecycle).

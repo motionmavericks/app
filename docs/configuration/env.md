@@ -14,6 +14,11 @@ Backend/API
 - `OBJECT_LOCK_DEFAULT_DAYS` (e.g., 365)
 - `EDGE_SIGNING_KEY` (HMAC secret)
 - `EDGE_PUBLIC_BASE` (e.g., https://edge.example.com)
+- `ALLOWED_ORIGINS` (comma-separated CORS allowlist; omit to allow all in dev)
+- `RATE_LIMIT_MAX` (requests per window, default 200)
+- `RATE_LIMIT_WINDOW` (e.g., `1 minute`)
+- `RL_PRESIGN_MAX`, `RL_PRESIGN_WINDOW` (per-route limit for `/api/presign`)
+- `RL_PROMOTE_MAX`, `RL_PROMOTE_WINDOW` (per-route limit for `/api/promote`)
 - `AUTH_SECRET`, `AUTH_PROVIDERS...`
 
 Workers (Preview)
@@ -24,6 +29,8 @@ Workers (Preview)
 Edge Cache
 - `EDGE_SIGNING_KEY`, `CACHE_PATH`, `CACHE_MAX_BYTES`, `CACHE_TTL_DAYS`
 - `PREVIEWS_BUCKET`, `WASABI_ENDPOINT`, `WASABI_REGION` (read-only)
+- `FETCH_TIMEOUT_MS` (edge fetch timeout, default 10000)
+- `RATE_LIMIT_MAX`, `RATE_LIMIT_WINDOW` (edge rate limiting)
 
 Acceptance
 - Frontend boots with `frontend/.env.local` or defaults.

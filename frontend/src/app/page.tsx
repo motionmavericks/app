@@ -9,10 +9,15 @@ type ApiAsset = { id: string; title?: string | null; staging_key?: string | null
 
 async function fetchAssets(): Promise<ApiAsset[]> {
   const apiBase = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:3000";
-  const r = await fetch(`${apiBase}/api/assets`, { cache: "no-store" });
-  if (!r.ok) return [];
-  const data = await r.json();
-  return (data.items ?? []) as ApiAsset[];
+  try {
+    const r = await fetch(`${apiBase}/api/assets`);
+    if (!r.ok) return [];
+    const data = await r.json();
+    return (data.items ?? []) as ApiAsset[];
+  } catch {
+    // During build/prerender the API may not be available; return empty list gracefully.
+    return [];
+  }
 }
 
 function toCardAsset(a: ApiAsset): CardAsset {
@@ -53,3 +58,4 @@ export default async function Home(){
     </div>
   );
 }
+export const revalidate = 30;

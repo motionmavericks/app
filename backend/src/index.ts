@@ -4,13 +4,38 @@ import crypto from 'node:crypto';
 import Redis from 'ioredis';
 import { Pool } from 'pg';
 import cors from '@fastify/cors';
+import rateLimit from '@fastify/rate-limit';
+import swagger from '@fastify/swagger';
+import swaggerUi from '@fastify/swagger-ui';
 import { z } from 'zod';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { CopyObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
+import { signEdgeUrl } from './sign';
 
 const app = Fastify({ logger: { level: process.env.LOG_LEVEL || 'info' } });
-await app.register(cors, { origin: true });
+// CORS: allowlist via env ALLOWED_ORIGINS (comma-separated); fallback to true for dev
+const allowed = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
+await app.register(cors, allowed.length > 0 ? { origin: allowed } : { origin: true });
+// Basic rate limiting (configurable via env)
+await app.register(rateLimit, {
+  max: Number(process.env.RATE_LIMIT_MAX || 200),
+  timeWindow: process.env.RATE_LIMIT_WINDOW || '1 minute'
+});
+
+// OpenAPI docs
+await app.register(swagger, {
+  openapi: {
+    info: { title: 'MotionMavericks API', version: '0.1.0' },
+  },
+});
+await app.register(swaggerUi, {
+  routePrefix: '/api/docs',
+  uiConfig: { docExpansion: 'list', deepLinking: false },
+});
 
 // Optional DB/Redis wiring (enabled when env is present)
 const pgUrl = process.env.POSTGRES_URL;
@@ -20,7 +45,14 @@ const redis = redisUrl ? new Redis(redisUrl) : undefined;
 const previewStream = process.env.PREVIEW_STREAM || 'previews:build';
 
 app.get('/api/health', async () => {
-  return { ok: true, service: 'backend', time: new Date().toISOString() };
+  const checks: Record<string, any> = {};
+  if (pool) {
+    try { await pool.query('select 1'); checks.db = true; } catch { checks.db = false; }
+  }
+  if (redis) {
+    try { await redis.ping(); checks.redis = true; } catch { checks.redis = false; }
+  }
+  return { ok: true, service: 'backend', time: new Date().toISOString(), ...checks };
 });
 
 const PresignSchema = z.object({
@@ -30,7 +62,14 @@ const PresignSchema = z.object({
   expires: z.number().int().min(60).max(3600).optional(),
 });
 
-app.post('/api/presign', async (req, reply) => {
+app.post('/api/presign', {
+  config: {
+    rateLimit: {
+      max: Number(process.env.RL_PRESIGN_MAX || 120),
+      timeWindow: process.env.RL_PRESIGN_WINDOW || '1 minute',
+    }
+  }
+}, async (req, reply) => {
   const parsed = PresignSchema.safeParse(req.body);
   if (!parsed.success) {
     return reply.code(400).send({ error: 'Invalid body', issues: parsed.error.issues });
@@ -162,7 +201,8 @@ app.get('/api/preview/status', async (req, reply) => {
   try {
     await s3.send(new HeadObjectCommand({ Bucket: previewsBucket, Key: `${prefix.replace(/^\//, '')}/index.m3u8` }));
     return { ready: true };
-  } catch {
+  } catch (err: any) {
+    req.log.debug({ err, prefix }, 'preview status check failed');
     return { ready: false };
   }
 });
@@ -215,10 +255,7 @@ app.post('/api/sign-preview', async (req, reply) => {
   const exp = Math.floor(Date.now() / 1000) + (expSec ?? 600);
   const path = `/s/${preview_prefix.replace(/^\//, '')}/${playlist}`;
   if (edgeBase && key) {
-    const h = crypto.createHmac('sha256', key);
-    h.update(`${path}?exp=${exp}`);
-    const sig = h.digest('hex');
-    const url = `${edgeBase.replace(/\/$/, '')}${path}?exp=${exp}&sig=${sig}`;
+    const url = signEdgeUrl(edgeBase, preview_prefix, playlist, exp, key);
     return { url, edge: true, exp };
   }
   // Fallback: presign from previews bucket directly
@@ -238,7 +275,14 @@ app.post('/api/sign-preview', async (req, reply) => {
 });
 
 // Promote from Staging to Masters and enqueue preview
-app.post('/api/promote', async (req, reply) => {
+app.post('/api/promote', {
+  config: {
+    rateLimit: {
+      max: Number(process.env.RL_PROMOTE_MAX || 30),
+      timeWindow: process.env.RL_PROMOTE_WINDOW || '1 minute',
+    }
+  }
+}, async (req, reply) => {
   const schema = z.object({
     stagingKey: z.string(),
     sha256: z.string().optional(),
@@ -301,6 +345,7 @@ app.post('/api/promote', async (req, reply) => {
         Bucket: mastersBucket,
         Key: destKey,
         CopySource: src,
+        ServerSideEncryption: 'AES256',
         ...(retainUntil ? { ObjectLockMode: 'GOVERNANCE', ObjectLockRetainUntilDate: retainUntil } : {}),
       }));
     } catch (err: any) {

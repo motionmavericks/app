@@ -21,6 +21,12 @@ MCP Usage
 - DigitalOcean MCP: launched via `scripts/mcp_digitalocean.sh` which supplies the API token. Restart Codex CLI after MCP config edits.
 - Keep actions atomic and narrate with short preambles.
 
+Qwen Code (Complementary)
+- Launch with `make qwen` to use Qwen Code CLI for repo‑scale analysis, refactors, tests, and docs generation.
+- Prefer Qwen for: summarizing large codebases, generating scaffolds/tests, dependency graphs, changelogs.
+- Prefer Codex for: precise patches (`apply_patch`), plan tracking, validation, and MCP tool workflows.
+- See `docs/ai/qwen-code.md` for setup and auth options (Qwen OAuth or OpenAI‑compatible providers like OpenRouter).
+
 Docs Discipline
 - Any code change must be reflected in `/docs/` before considering the task complete.
 - Add or update env templates (`*.env.example`) and ensure `docs/configuration/env.md` stays in sync.
