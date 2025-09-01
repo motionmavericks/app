@@ -1,3 +1,8 @@
+/**
+ * Development-only presign endpoint for local testing.
+ * In production, use the backend API at NEXT_PUBLIC_API_BASE/api/presign
+ * This route allows testing uploads without running the full backend stack.
+ */
 import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
