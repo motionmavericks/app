@@ -4,7 +4,7 @@ services:
   - name: frontend
     image:
       registry_type: DOCR
-      repository: frontend
+      repository: mm-motionmav-reg/frontend
       tag: latest
     http_port: 3001
     instance_count: 1
@@ -31,7 +31,7 @@ services:
   - name: backend
     image:
       registry_type: DOCR
-      repository: backend
+      repository: mm-motionmav-reg/backend
       tag: latest  # NOTE: CI replaces this with sha-${GITHUB_SHA} during deploy
     http_port: 3000
     instance_count: 1
@@ -45,7 +45,7 @@ services:
       timeout_seconds: 3
       failure_threshold: 5
     envs:
-      # Secrets are managed in DO UI; do not include them here to avoid clearing values on update
+      # Public configuration
       - key: WASABI_ENDPOINT
         value: https://s3.ap-southeast-2.wasabisys.com
       - key: WASABI_REGION
@@ -58,17 +58,45 @@ services:
         value: mm-masters-au
       - key: PREVIEWS_BUCKET
         value: mm-previews-au
+      # Secrets (set via DO UI or scripts)
+      - key: POSTGRES_URL
+        type: SECRET
+        scope: RUN_TIME
+      - key: REDIS_URL
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_STAGING_ACCESS_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_STAGING_SECRET
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_MASTERS_ACCESS_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_MASTERS_SECRET
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_PREVIEWS_ACCESS_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_PREVIEWS_SECRET
+        type: SECRET
+        scope: RUN_TIME
+      - key: EDGE_SIGNING_KEY
+        type: SECRET
+        scope: RUN_TIME
 workers:
   - name: preview-worker
     image:
       registry_type: DOCR
-      repository: worker
+      repository: mm-motionmav-reg/worker
       tag: latest
     instance_count: 1
     instance_size_slug: basic-xxs
     run_command: node dist/worker.js
     envs:
-      # Secrets are managed in DO UI; do not include them here to avoid clearing values on update
+      # Public configuration
       - key: PREVIEW_STREAM
         value: previews:build
       - key: PREVIEW_CONSUMER_GROUP
@@ -85,4 +113,31 @@ workers:
         value: 480p
       - key: HLS_SEGMENT_SEC
         value: "4"
-## Managed Redis is configured externally; REDIS_URL is set as a secret via scripts/do_app_set_redis.sh
+      # Secrets (set via DO UI or scripts)
+      - key: REDIS_URL
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_MASTERS_ACCESS_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_MASTERS_SECRET
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_PREVIEWS_ACCESS_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_PREVIEWS_SECRET
+        type: SECRET
+        scope: RUN_TIME
+
+# Managed PostgreSQL database
+databases:
+  - name: motionmav-db
+    engine: PG
+    version: "16"
+    size: db-s-1vcpu-1gb
+    num_nodes: 1
+    production: false
+
+## Note: Managed Redis/Valkey is set up separately through DO console
+## Secrets are managed via scripts/do_app_set_redis.sh and scripts/do_app_set_secrets.sh
