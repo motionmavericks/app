@@ -35,6 +35,24 @@ Qwen + Codex Operating Model
 - Codex (this agent): Convert human/Qwen inputs into precise action items and plans; implement minimal `apply_patch` changes; keep `/docs/` and env templates in sync; run `make typecheck`, `make lint`, `make build` to validate; orchestrate MCP tooling for deploys.
 - Workflow: Run `make qwen` for exploration → paste summaries/proposals → Codex turns them into a task list → implement and validate.
 
+Claude Code — Guardrails & Usage
+- When to use: ambiguous/risky changes, YAML/spec surgery, CI/CD deploy fixes, targeted diffs.
+- Guardrails (always):
+  - Scope to specific files and outputs (unified diffs only + short Validation).
+  - Hard‑fail on drift; do not let Claude modify unrelated files.
+  - Prefer yq/jq over awk/sed for YAML/JSON edits.
+- Canonical prompts (copy/paste):
+  - DO App spec image parsing fix:
+    - `claude -p "You are Claude Code. Modify ONLY deploy/do-app.yaml and .github/workflows/do-app-deploy.yml. Fix DOCR image parsing by ensuring image.registry is a full DOCR URL (registry.digitalocean.com/<registry>), and pin backend image.tag to sha-\${GITHUB_SHA} using yq. Output unified diffs for those two files only, then a 3-line Validation with doctl/yq commands." --max-turns 6`
+  - CI watcher (don’t poll arrays incorrectly):
+    - `gh run watch $(gh run list --workflow build-push-docr --limit 1 -q '.[0].databaseId') --interval 5 --exit-status`
+    - `gh run watch $(gh run list --workflow deploy-do-app --limit 1 -q '.[0].databaseId') --interval 5 --exit-status`
+- Validation checklist after applying Claude’s diffs:
+  - `yq eval '.services[] | {name: .name, image: .image}' spec.yaml`
+  - `doctl apps update "$APP_ID" --spec spec.yaml --wait=false --validate-only`
+  - `doctl apps logs "$APP_ID" backend --type deploy --tail 200`
+
+
 Docs Discipline (Always)
 - Treat `/docs/` as the source of truth. Any code/config change must be reflected in the relevant docs before the task is done.
 - Update env templates and `docs/configuration/env.md` together; add new variables to `.env.example` files and document them.
