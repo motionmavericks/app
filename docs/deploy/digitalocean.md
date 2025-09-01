@@ -25,16 +25,20 @@ Firewalls
 
 App Platform Spec
 - Spec file: `deploy/do-app.yaml`
-- Contains services: `frontend`, `backend`, `preview-worker`, and attachments for Managed Postgres and Redis. Health checks are configured for `frontend` and `backend`.
-- Customize domains and secrets, then create/update the app:
-  - `doctl apps create --spec deploy/do-app.yaml`
-  - `doctl apps update <APP_ID> --spec deploy/do-app.yaml`
+- Contains services: `frontend`, `backend`, and a `worker` (`preview-worker`). Health checks are configured for `frontend` and `backend`.
+- DOCR images: when `registry_type: DOCR`, omit `image.registry`; set `repository` and `tag`. CI pins image tags to `sha-<commit>` only for services that changed.
+- Redis: set `REDIS_URL` as a secret on backend and preview-worker (e.g., Valkey `rediss://…`). Do not include a `databases:` block for non‑production Redis.
+- Create/update the app:
+  - First-time create from `deploy/do-app.yaml`.
+  - Subsequent deploys fetch the live spec via `doctl apps get` and update only image tags of changed services to preserve secrets (e.g., `REDIS_URL`).
 
 Container Images
-- Each service includes a Dockerfile (`frontend/Dockerfile`, `backend/Dockerfile`, `worker/Dockerfile`). App Platform builds from repo by default. The worker image installs FFmpeg in its runtime stage.
+- Each service includes a Dockerfile (`frontend/Dockerfile`, `backend/Dockerfile`, `worker/Dockerfile`).
+- CI builds/pushes images to DOCR; the deploy workflow pins backend to the exact commit tag.
 
 Environment
-- Map Managed DB/Redis connection strings to `POSTGRES_URL` and `REDIS_URL` in App Platform.
+- Map Managed Postgres connection to `POSTGRES_URL`.
+- Set `REDIS_URL` (Valkey/Redis, `rediss://…`) on backend and preview-worker as secrets.
 - Fill Wasabi keys and bucket names as secrets for backend and worker.
 - Frontend uses `NEXT_PUBLIC_API_BASE` and `NEXT_PUBLIC_EDGE_BASE` for routing.
 - Backend sets `EDGE_PUBLIC_BASE` (edge domain) and `EDGE_SIGNING_KEY` to enable signed playback URLs.
@@ -55,6 +59,9 @@ Post-Deploy Checks
 - Presign flow returns valid PUT URL; PUT succeeds; object appears in Staging bucket.
 - Promote copies to Masters; preview worker builds; signed playback works (edge or fallback).
 - API docs available at `/api/docs` on backend.
+ - Logs:
+   - `doctl apps logs <APP_ID> backend --type deploy --tail 200`
+   - `doctl apps logs <APP_ID> preview-worker --type run --tail 200`
 
 MCP (DigitalOcean)
 - The MCP server is launched via `scripts/mcp_digitalocean.sh`, which sources the DO token from `DIGITALOCEAN_ACCESS_TOKEN` or `~/.config/doctl/config.yaml`.

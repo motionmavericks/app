@@ -12,6 +12,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Ensure we deploy based on the triggering commit of build workflow
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - name: Detect changed services
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          filters: |
+            backend:
+              - 'backend/**'
+            worker:
+              - 'worker/**'
+            frontend:
+              - 'frontend/**'
+            workflows:
+              - '.github/workflows/**'
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_ACCESS_TOKEN }}
@@ -22,14 +39,31 @@ jobs:
           curl -fsSL https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64 -o /usr/local/bin/yq
           chmod +x /usr/local/bin/yq
           yq --version
-      - name: Prepare spec with pinned backend tag (yq)
+      - name: Prepare spec from live app (preserve envs)
         id: spec
         shell: bash
         run: |
           set -e
-          cp deploy/do-app.yaml spec.yaml
+          # Fetch current live spec to preserve secrets like REDIS_URL
+          APP_ID=$(doctl apps list --no-header --format ID,Spec.Name | awk '$2=="motionmavericks"{print $1}' | head -n1 || true)
+          if [ -z "$APP_ID" ]; then
+            echo "App not found; creating from repo spec" >&2
+            cp deploy/do-app.yaml spec.yaml
+          else
+            doctl apps get "$APP_ID" -o json | jq '.[0].spec' > spec.json
+            yq -P spec.json > spec.yaml
+          fi
           TAG="sha-${GITHUB_SHA}"
-          yq -i ".services[] |= (select(.name==\"backend\") | .image.tag = \"$TAG\")" spec.yaml
+          # Update image tags only for changed services
+          if [ "${{ steps.changes.outputs.backend }}" = "true" ]; then
+            yq -i ".services[] |= (select(.name==\"backend\") | .image.tag = \"$TAG\")" spec.yaml
+          fi
+          if [ "${{ steps.changes.outputs.worker }}" = "true" ]; then
+            yq -i ".workers[] |= (select(.name==\"preview-worker\") | .image.tag = \"$TAG\")" spec.yaml
+          fi
+          if [ "${{ steps.changes.outputs.frontend }}" = "true" ]; then
+            yq -i ".services[] |= (select(.name==\"frontend\") | .image.tag = \"$TAG\")" spec.yaml
+          fi
           echo "spec=spec.yaml" >> $GITHUB_OUTPUT
       - name: Show spec summary (debug)
         shell: bash
@@ -39,16 +73,26 @@ jobs:
           sed -n '1,120p' spec.yaml
           echo "--- services image blocks ---"
           yq '.services[].image' spec.yaml
+          echo "--- workers image blocks ---"
+          yq '.workers[].image' spec.yaml
       - name: Try update existing app, else create
         shell: bash
         run: |
           set -e
+          # Skip deploy if nothing changed and not manually dispatched
+          if [ "${{ steps.changes.outputs.backend }}" != "true" ] && \
+             [ "${{ steps.changes.outputs.worker }}" != "true" ] && \
+             [ "${{ steps.changes.outputs.frontend }}" != "true" ] && \
+             [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            echo "No relevant changes detected; skipping deploy." >&2
+            exit 0
+          fi
           APP_ID=$(doctl apps list --no-header --format ID,Spec.Name | awk '$2=="motionmavericks"{print $1}' | head -n1 || true)
           if [ -n "$APP_ID" ]; then
-            echo "Updating App $APP_ID from deploy/do-app.yaml"
+            echo "Updating App $APP_ID from prepared spec.yaml"
             doctl apps update "$APP_ID" --spec spec.yaml --wait || exit 1
           else
-            echo "Creating App from deploy/do-app.yaml"
+            echo "Creating App from prepared spec.yaml"
             doctl apps create --spec spec.yaml --wait || exit 1
           fi
           echo "Apps summary:" && doctl apps list --no-header --format ID,Spec.Name,DefaultIngress,UpdatedAt | head -n 5

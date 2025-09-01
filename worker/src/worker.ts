@@ -16,6 +16,12 @@ if (!redisUrl) {
   log.error('REDIS_URL is not set; cannot start preview-worker. Set a valid Redis connection URL.');
   process.exit(1);
 }
+// Parse for safe logging (without credentials)
+try {
+  const u = new URL(redisUrl);
+  const redacted = `${u.protocol}//${u.hostname}:${u.port || (u.protocol === 'rediss:' ? '6379' : '6379')}`;
+  log.info({ redis: redacted }, 'connecting to Redis');
+} catch {}
 const redis = new Redis(redisUrl);
 const stream = process.env.PREVIEW_STREAM || 'previews:build';
 const group = process.env.PREVIEW_CONSUMER_GROUP || 'previewers';
