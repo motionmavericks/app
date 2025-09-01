@@ -20,7 +20,8 @@ Behavior
 
 Environment
 - Redis: `REDIS_URL` (required). Use Valkey/Redis TLS URI, e.g., `rediss://user:pass@host:port`.
-  - Note: worker reads `process.env.REDIS_URL` directly; ensure the App Platform secret is set.
+  - Alias: `VALKEY_URL` is also accepted.
+  - Note: worker reads `process.env.REDIS_URL || process.env.VALKEY_URL` and will retry `PING` briefly at startup before failing.
 - Wasabi: `WASABI_ENDPOINT`, `WASABI_REGION`, Masters/Previews creds + buckets
 - HLS: `PREVIEW_PRESET` or `PREVIEW_VARIANTS`, `HLS_SEGMENT_SEC`
 

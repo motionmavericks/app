@@ -27,10 +27,11 @@ App Platform Spec
 - Spec file: `deploy/do-app.yaml`
 - Contains services: `frontend`, `backend`, and a `worker` (`preview-worker`). Health checks are configured for `frontend` and `backend`.
 - DOCR images: when `registry_type: DOCR`, omit `image.registry`; set `repository` and `tag`. CI pins image tags to `sha-<commit>` only for services that changed.
-- Redis: set `REDIS_URL` as a secret on backend and preview-worker (e.g., Valkey `rediss://…`). Do not include a `databases:` block for non‑production Redis.
+- Redis: set `REDIS_URL` as a secret on backend and preview-worker (e.g., Valkey `rediss://…`). Scope should be `RUN_TIME` (build does not need it). Do not include a `databases:` block for non‑production Redis. The worker also accepts `VALKEY_URL` as an alias.
 - Create/update the app:
   - First-time create from `deploy/do-app.yaml`.
   - Subsequent deploys fetch the live spec via `doctl apps get` and update only image tags of changed services to preserve secrets (e.g., `REDIS_URL`).
+  - Use `scripts/do_app_set_redis.sh` to set/update `REDIS_URL` with scope `RUN_TIME` safely against the live spec.
 
 Container Images
 - Each service includes a Dockerfile (`frontend/Dockerfile`, `backend/Dockerfile`, `worker/Dockerfile`).
