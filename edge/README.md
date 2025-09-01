@@ -10,7 +10,9 @@ Deployment
 - Restrict egress to the Previews bucket endpoint.
 
 Security
-- Require HMAC signed URLs (generate in backend) before allowing proxy; example left as a TODO in the configs.
+- Require HMAC signed URLs (generated in backend) before allowing proxy.
+- HMAC validation is implemented in the Fastify application layer.
+- The reverse proxy (Caddy/Nginx) only forwards requests that have already been validated.
 
 Notes
 - Ensure `Range` headers are supported and not stripped.

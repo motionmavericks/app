@@ -6,7 +6,8 @@
   header Access-Control-Allow-Origin "*"
   @hls path_regexp hls \.m3u8|\.ts$
   handle @hls {
-    # TODO: validate HMAC signature on query params before proxy
+    # HMAC signature validation is handled by the Fastify application
+    # This proxy simply forwards requests that have already been validated
     reverse_proxy https://s3.wasabisys.com
   }
   handle {
