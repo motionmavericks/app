@@ -28,8 +28,17 @@ jobs:
         run: |
           set -e
           cp deploy/do-app.yaml spec.yaml
-          yq -i '(.services[] | select(.name=="backend").image.tag) = "sha-${GITHUB_SHA}"' spec.yaml
+          TAG="sha-${GITHUB_SHA}"
+          yq -i ".services[] |= (select(.name==\"backend\") | .image.tag = \"$TAG\")" spec.yaml
           echo "spec=spec.yaml" >> $GITHUB_OUTPUT
+      - name: Show spec summary (debug)
+        shell: bash
+        run: |
+          set -e
+          echo "--- spec.yaml (head) ---"
+          sed -n '1,120p' spec.yaml
+          echo "--- services image blocks ---"
+          yq '.services[].image' spec.yaml
       - name: Try update existing app, else create
         shell: bash
         run: |
