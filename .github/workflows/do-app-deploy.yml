@@ -2,6 +2,15 @@ name: deploy-do-app
 
 on:
   workflow_dispatch:
+    inputs:
+      sha:
+        description: "Commit SHA to deploy (defaults to triggering build's head_sha)"
+        type: string
+        required: false
+      worker_only:
+        description: "Deploy only preview-worker image"
+        type: boolean
+        default: false
   workflow_run:
     workflows: ["build-push-docr"]
     types: ["completed"]
@@ -15,20 +24,6 @@ jobs:
         with:
           # Ensure we deploy based on the triggering commit of build workflow
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
-      - name: Detect changed services
-        id: changes
-        uses: dorny/paths-filter@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          filters: |
-            backend:
-              - 'backend/**'
-            worker:
-              - 'worker/**'
-            frontend:
-              - 'frontend/**'
-            workflows:
-              - '.github/workflows/**'
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_ACCESS_TOKEN }}
@@ -43,7 +38,7 @@ jobs:
         id: spec
         shell: bash
         env:
-          DEPLOY_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+          DEPLOY_SHA: ${{ inputs.sha || github.event.workflow_run.head_sha || github.sha }}
         run: |
           set -e
           # Fetch current live spec to preserve secrets like REDIS_URL
@@ -56,16 +51,9 @@ jobs:
             yq -P spec.json > spec.yaml
           fi
           TAG="sha-${DEPLOY_SHA}"
-          # Update image tags only for changed services
-          if [ "${{ steps.changes.outputs.backend }}" = "true" ]; then
-            yq -i ".services[] |= (select(.name==\"backend\") | .image.tag = \"$TAG\")" spec.yaml
-          fi
-          if [ "${{ steps.changes.outputs.worker }}" = "true" ]; then
-            yq -i ".workers[] |= (select(.name==\"preview-worker\") | .image.tag = \"$TAG\")" spec.yaml
-          fi
-          if [ "${{ steps.changes.outputs.frontend }}" = "true" ]; then
-            yq -i ".services[] |= (select(.name==\"frontend\") | .image.tag = \"$TAG\")" spec.yaml
-          fi
+          echo "Using TAG=$TAG (DEPLOY_SHA=$DEPLOY_SHA)"
+          # Update only the preview-worker image tag
+          yq -i ".workers[] |= (select(.name==\"preview-worker\") | .image.tag = \"$TAG\")" spec.yaml
           echo "spec=spec.yaml" >> $GITHUB_OUTPUT
       - name: Show spec summary (debug)
         shell: bash
@@ -81,14 +69,6 @@ jobs:
         shell: bash
         run: |
           set -e
-          # Skip deploy if nothing changed and not manually dispatched
-          if [ "${{ steps.changes.outputs.backend }}" != "true" ] && \
-             [ "${{ steps.changes.outputs.worker }}" != "true" ] && \
-             [ "${{ steps.changes.outputs.frontend }}" != "true" ] && \
-             [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
-            echo "No relevant changes detected; skipping deploy." >&2
-            exit 0
-          fi
           APP_ID=$(doctl apps list --no-header --format ID,Spec.Name | awk '$2=="motionmavericks"{print $1}' | head -n1 || true)
           if [ -n "$APP_ID" ]; then
             echo "Updating App $APP_ID from prepared spec.yaml"
