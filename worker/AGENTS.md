@@ -19,7 +19,8 @@ Behavior
 - Optional health: set `WORKER_HEALTH_PORT` and GET `/health` returns `{ ok: true }`.
 
 Environment
-- Redis: `REDIS_URL`
+- Redis: `REDIS_URL` (required). Use Valkey/Redis TLS URI, e.g., `rediss://user:pass@host:port`.
+  - Note: worker reads `process.env.REDIS_URL` directly; ensure the App Platform secret is set.
 - Wasabi: `WASABI_ENDPOINT`, `WASABI_REGION`, Masters/Previews creds + buckets
 - HLS: `PREVIEW_PRESET` or `PREVIEW_VARIANTS`, `HLS_SEGMENT_SEC`
 
@@ -31,4 +32,4 @@ Do/Don’t
 - Do: keep operations idempotent and resumable.
 - Do: log key events (received job, uploaded segment, errors) without leaking secrets.
 - Don’t: oversubscribe GPU; tune `QUEUE_CONCURRENCY` conservatively.
-
+- Note: Worker exits at startup if `REDIS_URL` is unset to avoid connection spam.
