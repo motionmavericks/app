@@ -8,8 +8,8 @@ Build
 
 Deploy
 - Deploy uses the live App spec from DigitalOcean to preserve secrets (e.g., `REDIS_URL`).
-- Image tags are updated only for changed services to trigger rollouts:
-  - Backend/Worker/Frontend → `:sha-${GITHUB_SHA}` when changed.
+- Image tags are updated only for repositories where the `:sha-${GITHUB_SHA}` tag exists in DOCR (checked via `doctl registry repository list-tags`). This prevents failed deploys when a service wasn't rebuilt.
+  - Backend/Worker/Frontend are bumped to `:sha-${GITHUB_SHA}` when the tag exists. A manual input `worker_only` forces only the preview-worker update.
 - No-op deploys are skipped unless manually dispatched.
 
 Secrets

@@ -52,8 +52,40 @@ jobs:
           fi
           TAG="sha-${DEPLOY_SHA}"
           echo "Using TAG=$TAG (DEPLOY_SHA=$DEPLOY_SHA)"
-          # Update only the preview-worker image tag
-          yq -i ".workers[] |= (select(.name==\"preview-worker\") | .image.tag = \"$TAG\")" spec.yaml
+          # Determine which images exist in DOCR for this TAG; only bump those
+          has_tag() {
+            local repo="$1"; local tag="$2"
+            doctl registry repository list-tags "$repo" --no-header --format Tag 2>/dev/null | awk -v t="$tag" '$1==t{ok=1} END{exit ok?0:1}'
+          }
+
+          BACKEND_CHANGED=false
+          WORKER_CHANGED=false
+          FRONTEND_CHANGED=false
+
+          if has_tag "mm-motionmav-reg/backend" "$TAG"; then BACKEND_CHANGED=true; fi
+          if has_tag "mm-motionmav-reg/worker" "$TAG";  then WORKER_CHANGED=true;  fi
+          if has_tag "mm-motionmav-reg/frontend" "$TAG"; then FRONTEND_CHANGED=true; fi
+
+          echo "backend_changed=$BACKEND_CHANGED" >> $GITHUB_OUTPUT
+          echo "worker_changed=$WORKER_CHANGED"   >> $GITHUB_OUTPUT
+          echo "frontend_changed=$FRONTEND_CHANGED" >> $GITHUB_OUTPUT
+
+          # Respect manual override to deploy worker only
+          if [ "${{ inputs.worker_only }}" = "true" ]; then
+            BACKEND_CHANGED=false
+            FRONTEND_CHANGED=false
+          fi
+
+          # Update image tags only where the sha tag exists
+          if [ "$BACKEND_CHANGED" = "true" ]; then
+            yq -i '.services[] |= (select(.name=="backend") | .image.tag = strenv(TAG))' spec.yaml
+          fi
+          if [ "$WORKER_CHANGED" = "true" ]; then
+            yq -i '.workers[]  |= (select(.name=="preview-worker") | .image.tag = strenv(TAG))' spec.yaml
+          fi
+          if [ "$FRONTEND_CHANGED" = "true" ]; then
+            yq -i '.services[] |= (select(.name=="frontend") | .image.tag = strenv(TAG))' spec.yaml
+          fi
           echo "spec=spec.yaml" >> $GITHUB_OUTPUT
       - name: Show spec summary (debug)
         shell: bash
