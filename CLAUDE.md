@@ -174,38 +174,57 @@ See `docs/architecture/services-plan.md` for detailed phase requirements and acc
 
 ## Working with Codex
 
-As documented in `AGENTS.md`, this repository uses a coordinated AI development approach:
+This repository uses OpenAI Codex CLI as the primary orchestrator with Claude Code as the specialized executor. See `CODEX_INTEGRATION.md` for detailed integration patterns.
 
-### Division of Responsibilities
+### Quick Reference: Who Does What
 
-**Codex (Orchestrator)**:
-- High-level planning and task decomposition
-- Bulk refactoring and mechanical changes across the codebase
-- Generating scaffolds, tests, and documentation
-- Managing CI/CD pipelines and deployment configurations
-- Coordinating multi-service changes
+**Codex Orchestrates (90% of tasks)**:
+- Multi-step features across services
+- System-wide refactoring
+- Bulk changes and migrations
+- New service setup
+- Project planning and decomposition
 
-**Claude Code (Executor)**:
-- Precise, surgical code modifications
+**Claude Code Executes**:
+- Precise code modifications
+- Complex debugging
+- Performance optimization
+- Security audits
 - Local testing and validation
-- Debugging complex issues requiring deep analysis
-- Handling nuanced business logic implementations
-- Resolving edge cases and performance optimizations
 
-### Communication Protocol
+### Task Handoff Protocol
 
-When invoked by Codex:
-1. Focus on the specific task provided
-2. Run validation commands (`make lint`, `make typecheck`, `make build`) after changes
-3. Report completion status clearly
-4. Flag any issues that require Codex intervention
-5. Avoid making changes outside the requested scope
+When Codex delegates a task:
+1. **Receive**: Specific file paths, line ranges, and requirements
+2. **Execute**: Make only the requested changes
+3. **Validate**: Run `make lint`, `make typecheck`, `make test`
+4. **Report**: Clear status (DONE/BLOCKED/PARTIAL)
 
-### Handoff Patterns
+### Guard Rails
 
-Common workflows as defined in `AGENTS.md`:
-- **Spec → Sweep**: Codex plans, Claude executes locally, Codex validates
-- **Bulk → Surgical**: Codex handles repo-wide changes, Claude fixes edge cases
-- **CI Fail → Local Fix**: Codex identifies failures, Claude debugs and fixes locally
+**Stay Focused**:
+- Only modify specified files
+- Don't refactor unrelated code
+- Don't add unrequested features
+- Don't change dependencies without approval
 
-Remember: You're part of a larger orchestrated workflow. Stay focused on your assigned tasks and communicate clearly with Codex about outcomes and blockers.
+**Always Validate**:
+- Run tests before marking complete
+- Check types compile
+- Ensure build succeeds
+- Report any validation failures
+
+### Common Patterns
+
+```bash
+# Feature across services (Codex orchestrates)
+codex "Add rate limiting to all API endpoints"
+
+# Specific bug fix (Direct to Claude)
+claude "Fix memory leak in worker/src/queue.ts"
+
+# Refactoring (Codex plans, Claude implements tricky parts)
+codex "Convert to TypeScript strict mode"
+```
+
+For detailed integration guide, delegation patterns, and troubleshooting, see `CODEX_INTEGRATION.md`.

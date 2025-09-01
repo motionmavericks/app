@@ -15,21 +15,20 @@ jobs:
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_ACCESS_TOKEN }}
-      - name: Prepare spec with pinned backend tag
+      - name: Install yq (Linux AMD64)
+        shell: bash
+        run: |
+          set -e
+          curl -fsSL https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64 -o /usr/local/bin/yq
+          chmod +x /usr/local/bin/yq
+          yq --version
+      - name: Prepare spec with pinned backend tag (yq)
         id: spec
         shell: bash
         run: |
           set -e
           cp deploy/do-app.yaml spec.yaml
-          # Replace only the backend image tag to use the commit SHA
-          awk '
-            BEGIN{in_backend=0}
-            /name: backend/{in_backend=1}
-            in_backend==1 && /name: frontend/{in_backend=0}
-            in_backend==1 && /name: preview-worker/{in_backend=0}
-            in_backend==1 && /tag: /{ sub(/tag: .*/, "tag: sha-${GITHUB_SHA}"); in_backend=2 }
-            { print }
-          ' deploy/do-app.yaml > spec.yaml
+          yq -i '(.services[] | select(.name=="backend").image.tag) = "sha-${GITHUB_SHA}"' spec.yaml
           echo "spec=spec.yaml" >> $GITHUB_OUTPUT
       - name: Try update existing app, else create
         shell: bash
