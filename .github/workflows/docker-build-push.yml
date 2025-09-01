@@ -24,6 +24,9 @@ jobs:
         with:
           context: ./backend
           file: ./backend/Dockerfile
+          build-args: |
+            BUILD_SHA=${{ github.sha }}
+          no-cache: true
           push: true
           tags: registry.digitalocean.com/mm-motionmav-reg/backend:latest
 

@@ -9,7 +9,8 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+ARG BUILD_SHA="dev"
+RUN echo "BUILD_SHA=$BUILD_SHA" && npm run build && echo "== dist listing ==" && ls -la dist && echo "== dist/index.js (head) ==" && sed -n '1,80p' dist/index.js && echo "== dist/sign.js ==" && sed -n '1,80p' dist/sign.js || true
 
 FROM node:20-alpine AS runner
 WORKDIR /app
