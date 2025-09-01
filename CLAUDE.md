@@ -83,7 +83,7 @@ This is a multi-service media processing application with the following componen
 ### Data Flow
 1. **Upload**: Frontend → API presign → Direct upload to Wasabi Staging
 2. **Promotion**: API validates → Server copy to Masters (with object lock)
-3. **Preview**: API enqueues job → Worker processes → Outputs to Previews bucket
+3. **Preview**: API enqueues job → Worker processes → Outputs to Previews
 4. **Delivery**: Frontend requests → Edge validates/caches → Serves from Previews
 
 ### Storage Architecture (Wasabi S3)

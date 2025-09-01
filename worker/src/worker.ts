@@ -11,7 +11,12 @@ import { join } from 'node:path';
 import http from 'node:http';
 
 const log = pino({ level: process.env.LOG_LEVEL || 'info' });
-const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
+const redisUrl = process.env.REDIS_URL;
+if (!redisUrl) {
+  log.error('REDIS_URL is not set; cannot start preview-worker. Set a valid Redis connection URL.');
+  process.exit(1);
+}
+const redis = new Redis(redisUrl);
 const stream = process.env.PREVIEW_STREAM || 'previews:build';
 const group = process.env.PREVIEW_CONSUMER_GROUP || 'previewers';
 const consumer = process.env.INSTANCE_ID || `worker-${hostname()}-${cryptoRandom()}`;
