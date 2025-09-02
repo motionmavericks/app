@@ -80,16 +80,27 @@ export default function DashboardPage() {
   // Fetch assets from API
   useEffect(() => {
     async function fetchAssets() {
-      const apiBase = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:3000";
+      const apiBase = process.env.NEXT_PUBLIC_API_BASE || "/api";
       
       try {
         setLoading(true);
         setError(null);
         
-        const response = await fetch(`${apiBase}/api/assets`);
+        // Add timeout to prevent hanging requests
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+        
+        const response = await fetch(`${apiBase}/assets`, {
+          signal: controller.signal,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        clearTimeout(timeoutId);
         
         if (!response.ok) {
-          throw new Error(`Failed to fetch assets: ${response.status} ${response.statusText}`);
+          throw new Error(`API unavailable: ${response.status} ${response.statusText}`);
         }
         
         const data = await response.json();
@@ -108,14 +119,15 @@ export default function DashboardPage() {
         
         setAssets(convertedAssets);
       } catch (err) {
-        console.error('Error fetching assets:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load assets');
+        console.warn('Backend API not available, using demo data:', err);
+        // Don't set error state for missing backend - use demo data instead
+        setError(null);
         
-        // Fallback: Create demo assets for development
-        const demoAssets: Asset[] = Array.from({ length: 150 }, (_, i) => ({
+        // Fallback: Create demo assets for when backend is not available
+        const demoAssets: Asset[] = Array.from({ length: 50 }, (_, i) => ({
           id: `demo-${i + 1}`,
-          title: `Asset ${i + 1}`,
-          description: `This is demo asset number ${i + 1} for testing the virtual scrolling functionality.`,
+          title: `Demo Asset ${i + 1}`,
+          description: `This is a demo asset for testing. Backend API is not available yet.`,
           type: (['video', 'image', 'audio', 'document'] as const)[i % 4],
           status: (['draft', 'review', 'approved', 'published', 'archived'] as const)[i % 5],
           thumbnailUrl: `/placeholder.svg`,

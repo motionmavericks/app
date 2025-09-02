@@ -144,7 +144,7 @@ export default function AssetMetadataPage() {
   const [validationSchema, setValidationSchema] = useState<string>('none');
 
   const selectedAssets = getSelectedAssets();
-  const assetId = params.assetId as string;
+  const assetId = params.id as string;
 
   useEffect(() => {
     // Mock loading delay
