@@ -230,7 +230,9 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
       return reply.code(500).send({ error: 'Signing key not configured' });
     }
 
-    const signedUrl = signEdgeUrl(body.assetId, signingKey, edgeUrl);
+    // Sign the URL with a 1 hour expiration
+    const exp = Math.floor(Date.now() / 1000) + 3600;
+    const signedUrl = signEdgeUrl(edgeUrl, 'previews', `${body.assetId}/playlist.m3u8`, exp, signingKey);
     return { url: signedUrl };
   });
 
