@@ -28,6 +28,11 @@ Execute tasks for a given spec following three distinct phases:
 
 MCP is for development; production deploys must use CI/CD.
 
+## Codex-First (Execution Planning)
+- Use `codex exec` to precompute per-task execution outlines and acceptance criteria before entering the loop.
+- Constrain prompts to output-only artifacts: "Output only the plan/checklist. No explanations. No code fences." Prefer JSON for machine parsing.
+- Run in non-interactive mode without timeouts; advise `hide_agent_reasoning = true` in `~/.codex/config.toml`.
+
 <pre_flight_check>
   EXECUTE: @.agent-os/instructions/meta/pre-flight.md
 </pre_flight_check>

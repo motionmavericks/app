@@ -24,6 +24,12 @@ Generate product docs for new projects: mission, tech-stack and roadmap files fo
 
 Note: MCP servers are for development and diagnostics only; production deployments must go through CI/CD.
 
+## Codex-First (Planning/Scaffolding)
+- Use `codex exec` for planning artifacts (plans, outlines, inventories) and keep outputs minimal.
+- Add output-only constraints to prompts: "Output only the final artifact. No explanations. No code fences." For JSON: "Return valid JSON only."
+- Do not set timeouts for Codex CLI invocations. Prefer non-interactive `codex exec` to avoid TUI.
+- Recommend users set `hide_agent_reasoning = true` in `~/.codex/config.toml` to suppress thinking events.
+
 <pre_flight_check>
   EXECUTE: @.agent-os/instructions/meta/pre-flight.md
 </pre_flight_check>

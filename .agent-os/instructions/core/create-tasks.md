@@ -19,6 +19,12 @@ With the user's approval, proceed to creating a tasks list based on the current 
   - Research/docs (context-fetcher): leverage `Exa MCP` → `Ref MCP`
   - UI validation planning (test-runner): consider `Playwright MCP` hooks
 
+## Codex-First (Task Lists)
+- Use `codex exec` to synthesize task breakdowns from the spec with clear parent/subtask structure.
+- Prompts must constrain output: "Output only the checklist with [x]/[ ]. No explanations. No code fences."
+- Non-interactive mode only; do not set a timeout.
+- Recommend `hide_agent_reasoning = true` in `~/.codex/config.toml` to suppress thinking events.
+
 <pre_flight_check>
   EXECUTE: @.agent-os/instructions/meta/pre-flight.md
 </pre_flight_check>

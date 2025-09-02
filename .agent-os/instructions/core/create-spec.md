@@ -23,6 +23,12 @@ Generate detailed feature specifications aligned with product roadmap and missio
 
 Do not use MCP for production deployments; keep spec deploy steps aligned with CI/CD.
 
+## Codex-First (Spec Authoring)
+- Prefer `codex exec` for generating spec structure, numbered acceptance criteria, and traceable task outlines.
+- Embed output-only conditions: "Output only the final artifact. No explanations. No code fences." Use JSON when asking for machine-parseable lists.
+- Avoid timeouts and interactive TUI; use non-interactive mode.
+- Suggest setting `hide_agent_reasoning = true` in `~/.codex/config.toml` for minimal noise.
+
 <pre_flight_check>
   EXECUTE: @.agent-os/instructions/meta/pre-flight.md
 </pre_flight_check>

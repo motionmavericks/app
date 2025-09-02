@@ -23,6 +23,11 @@ Install Agent OS into an existing codebase, analyze current product state and pr
 
 MCP usage is for development only; do not run production deploys via MCP.
 
+## Codex-First (Analysis Summaries)
+- Prefer `codex exec` to generate concise analysis summaries, inventories, or recaps.
+- Include output-only constraints in prompts: "Output only the final artifact. No explanations. No code fences." Use JSON for structured inventories when useful.
+- Use non-interactive mode with no timeout; suggest `hide_agent_reasoning = true` in `~/.codex/config.toml`.
+
 <pre_flight_check>
   EXECUTE: @.agent-os/instructions/meta/pre-flight.md
 </pre_flight_check>

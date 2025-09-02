@@ -100,6 +100,8 @@ This repository uses an advanced multi-agent system combining Claude Code, Codex
 - **external-delegator**: Executes Codex and Qwen with specific outputs
 - **precision-coder**: Implements critical code after planning
 - **validator**: Final quality gate with pass/fail reports
+ - **testing-codex**: Runs tests and uses Codex to fix failures with minimal patches
+ - **debugger-codex**: Reproduces, diagnoses, and fixes bugs using Codex with verified repros
 
 ### Tool Strengths & Usage
 

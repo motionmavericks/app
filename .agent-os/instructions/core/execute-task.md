@@ -22,6 +22,11 @@ Execute a specific task along with its sub-tasks systematically following a TDD 
 
 Do not use MCP for production deployments during task execution.
 
+## Codex-First (Micro‑plans & Checklists)
+- For subtask sequencing and acceptance checklists, prefer `codex exec` with prompts that request output-only artifacts.
+- Prompt constraints: "Output only the final checklist/plan. No explanations. No code fences." Use JSON when machine parsing is needed.
+- Non-interactive mode only; do not set Codex timeouts. Recommend `hide_agent_reasoning = true` in `~/.codex/config.toml`.
+
 ## Concurrent Support Subagents
 Run the following subagents in parallel with the main implementation, and integrate their outputs:
 

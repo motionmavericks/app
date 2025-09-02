@@ -17,7 +17,12 @@ Follow these steps to mark your progress updates, create a recap, and deliver th
   - UI verification (test-runner): coordinate `Playwright MCP` for key flows
   - Git workflow/PRs (git-workflow): prefer `GitHub MCP`
   - Dev/staging validation (external-delegator): use `DigitalOcean MCP` to tail logs (no prod deploys)
-  - Error review (validator/sentry-integrator): check `Sentry MCP` for regressions
+- Error review (validator/sentry-integrator): check `Sentry MCP` for regressions
+
+## Codex-First (Recaps & Reports)
+- Prefer `codex exec` to draft recaps and delivery summaries from diffs and task status.
+- Prompt constraints: "Output only the recap markdown. No explanations beyond the recap. No code fences."
+- Use non-interactive mode; do not set timeouts. Suggest `hide_agent_reasoning = true` in `~/.codex/config.toml`.
 
 <pre_flight_check>
   EXECUTE: @.agent-os/instructions/meta/pre-flight.md

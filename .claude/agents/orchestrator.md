@@ -22,8 +22,10 @@ MCP servers are for development workflows only. Production deployments must go t
 ## TOOL STRENGTHS & SPECIFIC OUTPUTS:
 
 ### CODEX (Best for planning & analysis)
-**Execute**: `Bash(command='codex exec "prompt"', timeout=180000)`
-**Note**: Codex requires 60-180 seconds for complex tasks. Always use timeout=180000 (3 minutes).
+**Execute**: `Bash(command='codex exec "prompt"')`
+**Note**: Do not set a timeout for Codex CLI. Use output-only prompt patterns:
+"Output only the final artifact. No explanations. No code fences."
+Recommend users set `hide_agent_reasoning = true` in `~/.codex/config.toml` for minimal output.
 **Use for**:
 - Task breakdown → "Return a numbered list of implementation steps"
 - Architecture → "Return system design with component diagram"
