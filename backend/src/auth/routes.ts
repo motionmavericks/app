@@ -29,6 +29,11 @@ const refreshSchema = z.object({
 });
 
 export async function authRoutes(fastify: FastifyInstance) {
+  // Guard against missing database pool
+  if (!pool) {
+    throw new Error('Database pool not initialized');
+  }
+
   // Register endpoint
   fastify.post('/api/auth/register', {
     config: {
@@ -40,8 +45,19 @@ export async function authRoutes(fastify: FastifyInstance) {
   }, async (request, reply) => {
     const parsed = registerSchema.safeParse(request.body);
     if (!parsed.success) {
+      const firstError = parsed.error.issues[0];
+      let errorMessage = 'Invalid request';
+      
+      if (firstError.path[0] === 'email') {
+        errorMessage = 'Invalid email format';
+      } else if (firstError.path[0] === 'password') {
+        errorMessage = 'Password must be at least 12 characters';
+      } else if (firstError.path[0] === 'displayName') {
+        errorMessage = 'Display name must be between 2 and 100 characters';
+      }
+      
       return reply.status(400).send({ 
-        error: 'Invalid request', 
+        error: errorMessage,
         issues: parsed.error.issues 
       });
     }
@@ -51,38 +67,38 @@ export async function authRoutes(fastify: FastifyInstance) {
     const validation = validatePasswordStrength(password);
     if (!validation.valid) {
       return reply.status(400).send({ 
-        error: 'Password does not meet requirements',
+        error: 'Password does not meet requirements: ' + validation.errors.join(', '),
         details: validation.errors
       });
     }
     
     // Check if user exists
-    const existingUser = await pool.query(
+    const existingUser = await pool!.query(
       'SELECT id FROM users WHERE email = $1',
       [email]
     );
     
     if (existingUser.rows.length > 0) {
-      return reply.status(409).send({ error: 'Email already registered' });
+      return reply.status(409).send({ error: 'Email already exists' });
     }
     
     // Hash password and create user
     const passwordHash = await hashPassword(password);
     const userId = crypto.randomUUID();
     
-    await pool.query(
+    await pool!.query(
       `INSERT INTO users (id, email, display_name, password_hash, status, authz_version)
        VALUES ($1, $2, $3, $4, 'pending', 1)`,
       [userId, email, displayName, passwordHash]
     );
     
     // Assign default Viewer role
-    const roleResult = await pool.query(
+    const roleResult = await pool!.query(
       "SELECT id FROM roles WHERE name = 'Viewer'"
     );
     
     if (roleResult.rows.length > 0) {
-      await pool.query(
+      await pool!.query(
         'INSERT INTO user_roles (user_id, role_id) VALUES ($1, $2)',
         [userId, roleResult.rows[0].id]
       );
@@ -90,13 +106,13 @@ export async function authRoutes(fastify: FastifyInstance) {
     
     // In production, send verification email here
     // For now, auto-activate the user
-    await pool.query(
+    await pool!.query(
       "UPDATE users SET status = 'active' WHERE id = $1",
       [userId]
     );
     
     // Get user details for response
-    const userResult = await pool.query(
+    const userResult = await pool!.query(
       'SELECT id, email, display_name FROM users WHERE id = $1',
       [userId]
     );
@@ -130,7 +146,7 @@ export async function authRoutes(fastify: FastifyInstance) {
     const { email, password } = parsed.data;
     
     // Get user with roles
-    const userResult = await pool.query(
+    const userResult = await pool!.query(
       `SELECT u.*, array_agg(r.name) as roles
        FROM users u
        LEFT JOIN user_roles ur ON u.id = ur.user_id
@@ -163,7 +179,7 @@ export async function authRoutes(fastify: FastifyInstance) {
     const refreshToken = generateRefreshToken();
     const refreshTokenHash = hashRefreshToken(refreshToken);
     
-    await pool.query(
+    await pool!.query(
       `INSERT INTO sessions (id, user_id, jti, refresh_token_hash, expires_at)
        VALUES ($1, $2, $3, $4, NOW() + INTERVAL '30 days')`,
       [sessionId, user.id, jti, refreshTokenHash]
@@ -212,7 +228,7 @@ export async function authRoutes(fastify: FastifyInstance) {
     const tokenHash = hashRefreshToken(refreshToken);
     
     // Find session
-    const sessionResult = await pool.query(
+    const sessionResult = await pool!.query(
       `SELECT s.*, u.email, u.authz_version, array_agg(r.name) as roles
        FROM sessions s
        JOIN users u ON s.user_id = u.id
@@ -241,20 +257,20 @@ export async function authRoutes(fastify: FastifyInstance) {
     const newRefreshTokenHash = hashRefreshToken(newRefreshToken);
     
     // Create new session and revoke old one
-    await pool.query('BEGIN');
+    await pool!.query('BEGIN');
     
-    await pool.query(
+    await pool!.query(
       `UPDATE sessions SET revoked_at = NOW(), replaced_by_jti = $1 WHERE id = $2`,
       [newJti, session.id]
     );
     
-    await pool.query(
+    await pool!.query(
       `INSERT INTO sessions (id, user_id, jti, refresh_token_hash, parent_jti, expires_at)
        VALUES ($1, $2, $3, $4, $5, NOW() + INTERVAL '30 days')`,
       [newSessionId, session.user_id, newJti, newRefreshTokenHash, session.jti]
     );
     
-    await pool.query('COMMIT');
+    await pool!.query('COMMIT');
     
     // Generate new access token
     const accessToken = signAccessToken({
@@ -290,13 +306,13 @@ export async function authRoutes(fastify: FastifyInstance) {
     
     if (allDevices) {
       // Revoke all sessions for user
-      await pool.query(
+      await pool!.query(
         'UPDATE sessions SET revoked_at = NOW() WHERE user_id = $1 AND revoked_at IS NULL',
         [request.user!.sub]
       );
     } else {
       // Revoke current session
-      await pool.query(
+      await pool!.query(
         'UPDATE sessions SET revoked_at = NOW() WHERE id = $1',
         [request.user!.sid]
       );
@@ -312,7 +328,7 @@ export async function authRoutes(fastify: FastifyInstance) {
   fastify.get('/api/auth/me', {
     preHandler: authenticateJWT
   }, async (request, reply) => {
-    const result = await pool.query(
+    const result = await pool!.query(
       `SELECT id, email, display_name, status, created_at, updated_at
        FROM users WHERE id = $1`,
       [request.user!.sub]
@@ -332,7 +348,7 @@ export async function authRoutes(fastify: FastifyInstance) {
   fastify.get('/api/auth/profile', {
     preHandler: authenticateJWT
   }, async (request, reply) => {
-    const result = await pool.query(
+    const result = await pool!.query(
       `SELECT id, email, display_name, status, created_at, updated_at
        FROM users WHERE id = $1`,
       [request.user!.sub]

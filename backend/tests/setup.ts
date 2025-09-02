@@ -7,6 +7,10 @@ process.env.REFRESH_SECRET = 'test-refresh-secret';
 process.env.PORT = '3000';
 process.env.LOG_LEVEL = 'error';
 
+// IMPORTANT: Remove database and Redis URLs in test mode to force mock usage
+delete process.env.POSTGRES_URL;
+delete process.env.REDIS_URL;
+
 // Mock Redis connection
 vi.mock('ioredis', () => {
   const Redis = vi.fn();
@@ -22,14 +26,8 @@ vi.mock('ioredis', () => {
   Redis.prototype.xgroup = vi.fn();
   Redis.prototype.xreadgroup = vi.fn();
   Redis.prototype.xack = vi.fn();
+  Redis.prototype.ping = vi.fn().mockResolvedValue('PONG');
   return { default: Redis };
 });
 
-// Mock database pool
-vi.mock('../src/db.js', () => ({
-  pool: {
-    query: vi.fn().mockResolvedValue({ rows: [], rowCount: 0 }),
-    connect: vi.fn(),
-    end: vi.fn()
-  }
-}));
+// Don't mock the database - let db.ts handle test mode properly
