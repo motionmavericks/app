@@ -1,0 +1,195 @@
+name: motionmavericks
+region: syd1
+services:
+  - name: frontend
+    github:
+      repo: motionmavericks/app
+      branch: main
+      deploy_on_push: true
+    source_dir: frontend
+    build_command: npm ci && npm run build
+    run_command: npm start
+    http_port: 3001
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+    health_check:
+      http_path: /
+      initial_delay_seconds: 30
+      period_seconds: 10
+      timeout_seconds: 5
+      failure_threshold: 5
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_BASE
+        value: ${APP_URL}/api
+      - key: NEXT_PUBLIC_EDGE_BASE
+        value: ${APP_URL}/edge
+      - key: WASABI_ENDPOINT
+        scope: RUN_AND_BUILD_TIME
+        value: https://s3.ap-southeast-2.wasabisys.com
+      - key: WASABI_REGION
+        scope: RUN_AND_BUILD_TIME
+        value: ap-southeast-2
+  - name: backend
+    github:
+      repo: motionmavericks/app
+      branch: main
+      deploy_on_push: true
+    source_dir: backend
+    build_command: npm ci && npm run build
+    run_command: npm start
+    http_port: 3000
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /api
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 30
+      period_seconds: 10
+      timeout_seconds: 5
+      failure_threshold: 5
+    envs:
+      # Public configuration
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+      - key: WASABI_ENDPOINT
+        value: https://s3.ap-southeast-2.wasabisys.com
+      - key: WASABI_REGION
+        value: ap-southeast-2
+      - key: EDGE_PUBLIC_BASE
+        value: ${APP_URL}/edge
+      - key: STAGING_BUCKET
+        value: mm-staging-au
+      - key: MASTERS_BUCKET
+        value: mm-masters-au
+      - key: PREVIEWS_BUCKET
+        value: mm-previews-au
+      # Secrets (set via DO UI or scripts)
+      - key: POSTGRES_URL
+        type: SECRET
+        scope: RUN_TIME
+      - key: REDIS_URL
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_STAGING_ACCESS_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_STAGING_SECRET
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_MASTERS_ACCESS_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_MASTERS_SECRET
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_PREVIEWS_ACCESS_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_PREVIEWS_SECRET
+        type: SECRET
+        scope: RUN_TIME
+      - key: EDGE_SIGNING_KEY
+        type: SECRET
+        scope: RUN_TIME
+  - name: edge
+    github:
+      repo: motionmavericks/app
+      branch: main
+      deploy_on_push: true
+    source_dir: edge
+    build_command: npm ci && npm run build
+    run_command: npm start
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /edge
+    health_check:
+      http_path: /edge/health
+      initial_delay_seconds: 30
+      period_seconds: 10
+      timeout_seconds: 5
+      failure_threshold: 5
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "8080"
+      - key: WASABI_ENDPOINT
+        value: https://s3.ap-southeast-2.wasabisys.com
+      - key: WASABI_REGION
+        value: ap-southeast-2
+      - key: PREVIEWS_BUCKET
+        value: mm-previews-au
+      - key: WASABI_PREVIEWS_ACCESS_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_PREVIEWS_SECRET
+        type: SECRET
+        scope: RUN_TIME
+      - key: EDGE_SIGNING_KEY
+        type: SECRET
+        scope: RUN_TIME
+workers:
+  - name: preview-worker
+    github:
+      repo: motionmavericks/app
+      branch: main
+      deploy_on_push: true
+    source_dir: worker
+    build_command: npm ci && npm run build
+    run_command: node dist/worker.js
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    envs:
+      # Public configuration
+      - key: NODE_ENV
+        value: production
+      - key: PREVIEW_STREAM
+        value: previews:build
+      - key: PREVIEW_CONSUMER_GROUP
+        value: previewers
+      - key: WASABI_ENDPOINT
+        value: https://s3.ap-southeast-2.wasabisys.com
+      - key: WASABI_REGION
+        value: ap-southeast-2
+      - key: MASTERS_BUCKET
+        value: mm-masters-au
+      - key: PREVIEWS_BUCKET
+        value: mm-previews-au
+      - key: PREVIEW_PRESET
+        value: 480p
+      - key: HLS_SEGMENT_SEC
+        value: "4"
+      # Secrets (set via DO UI or scripts)
+      - key: REDIS_URL
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_MASTERS_ACCESS_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_MASTERS_SECRET
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_PREVIEWS_ACCESS_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: WASABI_PREVIEWS_SECRET
+        type: SECRET
+        scope: RUN_TIME
+
+# Managed PostgreSQL database
+databases:
+  - name: motionmav-db
+    engine: PG
+    version: "16"
+    size: db-s-1vcpu-1gb
+    num_nodes: 1
+    production: false
