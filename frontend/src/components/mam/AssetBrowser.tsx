@@ -6,7 +6,9 @@ import { Asset } from '@/types/asset';
 import { AssetCard } from './AssetCard';
 import { useAssetStore } from '@/lib/stores/asset-store';
 import { useSearchStore } from '@/lib/stores/search-store';
+import { useCollectionStore } from '@/lib/stores/collection-store';
 import { searchAssets, advancedSearchAssets } from '@/lib/search';
+import { handleDragOver, handleDrop, DraggedItem, DropTarget } from '@/lib/drag-drop';
 import { SearchBar } from '../search/SearchBar';
 import { SearchFilters } from '../search/SearchFilters';
 import { AdvancedSearch } from '../search/AdvancedSearch';
@@ -45,13 +47,15 @@ interface AssetBrowserProps {
   loading?: boolean;
   error?: string | null;
   onAssetSelect?: (asset: Asset) => void;
+  onAssetsAddedToCollection?: (assetIds: string[], collectionId: string) => void;
 }
 
 export function AssetBrowser({ 
   assets: propAssets, 
   loading: propLoading, 
   error: propError,
-  onAssetSelect 
+  onAssetSelect,
+  onAssetsAddedToCollection
 }: AssetBrowserProps) {
   const {
     viewMode,
@@ -78,6 +82,8 @@ export function AssetBrowser({
     hasActiveSearch,
     addToHistory
   } = useSearchStore();
+
+  const { addAssetsToCollection } = useCollectionStore();
 
   // Use props if provided, otherwise use store
   const loading = propLoading !== undefined ? propLoading : storeLoading;
@@ -132,6 +138,24 @@ export function AssetBrowser({
   const handleSearch = () => {
     // The search store handles the query update
     // Filtering happens automatically via useMemo above
+  };
+
+  const handleAssetDragStart = (asset: Asset | Asset[], isMultiple: boolean) => {
+    // Optional: Add visual feedback for drag operation
+    console.log(`Dragging ${isMultiple ? 'multiple' : 'single'} asset(s)`);
+  };
+
+  const handleAssetDropOnCollection = (draggedItem: DraggedItem, dropTarget: DropTarget) => {
+    if (draggedItem.type === 'asset') {
+      const asset = draggedItem.data as Asset;
+      addAssetsToCollection(dropTarget.id, [asset.id]);
+      onAssetsAddedToCollection?.([asset.id], dropTarget.id);
+    } else if (draggedItem.type === 'assets') {
+      const assets = draggedItem.data as Asset[];
+      const assetIds = assets.map(a => a.id);
+      addAssetsToCollection(dropTarget.id, assetIds);
+      onAssetsAddedToCollection?.(assetIds, dropTarget.id);
+    }
   };
 
   // Grid configuration
@@ -383,6 +407,8 @@ export function AssetBrowser({
                               searchQuery={query}
                               onSelect={() => onAssetSelect?.(asset)}
                               onToggleSelection={() => toggleAssetSelection(asset.id)}
+                              selectedAssets={baseAssets.filter(a => isAssetSelected(a.id))}
+                              onDragStart={handleAssetDragStart}
                             />
                           </div>
                         );
@@ -400,6 +426,8 @@ export function AssetBrowser({
                             searchQuery={query}
                             onSelect={() => onAssetSelect?.(asset)}
                             onToggleSelection={() => toggleAssetSelection(asset.id)}
+                            selectedAssets={baseAssets.filter(a => isAssetSelected(a.id))}
+                            onDragStart={handleAssetDragStart}
                           />
                         );
                       })}

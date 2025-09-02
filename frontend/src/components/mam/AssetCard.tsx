@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { highlightSearchTerms } from '@/lib/search';
+import { handleAssetDragStart } from '@/lib/drag-drop';
 
 interface AssetCardProps {
   asset: Asset;
@@ -31,6 +32,8 @@ interface AssetCardProps {
   searchQuery?: string;
   onSelect: () => void;
   onToggleSelection: () => void;
+  selectedAssets?: Asset[];
+  onDragStart?: (asset: Asset | Asset[], isMultiple: boolean) => void;
 }
 
 export function AssetCard({ 
@@ -39,7 +42,9 @@ export function AssetCard({
   isSelected, 
   searchQuery = '',
   onSelect, 
-  onToggleSelection 
+  onToggleSelection,
+  selectedAssets = [],
+  onDragStart
 }: AssetCardProps) {
   const getTypeIcon = () => {
     switch (asset.type) {
@@ -74,9 +79,28 @@ export function AssetCard({
     return <span dangerouslySetInnerHTML={{ __html: highlightedText }} />;
   };
 
+  const handleDragStart = (e: React.DragEvent) => {
+    e.stopPropagation();
+    
+    // If this asset is selected and there are multiple selected, drag all
+    const shouldDragMultiple = isSelected && selectedAssets.length > 1;
+    const dragData = shouldDragMultiple ? selectedAssets : asset;
+    
+    handleAssetDragStart(e, dragData, shouldDragMultiple);
+    onDragStart?.(dragData, shouldDragMultiple);
+  };
+
+  const dragProps = {
+    draggable: true,
+    onDragStart: handleDragStart,
+  };
+
   if (viewMode === 'list') {
     return (
-      <div className="flex items-center gap-4 p-4 border rounded-lg hover:bg-accent/50 transition-colors">
+      <div 
+        className="flex items-center gap-4 p-4 border rounded-lg hover:bg-accent/50 transition-colors cursor-grab active:cursor-grabbing"
+        {...dragProps}
+      >
         <Checkbox
           checked={isSelected}
           onCheckedChange={onToggleSelection}
@@ -135,7 +159,10 @@ export function AssetCard({
   }
 
   return (
-    <div className="relative group border rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-card">
+    <div 
+      className="relative group border rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-card cursor-grab active:cursor-grabbing"
+      {...dragProps}
+    >
       <div className="absolute top-2 left-2 z-10">
         <Checkbox
           checked={isSelected}

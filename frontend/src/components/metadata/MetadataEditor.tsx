@@ -38,7 +38,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { TagManager } from '../metadata/TagManager';
+import { TagManager } from './TagManager';
 import { 
   CustomFieldDefinition, 
   MetadataValidator, 
@@ -693,7 +693,7 @@ export function MetadataEditor({
                   <Label>Field Type</Label>
                   <Select
                     value={newCustomField.type}
-                    onValueChange={(value) => setNewCustomField(prev => ({ ...prev, type: value as 'text' | 'number' | 'date' | 'select' | 'multiselect' | 'boolean' }))}
+                    onValueChange={(value) => setNewCustomField(prev => ({ ...prev, type: value as CustomFieldDefinition['type'] }))}
                   >
                     <SelectTrigger>
                       <SelectValue />

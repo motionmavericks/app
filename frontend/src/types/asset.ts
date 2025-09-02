@@ -19,7 +19,7 @@ export interface Asset {
   creator?: string;
   copyright?: string;
   location?: string;
-  customFields?: Record<string, string>;
+  customFields?: Record<string, string | number | boolean | string[]>;
   createdAt: string;
   updatedAt: string;
   createdBy?: string;

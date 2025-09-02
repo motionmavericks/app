@@ -53,7 +53,7 @@
   - Search result highlighting
 
 ### 5. Metadata Management System
-- [ ] **Owner**: @frontend
+- [x] **Owner**: @frontend
 - **Files**: `frontend/src/components/metadata/`, `frontend/src/app/assets/[assetId]/metadata/page.tsx`
 - **Description**: Rich metadata editing with custom fields, auto-extraction, bulk editing, and standardized taxonomies
 - **Acceptance Criteria**:
@@ -64,7 +64,7 @@
   - Metadata validation and standards compliance
 
 ### 6. Collection & Organization Tools
-- [ ] **Owner**: @frontend
+- [x] **Owner**: @frontend
 - **Files**: `frontend/src/components/collections/`, `frontend/src/app/collections/`
 - **Description**: Smart collections, manual organization, nested folders, and advanced sharing controls
 - **Acceptance Criteria**:
