@@ -68,15 +68,40 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
   const previewStream = process.env.PREVIEW_STREAM || 'previews:build';
 
   // Health check endpoint
-  app.get('/api/health', async () => {
+  app.get('/api/health', async (req, reply) => {
     const checks: Record<string, any> = {};
-    if (pool) {
-      try { await pool.query('select 1'); checks.db = true; } catch { checks.db = false; }
+    
+    // Check database connection if configured (non-placeholder)
+    if (pool && !pgUrl?.includes('placeholder')) {
+      try { 
+        await pool.query('select 1'); 
+        checks.db = true; 
+      } catch { 
+        checks.db = false; 
+      }
+    } else if (pool && pgUrl?.includes('placeholder')) {
+      checks.db = 'not_configured';
     }
-    if (redis) {
-      try { await redis.ping(); checks.redis = true; } catch { checks.redis = false; }
+    
+    // Check Redis connection if configured (non-placeholder)
+    if (redis && !redisUrl?.includes('placeholder')) {
+      try { 
+        await redis.ping(); 
+        checks.redis = true; 
+      } catch { 
+        checks.redis = false; 
+      }
+    } else if (redis && redisUrl?.includes('placeholder')) {
+      checks.redis = 'not_configured';
     }
-    return { ok: true, service: 'backend', time: new Date().toISOString(), ...checks };
+    
+    // Always return 200 OK since the service itself is healthy
+    return reply.code(200).send({ 
+      ok: true, 
+      service: 'backend', 
+      time: new Date().toISOString(), 
+      ...checks 
+    });
   });
 
   // Presign endpoint
