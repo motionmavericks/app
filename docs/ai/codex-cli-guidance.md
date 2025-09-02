@@ -20,6 +20,8 @@ MCP Usage
 - Prefer MCP tools where available (Docs, Search, GitHub, Browserbase, DigitalOcean).
 - DigitalOcean MCP: launched via `scripts/mcp_digitalocean.sh` which supplies the API token. Restart Codex CLI after MCP config edits.
 - Keep actions atomic and narrate with short preambles.
+- See `docs/ai/mcp-tools-development-guide.md` for comprehensive guidance on all available MCP tools.
+- See `docs/ai/mcp-configuration-guide.md` for setup and configuration instructions.
 
 Qwen Code (Complementary)
 - Launch with `make qwen` to use Qwen Code CLI for repo‑scale analysis, refactors, tests, and docs generation.

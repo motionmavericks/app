@@ -10,14 +10,18 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "fastify": "^4.28.1",
+    "@fastify/rate-limit": "^8.0.0",
+    "@sentry/node": "^10.8.0",
+    "@sentry/profiling-node": "^10.8.0",
     "dotenv": "^16.4.5",
-    "@fastify/rate-limit": "^8.0.0"
+    "fastify": "^4.28.1"
   },
   "devDependencies": {
     "@types/node": "^20",
-    "vitest": "^2.0.5",
+    "@types/node-fetch": "^2.6.13",
+    "node-fetch": "^3.3.2",
     "tsx": "^4.19.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vitest": "^3.2.4"
   }
 }

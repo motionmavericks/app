@@ -22,6 +22,9 @@ Backend/API
 - `RL_PROMOTE_MAX`, `RL_PROMOTE_WINDOW` (per-route limit for `/api/promote`)
 - `AUTH_SECRET`, `AUTH_PROVIDERS...`
 
+CI-only (Backend/Frontend)
+- `SENTRY_AUTH_TOKEN`: GitHub Actions Secret used for sourcemap uploads during backend and frontend image builds (Sentry CLI/Next.js plugin). Passed to Docker Buildx as a BuildKit secret; never committed or baked into images.
+
 Workers (Preview)
 - `REDIS_URL` (required). Worker exits on startup if missing. It retries `PING` for a short period at startup to avoid race conditions. `VALKEY_URL` is also accepted as an alias.
 - `WASABI_MASTERS_ACCESS_KEY/SECRET` (read), `WASABI_PREVIEWS_ACCESS_KEY/SECRET` (write)
@@ -47,3 +50,4 @@ Templates
 
 Notes
 - The example files are kept up-to-date with the running services. Use them as a starting point in local dev and map the same variables as App Platform envs/secrets in production.
+ - Do not add `SENTRY_AUTH_TOKEN` to `.env` files. Store it as a GitHub Secret named `SENTRY_AUTH_TOKEN` so CI can upload sourcemaps securely.

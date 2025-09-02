@@ -13,5 +13,6 @@ Conventions
 - Status labels: Draft, In Review, Approved.
 
 Links
-- System overview: `overview.md`
+- System overview: `../.agent-os/product/mission.md`
 - ADRs: `adr/`
+- MCP Tools: `ai/mcp-tools-development-guide.md` and `ai/mcp-configuration-guide.md`

@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx tsc*)",
+      "Bash(npx vitest*)",
+      "Bash(yq*)",
+      "Bash(doctl*)",
+      "Bash(gh run watch:*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "MultiEdit(*)"
+    ],
+    "deny": [
+      "WebFetch",
+      "Bash(curl:*)"
+    ],
+    "additionalDirectories": []
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "digitalocean",
+    "github",
+    "ref",
+    "exa",
+    "sentry"
+  ]
+}

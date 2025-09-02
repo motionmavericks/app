@@ -1,9 +1,12 @@
+import './instrument.js';
 import 'dotenv/config';
 import Fastify from 'fastify';
+import * as Sentry from '@sentry/node';
 import crypto from 'node:crypto';
 import IORedis from 'ioredis';
 import { Pool } from 'pg';
 import cors from '@fastify/cors';
+import cookie from '@fastify/cookie';
 import rateLimit from '@fastify/rate-limit';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
@@ -12,14 +15,22 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { CopyObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
 import { signEdgeUrl } from './sign.js';
+import { authRoutes } from './auth/routes.js';
 
 const app = Fastify({ logger: { level: process.env.LOG_LEVEL || 'info' } });
+
+// Setup Sentry error handler for Fastify
+Sentry.setupFastifyErrorHandler(app);
 // CORS: allowlist via env ALLOWED_ORIGINS (comma-separated); fallback to true for dev
 const allowed = (process.env.ALLOWED_ORIGINS || '')
   .split(',')
   .map(s => s.trim())
   .filter(Boolean);
 await app.register(cors, allowed.length > 0 ? { origin: allowed } : { origin: true });
+// Cookie support for refresh tokens
+await app.register(cookie, {
+  secret: process.env.COOKIE_SECRET || crypto.randomBytes(32).toString('hex')
+});
 // Basic rate limiting (configurable via env)
 await app.register(rateLimit, {
   max: Number(process.env.RATE_LIMIT_MAX || 200),
@@ -36,6 +47,9 @@ await app.register(swaggerUi, {
   routePrefix: '/api/docs',
   uiConfig: { docExpansion: 'list', deepLinking: false },
 });
+
+// Register auth routes
+await app.register(authRoutes);
 
 // Optional DB/Redis wiring (enabled when env is present)
 const pgUrl = process.env.POSTGRES_URL;

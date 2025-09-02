@@ -3,7 +3,7 @@
 This index collects key entry points, live inventories, and diagrams.
 
 Quick Links
-- System Overview: `overview.md`
+- System Overview: `../.agent-os/product/mission.md`
 - Architecture Blueprint: `architecture/blueprint.md`
 - Architecture Diagrams: `architecture/diagrams.md`
 - Service Plan: `architecture/services-plan.md`
@@ -14,6 +14,7 @@ Quick Links
 - Migration Plan: `migration/plan.md`
 - Dev Setup: `dev-setup.md`
 - Env Matrix: `configuration/env.md`
+ - Code Style: `code-style-guide.md`
  - Codex CLI: `ai/codex-cli-guidance.md`
  - Qwen Code: `ai/qwen-code.md`
 

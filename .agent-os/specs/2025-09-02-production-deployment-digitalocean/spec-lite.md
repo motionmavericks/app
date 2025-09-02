@@ -1,0 +1,3 @@
+# Spec Summary (Lite)
+
+Deploy the complete Media Asset Management platform to DigitalOcean App Platform with managed PostgreSQL and Redis databases, Wasabi S3 integration, and production security configurations. Establish a scalable four-service architecture (Frontend, Backend API, Worker, Edge) with health monitoring, SSL certificates, and automated deployment pipelines capable of handling enterprise creative production workflows.

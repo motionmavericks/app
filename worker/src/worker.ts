@@ -1,5 +1,7 @@
+import './instrument.js';
 import 'dotenv/config';
 import Redis from 'ioredis';
+import * as Sentry from '@sentry/node';
 import { hostname } from 'node:os';
 import pino from 'pino';
 import { S3Client, PutObjectCommand, GetObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
@@ -58,9 +60,15 @@ async function waitForRedis(maxRetries = 30, retryDelayMs = 1000) {
 }
 
 async function handle(msgId: string, fields: string[]) {
-  const data: Record<string, string> = {};
-  for (let i = 0; i < fields.length; i += 2) data[fields[i]] = fields[i + 1];
-  log.info({ msgId, data }, 'received preview job');
+  return await Sentry.startSpan({
+    name: 'preview.job.process',
+    attributes: {
+      'job.id': msgId,
+    }
+  }, async () => {
+    const data: Record<string, string> = {};
+    for (let i = 0; i < fields.length; i += 2) data[fields[i]] = fields[i + 1];
+    log.info({ msgId, data }, 'received preview job');
   const endpoint = process.env.WASABI_ENDPOINT || 'https://s3.wasabisys.com';
   const region = process.env.WASABI_REGION || 'us-east-1';
   const s3 = new S3Client({ region, endpoint, forcePathStyle: true, credentials: {
@@ -113,6 +121,7 @@ async function handle(msgId: string, fields: string[]) {
       log.warn({ e }, 'callback failed');
     }
   }
+  });
 }
 
 async function presignGet(bucket: string, key: string): Promise<string> {
@@ -175,7 +184,14 @@ async function buildVariants(inputUrl: string, outRoot: string, vcodec: string, 
 
 function jitter(ms: number) { return Math.floor(ms * (0.5 + Math.random())); }
 async function ffmpegRun(args: string[]) {
-  const maxAttempts = Number(process.env.FFMPEG_RETRIES || 2);
+  return await Sentry.startSpan({
+    name: 'ffmpeg.transcode',
+    attributes: {
+      'ffmpeg.preset': 'fast',
+      'ffmpeg.retries': Number(process.env.FFMPEG_RETRIES || 2)
+    }
+  }, async () => {
+    const maxAttempts = Number(process.env.FFMPEG_RETRIES || 2);
   for (let attempt = 0; attempt <= maxAttempts; attempt++) {
     try {
       await new Promise((resolve, reject) => {
@@ -189,6 +205,7 @@ async function ffmpegRun(args: string[]) {
       await new Promise(r => setTimeout(r, jitter(base)));
     }
   }
+  });
 }
 
 async function uploadDir(s3: S3Client, bucket: string, prefix: string, dir: string) {
@@ -251,6 +268,10 @@ async function main() {
           await redis.xack(stream, group, id);
         } catch (err) {
           log.error({ err, id }, 'job failed');
+          Sentry.captureException(err, {
+            tags: { job_id: id },
+            extra: { fields }
+          });
         }
       }
     }
@@ -259,5 +280,9 @@ async function main() {
 
 main().catch((err) => {
   log.error(err);
-  process.exit(1);
+  Sentry.captureException(err);
+  // Ensure Sentry has time to send the error
+  Sentry.close(2000).then(() => {
+    process.exit(1);
+  });
 });

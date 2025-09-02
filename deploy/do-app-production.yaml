@@ -1,0 +1,324 @@
+# DigitalOcean App Platform Production Configuration
+# Media Asset Management System
+name: mam-production
+region: nyc1
+
+services:
+  # Frontend Service
+  - name: frontend
+    source_dir: /frontend
+    github:
+      repo: your-org/media-asset-management
+      branch: main
+    build_command: npm ci && npm run build
+    run_command: npm start
+    environment_slug: node-js
+    instance_count: 2
+    instance_size_slug: basic-xxs
+    http_port: 3001
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 60
+      period_seconds: 30
+      timeout_seconds: 10
+      success_threshold: 1
+      failure_threshold: 3
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        value: ${API_URL}
+      - key: NEXT_PUBLIC_EDGE_URL
+        value: ${EDGE_URL}
+      - key: PORT
+        value: "3001"
+
+  # Backend API Service
+  - name: backend
+    source_dir: /backend
+    github:
+      repo: your-org/media-asset-management
+      branch: main
+    build_command: npm ci && npm run build
+    run_command: npm start
+    environment_slug: node-js
+    instance_count: 2
+    instance_size_slug: basic-xs
+    http_port: 3000
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 60
+      period_seconds: 30
+      timeout_seconds: 10
+      success_threshold: 1
+      failure_threshold: 3
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+      - key: POSTGRES_URL
+        value: ${mam-db.CONNECTION_STRING}
+      - key: REDIS_URL
+        value: ${mam-redis.CONNECTION_STRING}
+      - key: JWT_SECRET
+        value: ${JWT_SECRET}
+        type: SECRET
+      - key: COOKIE_SECRET
+        value: ${COOKIE_SECRET}
+        type: SECRET
+      - key: EDGE_SIGNING_KEY
+        value: ${EDGE_SIGNING_KEY}
+        type: SECRET
+      - key: WASABI_ENDPOINT
+        value: https://s3.ap-southeast-2.wasabisys.com
+      - key: WASABI_REGION
+        value: ap-southeast-2
+      - key: WASABI_STAGING_ACCESS_KEY
+        value: ${WASABI_STAGING_ACCESS_KEY}
+        type: SECRET
+      - key: WASABI_STAGING_SECRET
+        value: ${WASABI_STAGING_SECRET}
+        type: SECRET
+      - key: WASABI_MASTERS_ACCESS_KEY
+        value: ${WASABI_MASTERS_ACCESS_KEY}
+        type: SECRET
+      - key: WASABI_MASTERS_SECRET
+        value: ${WASABI_MASTERS_SECRET}
+        type: SECRET
+      - key: WASABI_PREVIEWS_ACCESS_KEY
+        value: ${WASABI_PREVIEWS_ACCESS_KEY}
+        type: SECRET
+      - key: WASABI_PREVIEWS_SECRET
+        value: ${WASABI_PREVIEWS_SECRET}
+        type: SECRET
+      - key: STAGING_BUCKET
+        value: mam-production-staging
+      - key: MASTERS_BUCKET
+        value: mam-production-masters
+      - key: PREVIEWS_BUCKET
+        value: mam-production-previews
+      - key: EDGE_PUBLIC_BASE
+        value: ${EDGE_URL}
+      - key: ALLOWED_ORIGINS
+        value: ${APP_URL}
+      - key: RATE_LIMIT_MAX
+        value: "1000"
+      - key: RATE_LIMIT_WINDOW
+        value: "15 minutes"
+
+  # Edge Service
+  - name: edge
+    source_dir: /edge
+    github:
+      repo: your-org/media-asset-management
+      branch: main
+    build_command: npm ci && npm run build
+    run_command: npm start
+    environment_slug: node-js
+    instance_count: 3
+    instance_size_slug: basic-xs
+    http_port: 8080
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 30
+      period_seconds: 15
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 3
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "8080"
+      - key: HMAC_SECRET
+        value: ${HMAC_SECRET}
+        type: SECRET
+      - key: EDGE_SIGNING_KEY
+        value: ${EDGE_SIGNING_KEY}
+        type: SECRET
+      - key: WASABI_ENDPOINT
+        value: https://s3.ap-southeast-2.wasabisys.com
+      - key: WASABI_PREVIEWS_ACCESS_KEY
+        value: ${WASABI_PREVIEWS_ACCESS_KEY}
+        type: SECRET
+      - key: WASABI_PREVIEWS_SECRET
+        value: ${WASABI_PREVIEWS_SECRET}
+        type: SECRET
+      - key: PREVIEWS_BUCKET
+        value: mam-production-previews
+      - key: CORS_ORIGINS
+        value: ${APP_URL}
+
+  # Worker Service
+  - name: worker
+    source_dir: /worker
+    github:
+      repo: your-org/media-asset-management
+      branch: main
+    build_command: npm ci && npm run build
+    run_command: npm start
+    environment_slug: node-js
+    instance_count: 2
+    instance_size_slug: basic-s
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 45
+      period_seconds: 60
+      timeout_seconds: 15
+      success_threshold: 1
+      failure_threshold: 5
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: REDIS_URL
+        value: ${mam-redis.CONNECTION_STRING}
+      - key: WASABI_ENDPOINT
+        value: https://s3.ap-southeast-2.wasabisys.com
+      - key: WASABI_MASTERS_ACCESS_KEY
+        value: ${WASABI_MASTERS_ACCESS_KEY}
+        type: SECRET
+      - key: WASABI_MASTERS_SECRET
+        value: ${WASABI_MASTERS_SECRET}
+        type: SECRET
+      - key: WASABI_PREVIEWS_ACCESS_KEY
+        value: ${WASABI_PREVIEWS_ACCESS_KEY}
+        type: SECRET
+      - key: WASABI_PREVIEWS_SECRET
+        value: ${WASABI_PREVIEWS_SECRET}
+        type: SECRET
+      - key: MASTERS_BUCKET
+        value: mam-production-masters
+      - key: PREVIEWS_BUCKET
+        value: mam-production-previews
+      - key: WORKER_CONCURRENCY
+        value: "4"
+      - key: GPU_ENABLED
+        value: "false"
+      - key: NVENC_ENABLED
+        value: "false"
+
+databases:
+  # PostgreSQL Database
+  - name: mam-db
+    engine: PG
+    version: "14"
+    size: db-s-1vcpu-1gb
+    num_nodes: 1
+    production: true
+
+  # Redis Cache
+  - name: mam-redis
+    engine: REDIS
+    version: "7"
+    size: db-s-1vcpu-1gb
+    num_nodes: 1
+    production: true
+
+# Static site for documentation (optional)
+static_sites:
+  - name: docs
+    source_dir: /docs
+    github:
+      repo: your-org/media-asset-management
+      branch: main
+    build_command: |
+      if [ -f package.json ]; then
+        npm ci && npm run build
+      else
+        echo "No build needed for static docs"
+      fi
+    output_dir: /public
+    index_document: index.html
+    error_document: 404.html
+
+# Domain configuration
+domains:
+  - domain: yourdomain.com
+    type: PRIMARY
+    certificate: MANAGED
+  - domain: www.yourdomain.com
+    type: ALIAS
+    certificate: MANAGED
+  - domain: api.yourdomain.com
+    type: ALIAS
+    certificate: MANAGED
+  - domain: edge.yourdomain.com  
+    type: ALIAS
+    certificate: MANAGED
+
+# Ingress rules
+ingress:
+  rules:
+    - match:
+        path:
+          prefix: /api/
+      component:
+        name: backend
+    - match:
+        path:
+          prefix: /s/
+      component:
+        name: edge
+    - match:
+        path:
+          prefix: /health
+      component:
+        name: edge
+    - match:
+        path:
+          prefix: /docs
+      component:
+        name: docs
+    - component:
+        name: frontend
+
+# Jobs for maintenance tasks
+jobs:
+  # Database migrations
+  - name: migrate
+    source_dir: /backend
+    github:
+      repo: your-org/media-asset-management  
+      branch: main
+    build_command: npm ci
+    run_command: npm run migrate
+    environment_slug: node-js
+    instance_size_slug: basic-xxs
+    envs:
+      - key: POSTGRES_URL
+        value: ${mam-db.CONNECTION_STRING}
+    kind: PRE_DEPLOY
+
+  # Cleanup job (runs daily)
+  - name: cleanup
+    source_dir: /backend
+    github:
+      repo: your-org/media-asset-management
+      branch: main
+    build_command: npm ci
+    run_command: npm run cleanup
+    environment_slug: node-js
+    instance_size_slug: basic-xxs
+    schedule: "0 2 * * *"  # Daily at 2 AM UTC
+    envs:
+      - key: POSTGRES_URL
+        value: ${mam-db.CONNECTION_STRING}
+      - key: REDIS_URL
+        value: ${mam-redis.CONNECTION_STRING}
+
+# Alerts
+alerts:
+  - rule: CPU_UTILIZATION
+    operator: GREATER_THAN
+    value: 80
+    window: 5m
+  - rule: MEM_UTILIZATION  
+    operator: GREATER_THAN
+    value: 85
+    window: 5m
+  - rule: RESTART_COUNT
+    operator: GREATER_THAN
+    value: 5
+    window: 1h
+

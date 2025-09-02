@@ -163,7 +163,11 @@ Repo-Specific Notes
 - GitHub: repo, code, and issue searches across GitHub.
 - Browserbase: cloud browser automation (navigate/extract/act) when page rendering is required.
 - DigitalOcean: manage DO Apps/Droplets/Networking via MCP.
-- DigitalOcean: manage DO Apps/Droplets/Networking via MCP.
+- Sequential Thinking: planning/reasoning scaffold for stepwise thought orchestration.
+- Sentry: pull issues, errors, projects, releases, performance data with Seer analysis.
+- Playwright: full browser automation for testing and verification.
+
+See `docs/ai/mcp-tools-development-guide.md` for comprehensive guidance on when and how to use each MCP tool during development.
 
 Qwen Code Tooling
 - Launch: `make qwen` (already integrated via npx). Authentication via Qwen OAuth or OpenAI‑compatible providers.

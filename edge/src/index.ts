@@ -1,15 +1,30 @@
+import './instrument.js';
 import 'dotenv/config';
 import Fastify from 'fastify';
+import * as Sentry from '@sentry/node';
 import crypto from 'node:crypto';
 import { setTimeout as sleep } from 'node:timers/promises';
 import rateLimit from '@fastify/rate-limit';
 
 const app = Fastify({ logger: true });
+
+// Setup Sentry error handler for Fastify
+Sentry.setupFastifyErrorHandler(app);
+
 await app.register(rateLimit, {
   max: Number(process.env.RATE_LIMIT_MAX || 400),
   timeWindow: process.env.RATE_LIMIT_WINDOW || '1 minute'
 });
 app.get('/health', async () => ({ ok: true, service: 'edge', time: new Date().toISOString() }));
+
+// Debug Sentry endpoint for testing
+app.get('/debug-sentry', async (req, reply) => {
+  // Send a log before throwing the error
+  Sentry.logger.info('User triggered test error', {
+    action: 'test_error_endpoint',
+  });
+  throw new Error('My first Sentry error!');
+});
 const previewsBucket = process.env.PREVIEWS_BUCKET || '';
 const endpoint = (process.env.WASABI_ENDPOINT || 'https://s3.wasabisys.com').replace(/\/$/, '');
 const key = process.env.EDGE_SIGNING_KEY || '';

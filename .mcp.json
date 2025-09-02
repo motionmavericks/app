@@ -1,0 +1,37 @@
+{
+  "mcpServers": {
+    "digitalocean": {
+      "type": "stdio",
+      "command": "bash",
+      "args": ["scripts/mcp_digitalocean.sh"]
+    },
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "ref": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-ref"],
+      "env": {
+        "REF_API_KEY": "${REF_API_KEY}"
+      }
+    },
+    "exa": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-exa"],
+      "env": {
+        "EXA_API_KEY": "${EXA_API_KEY}"
+      }
+    },
+    "sentry": {
+      "url": "https://mcp.sentry.dev/mcp"
+    }
+  }
+}
+

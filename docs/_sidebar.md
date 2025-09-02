@@ -2,7 +2,7 @@
 - [Index](index.md)
 
 - Overview
-  - [System Overview](overview.md)
+  - [System Overview](../.agent-os/product/mission.md)
   - [Dev Setup](dev-setup.md)
 
 - Project
@@ -110,3 +110,5 @@
   - [Standards](appendix/standards.md)
   - [Glossary](glossary.md)
   - [AI Guidance](ai/codex-cli-guidance.md)
+  - [MCP Tools Development Guide](ai/mcp-tools-development-guide.md)
+  - [MCP Configuration Guide](ai/mcp-configuration-guide.md)

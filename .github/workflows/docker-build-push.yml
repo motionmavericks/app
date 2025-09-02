@@ -41,6 +41,9 @@ jobs:
           file: ./backend/Dockerfile
           build-args: |
             BUILD_SHA=${{ github.sha }}
+          # Pass Sentry auth token as a BuildKit secret (not embedded in image)
+          secrets: |
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
           no-cache: true
           push: true
           tags: |
@@ -64,6 +67,9 @@ jobs:
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
+          # Pass Sentry auth token as a BuildKit secret for sourcemap uploads
+          secrets: |
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
           push: true
           tags: |
             registry.digitalocean.com/mm-motionmav-reg/frontend:latest

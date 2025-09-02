@@ -82,6 +82,7 @@ cd edge && npm run test
 - **Service guides**: `{backend,worker,edge,frontend}/AGENTS.md`
 - **Deployment**: `deploy/do-app.yaml`, `docs/deploy/digitalocean.md`
 - **Environment**: `.env.example` in each service directory
+ - **Sentry subagent**: `.claude/agents/sentry-integrator.md` (covers frontend and backend)
 
 ## Key Implementation Details
 
@@ -90,18 +91,56 @@ cd edge && npm run test
 - **Database**: PostgreSQL, migrations via `backend/src/migrate.ts`
 - **GPU Processing**: NVENC preferred, fallback to CPU (libx264)
 
-## Codex Integration
+## Multi-Agent Orchestration System
 
-This repository uses Codex CLI as primary orchestrator with Claude Code for execution.
+This repository uses an advanced multi-agent system combining Claude Code, Codex, and Qwen:
 
-### Task Division
-- **Codex**: Multi-service features, refactoring, bulk changes, planning
-- **Claude Code**: Precise modifications, debugging, performance optimization, local validation
+### Available Subagents (.claude/agents/)
+- **orchestrator**: Delegates tasks and combines tools strategically
+- **external-delegator**: Executes Codex and Qwen with specific outputs
+- **precision-coder**: Implements critical code after planning
+- **validator**: Final quality gate with pass/fail reports
 
-### When Called by Codex
-1. Focus on the specific task provided
-2. Make only requested changes
-3. Validate with `make lint`, `make typecheck`, relevant tests
-4. Report clear status: DONE/BLOCKED/PARTIAL
+### Tool Strengths & Usage
 
-See `CODEX_INTEGRATION.md` for detailed patterns.
+#### Codex (GPT-5) - Planning & Analysis
+```bash
+codex exec "Create task list for X. Return numbered steps."
+codex exec "Design architecture for Y. Return component diagram."
+codex exec "Analyze bug Z. Return root cause and fix."
+```
+**Best for**: Task lists, architecture, problem analysis
+
+#### Qwen (Qwen3-Coder) - Bulk Execution
+```bash
+qwen -p "Generate tests for all services. Return file names."
+qwen -p "Refactor X to Y. Return modified file count."
+qwen -p "Document all APIs. Return markdown files."
+```
+**Best for**: Mass generation, refactoring, documentation
+
+#### Claude - Critical Implementation
+- Security code → Returns security checklist
+- Performance fixes → Returns benchmarks
+- Bug fixes → Returns proof of fix
+
+### Optimal Workflow Pattern
+```
+1. Codex creates plan → "Return numbered task list"
+2. Qwen executes bulk → "Return generated files"
+3. Claude implements critical → "Return working code with metrics"
+4. Validator checks all → "Return pass/fail report"
+```
+
+### Key Principles
+- **Always specify outputs**: Include "Return [format]" in every prompt
+- **Combine tools**: Codex thinks, Qwen does, Claude perfects
+- **Measurable results**: Metrics, counts, benchmarks - not just "done"
+
+See `.claude/agents/` for detailed instructions.
+
+## Sentry Ops Examples (Claude)
+
+- Backend issues (dev): `@sentry-integrator List unresolved issues for backend in the last 7 days and summarize top 3.`
+- Backend performance: `@sentry-integrator Show slowest backend transactions this week with trace links.`
+- SDK help: `@sentry-integrator Give backend instrumentation steps and envs to enable tracing and profiling.`
