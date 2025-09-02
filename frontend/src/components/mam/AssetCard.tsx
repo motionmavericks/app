@@ -22,11 +22,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { highlightSearchTerms } from '@/lib/search';
 
 interface AssetCardProps {
   asset: Asset;
   viewMode: 'grid' | 'list';
   isSelected: boolean;
+  searchQuery?: string;
   onSelect: () => void;
   onToggleSelection: () => void;
 }
@@ -35,6 +37,7 @@ export function AssetCard({
   asset, 
   viewMode, 
   isSelected, 
+  searchQuery = '',
   onSelect, 
   onToggleSelection 
 }: AssetCardProps) {
@@ -65,6 +68,12 @@ export function AssetCard({
     return `${mb.toFixed(2)} MB`;
   };
 
+  const renderHighlightedText = (text: string) => {
+    if (!searchQuery) return text;
+    const highlightedText = highlightSearchTerms(text, searchQuery);
+    return <span dangerouslySetInnerHTML={{ __html: highlightedText }} />;
+  };
+
   if (viewMode === 'list') {
     return (
       <div className="flex items-center gap-4 p-4 border rounded-lg hover:bg-accent/50 transition-colors">
@@ -78,14 +87,14 @@ export function AssetCard({
         
         <div className="flex-1 cursor-pointer" onClick={onSelect}>
           <div className="flex items-center gap-2">
-            <h3 className="font-medium">{asset.title}</h3>
+            <h3 className="font-medium">{renderHighlightedText(asset.title)}</h3>
             <Badge className={`${getStatusColor()} text-white`}>
               {asset.status}
             </Badge>
           </div>
           {asset.description && (
             <p className="text-sm text-muted-foreground line-clamp-1 mt-1">
-              {asset.description}
+              {renderHighlightedText(asset.description)}
             </p>
           )}
         </div>
@@ -193,7 +202,7 @@ export function AssetCard({
 
       <div className="p-4">
         <div className="flex items-start justify-between mb-2">
-          <h3 className="font-medium line-clamp-1">{asset.title}</h3>
+          <h3 className="font-medium line-clamp-1">{renderHighlightedText(asset.title)}</h3>
           <Badge className={`${getStatusColor()} text-white text-xs`}>
             {asset.status}
           </Badge>
@@ -201,7 +210,7 @@ export function AssetCard({
         
         {asset.description && (
           <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-            {asset.description}
+            {renderHighlightedText(asset.description)}
           </p>
         )}
 

@@ -42,7 +42,7 @@
   - Fullscreen support with controls overlay
 
 ### 4. Comprehensive Search & Filtering
-- [ ] **Owner**: @frontend
+- [x] **Owner**: @frontend
 - **Files**: `frontend/src/components/search/`, `frontend/src/lib/search.ts`
 - **Description**: Real-time search across metadata, tags, collections, and content with faceted filtering and saved searches
 - **Acceptance Criteria**:

@@ -1,10 +1,15 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Asset } from '@/types/asset';
 import { AssetCard } from './AssetCard';
 import { useAssetStore } from '@/lib/stores/asset-store';
+import { useSearchStore } from '@/lib/stores/search-store';
+import { searchAssets, advancedSearchAssets } from '@/lib/search';
+import { SearchBar } from '../search/SearchBar';
+import { SearchFilters } from '../search/SearchFilters';
+import { AdvancedSearch } from '../search/AdvancedSearch';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -67,6 +72,13 @@ export function AssetBrowser({
     setError,
   } = useAssetStore();
 
+  const {
+    query,
+    filters,
+    hasActiveSearch,
+    addToHistory
+  } = useSearchStore();
+
   // Use props if provided, otherwise use store
   const loading = propLoading !== undefined ? propLoading : storeLoading;
   const error = propError !== undefined ? propError : storeError;
@@ -86,8 +98,41 @@ export function AssetBrowser({
 
   const parentRef = useRef<HTMLDivElement>(null);
 
-  // Get sorted assets for display
-  const sortedAssets = getSortedAssets();
+  // Get base assets (props or store)
+  const baseAssets = propAssets || getSortedAssets();
+
+  // Apply search and filters
+  const filteredAssets = useMemo(() => {
+    if (!hasActiveSearch()) {
+      return baseAssets;
+    }
+
+    // Use advanced search if query contains special syntax
+    const hasAdvancedSyntax = query.includes(':') || query.includes('"') || query.includes('-');
+    
+    if (hasAdvancedSyntax) {
+      return advancedSearchAssets(baseAssets, query, filters);
+    } else {
+      return searchAssets(baseAssets, query, filters);
+    }
+  }, [baseAssets, query, filters, hasActiveSearch]);
+
+  // Update search history when results change
+  useEffect(() => {
+    if (query.trim() && filteredAssets.length !== undefined) {
+      const timer = setTimeout(() => {
+        addToHistory(query, filteredAssets.length);
+      }, 1000); // Wait 1 second after search completes
+      
+      return () => clearTimeout(timer);
+    }
+  }, [query, filteredAssets.length, addToHistory]);
+
+  // Handle search
+  const handleSearch = () => {
+    // The search store handles the query update
+    // Filtering happens automatically via useMemo above
+  };
 
   // Grid configuration
   const gridCols = viewMode === 'grid' ? 4 : 1;
@@ -96,7 +141,7 @@ export function AssetBrowser({
 
   // Virtual scrolling setup
   const virtualizer = useVirtualizer({
-    count: Math.ceil(sortedAssets.length / itemsPerRow),
+    count: Math.ceil(filteredAssets.length / itemsPerRow),
     getScrollElement: () => parentRef.current,
     estimateSize: () => itemHeight,
     overscan: 5,
@@ -104,7 +149,7 @@ export function AssetBrowser({
 
 
   const handleSelectAll = () => {
-    if (getSelectionCount() === sortedAssets.length) {
+    if (getSelectionCount() === filteredAssets.length) {
       deselectAll();
     } else {
       selectAll();
@@ -112,8 +157,8 @@ export function AssetBrowser({
   };
 
   const selectedCount = getSelectionCount();
-  const allSelected = selectedCount === sortedAssets.length && sortedAssets.length > 0;
-  const someSelected = selectedCount > 0 && selectedCount < sortedAssets.length;
+  const allSelected = selectedCount === filteredAssets.length && filteredAssets.length > 0;
+  const someSelected = selectedCount > 0 && selectedCount < filteredAssets.length;
 
   if (loading) {
     return (
@@ -132,9 +177,18 @@ export function AssetBrowser({
   }
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Toolbar */}
-      <div className="flex items-center justify-between p-4 border-b">
+    <div className="flex h-full">
+      {/* Search Filters Sidebar */}
+      <SearchFilters assets={baseAssets} />
+      
+      <div className="flex flex-col flex-1">
+        {/* Search Bar */}
+        <div className="p-4 border-b">
+          <SearchBar onSearch={handleSearch} />
+        </div>
+
+        {/* Toolbar */}
+        <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center gap-4">
           {/* Bulk selection */}
           <div className="flex items-center gap-2">
@@ -144,7 +198,12 @@ export function AssetBrowser({
               onCheckedChange={handleSelectAll}
             />
             <span className="text-sm text-muted-foreground">
-              {selectedCount > 0 ? `${selectedCount} selected` : `${sortedAssets.length} assets`}
+              {selectedCount > 0 ? `${selectedCount} selected` : `${filteredAssets.length} assets`}
+              {hasActiveSearch() && (
+                <span className="text-xs text-muted-foreground ml-2">
+                  (filtered from {baseAssets.length})
+                </span>
+              )}
             </span>
           </div>
 
@@ -273,12 +332,17 @@ export function AssetBrowser({
         className="flex-1 overflow-auto"
         style={{ contain: 'strict' }}
       >
-        {sortedAssets.length === 0 ? (
+        {filteredAssets.length === 0 ? (
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
-              <div className="text-muted-foreground mb-2">No assets found</div>
+              <div className="text-muted-foreground mb-2">
+                {hasActiveSearch() ? 'No assets match your search' : 'No assets found'}
+              </div>
               <div className="text-sm text-muted-foreground">
-                Try uploading some assets or adjusting your filters
+                {hasActiveSearch() 
+                  ? 'Try adjusting your search terms or filters'
+                  : 'Try uploading some assets or adjusting your filters'
+                }
               </div>
             </div>
           </div>
@@ -292,8 +356,8 @@ export function AssetBrowser({
           >
             {virtualizer.getVirtualItems().map((virtualRow) => {
               const startIndex = virtualRow.index * itemsPerRow;
-              const endIndex = Math.min(startIndex + itemsPerRow, sortedAssets.length);
-              const rowAssets = sortedAssets.slice(startIndex, endIndex);
+              const endIndex = Math.min(startIndex + itemsPerRow, filteredAssets.length);
+              const rowAssets = filteredAssets.slice(startIndex, endIndex);
 
               return (
                 <div
@@ -316,6 +380,7 @@ export function AssetBrowser({
                               asset={asset}
                               viewMode="grid"
                               isSelected={isAssetSelected(asset.id)}
+                              searchQuery={query}
                               onSelect={() => onAssetSelect?.(asset)}
                               onToggleSelection={() => toggleAssetSelection(asset.id)}
                             />
@@ -332,6 +397,7 @@ export function AssetBrowser({
                             asset={asset}
                             viewMode="list"
                             isSelected={isAssetSelected(asset.id)}
+                            searchQuery={query}
                             onSelect={() => onAssetSelect?.(asset)}
                             onToggleSelection={() => toggleAssetSelection(asset.id)}
                           />
@@ -344,7 +410,14 @@ export function AssetBrowser({
             })}
           </div>
         )}
+        </div>
       </div>
+
+      {/* Advanced Search Modal */}
+      <AdvancedSearch 
+        assets={baseAssets} 
+        onSearch={handleSearch}
+      />
     </div>
   );
 }
