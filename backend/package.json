@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "npx tsc -p tsconfig.json",
+    "build": "rm -rf dist && npx --yes tsc --project tsconfig.json",
     "start": "node dist/index.js",
     "migrate": "tsx src/migrate.ts",
     "test": "vitest run",
