@@ -21,18 +21,21 @@ encoding: UTF-8
 ## MCP & Subagents Preparation (Development)
 - Verify MCP servers from project `.mcp.json` are enabled.
   - Core: GitHub, DigitalOcean, Ref, Exa, Sentry
-  - Optional (recommended): Playwright, Neo4j Cypher, Sequential Thinking
-- Ensure `.claude/settings.json` has `enableAllProjectMcpServers=true` (already set) so project MCP servers are loaded.
-- Remember: MCP tools are for development and diagnostics only; production deployments must go via CI/CD.
+  - Recommended: Playwright, Browserbase, Neo4j Cypher, Sequential Thinking
+- Ensure `.claude/settings.json` has `enableAllProjectMcpServers=true` so project MCP servers load.
+- Remember: MCP tools are for development/diagnostics and staging; production deployments must go via CI/CD.
 
-### Subagent → MCP Mapping
-- orchestrator → may use Sequential Thinking (planning/revisions)
-- context-fetcher → Exa (discover) → Ref (fetch docs)
-- git-workflow → GitHub (repo/PR/issue ops)
-- external-delegator → DigitalOcean (dev logs/specs), Neo4j Cypher (graph)
-- sentry-integrator → Sentry (issues, performance, releases, Seer) and instrumentation guidance
-- test-runner → Playwright (browser flows/assertions)
-- validator → Sentry (regressions) via sentry-integrator; Playwright (UI spot checks) via external-delegator
+### Subagent → MCP Mapping (New)
+- task-router → Sequential Thinking (planning/revisions); maintains update_plan
+- mcp-coordinator → GitHub, DigitalOcean, Sentry, Ref, Exa, Browserbase, Playwright, Neo4j
+- test-orchestrator/test-writer → Playwright (E2E) + Qwen (bulk tests)
+- architecture-planner → Ref/Exa research + sequential-thinking/codex
+- implementation-specialist → apply_patch, Makefile validations
+- security-auditor → Sentry + Ref; codex for deep analysis
+- performance-tuner → Sentry perf + DigitalOcean metrics
+- graph-architect → Neo4j (read-only) + Ref/Exa
+- graph-ops-migrator → Neo4j migrate (staging-first) + GitHub/DO
+- deployment-orchestrator → GitHub (runs) + DigitalOcean (apps)
 
 ### Env & Setup Sanity (non-secrets)
 - GitHub: `GITHUB_TOKEN` set and scoped
@@ -40,11 +43,23 @@ encoding: UTF-8
 - Ref: `REF_API_KEY` set
 - Exa: `EXA_API_KEY` set
 - Sentry: `SENTRY_AUTH_TOKEN` (or MCP OAuth configured)
-- Neo4j (optional): `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD`
+- Browserbase: `BROWSERBASE_API_KEY`, `BROWSERBASE_PROJECT_ID`
+- Neo4j: `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD` (`NEO4J_DATABASE` optional)
 - Playwright MCP available (installed per `.mcp.json` if used)
 
 ### Model Tooling (non-MCP)
-- Subagents may delegate to Codex (planning/analysis) or Qwen (bulk) when beneficial. Precision coding remains with Claude. These are orchestrated by subagents; do not call directly from meta steps.
+- Subagents may delegate to Codex (planning/analysis) or Qwen (bulk) when beneficial. Precision/surgical coding uses apply_patch. These are orchestrated by subagents; do not call directly from meta steps.
+
+### Subagent Alias Mapping (for legacy steps)
+- If a core instruction step uses legacy names, map as follows:
+  - orchestrator → task-router
+  - context-fetcher → mcp-coordinator (research via Ref/Exa)
+  - external-delegator → mcp-coordinator (DigitalOcean/GitHub/Neo4j/Browserbase/Playwright)
+  - test-runner/validator → test-orchestrator (+ Playwright + Sentry)
+
+### Task/Output Specs (standardize handoffs)
+- TaskSpec: title, context_links, constraints, acceptance_checks, priority_tools, docs_to_update
+- OutputSpec: changes_summary, apply_patch diff/paths, validations_run, docs/env_updates, MCP_actions, followups
 
 ## Parallel Subagents Readiness
 - When a step declares background or parallel work, spawn the named subagents concurrently (e.g., `validator`, `project-manager`, `orchestrator`, `external-delegator`, `test-runner`, `git-workflow`).

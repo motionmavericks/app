@@ -1,6 +1,9 @@
-# Execute Task
+# Execute Task (Router-First)
 
-Execute the next task.
+Execute the next task with subagent coordination and MCP-first tools. Routed via task-router.
 
-Refer to the instructions located in this file:
+Use:
+@.claude/agents/task-router.md
+
+Then execute:
 @.agent-os/instructions/core/execute-tasks.md

@@ -42,3 +42,4 @@ Handoff patterns
 
 Usage pattern in this repo
 - Start with `make claude-plan` for a backlog; use `make claude-audit-*` for scoped checks; implement fixes via Codex `apply_patch` and keep docs/env in sync.
+ - Subagents: see `docs/ai/claude-subagents.md` for routing, MCP-first policy, guardrails, and validation checklists.

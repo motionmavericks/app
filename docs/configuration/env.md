@@ -22,6 +22,12 @@ Backend/API
 - `RL_PROMOTE_MAX`, `RL_PROMOTE_WINDOW` (per-route limit for `/api/promote`)
 - `AUTH_SECRET`, `AUTH_PROVIDERS...`
 
+Graph (Neo4j)
+- `NEO4J_URI` (e.g., `neo4j+s://<host>:7687`)
+- `NEO4J_USERNAME`
+- `NEO4J_PASSWORD`
+- `NEO4J_DATABASE` (optional; defaults to `neo4j` if unset)
+
 CI-only (Backend/Frontend)
 - `SENTRY_AUTH_TOKEN`: GitHub Actions Secret used for sourcemap uploads during backend and frontend image builds (Sentry CLI/Next.js plugin). Passed to Docker Buildx as a BuildKit secret; never committed or baked into images.
 

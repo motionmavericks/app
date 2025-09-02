@@ -22,8 +22,17 @@ After completing all steps in a process_flow, always review your work and verify
 - Confirm Claude hooks executed (lint after edits, todo backup on compact/end) and artifacts are in expected locations.
 
 ## MCP-First Verification
-- Verify external interactions used MCP tools (GitHub/DO/Exa/Ref/Playwright/Sentry/Neo4j/Sequential Thinking) where applicable, and that they were invoked via the correct subagent.
-- Reiterate that deployments, if any, were routed through CI/CD, not MCP.
+- Verify external interactions used MCP tools (GitHub/DO/Exa/Ref/Playwright/Sentry/Neo4j/Browserbase/Sequential Thinking) where applicable, and were invoked via the correct subagent.
+- Reiterate that production deployments, if any, were routed through CI/CD, not MCP.
+
+## Guardrails & Deploy Checks
+- Structured edits used yq/jq; unified diffs only; scope restricted to intended files; no drift.
+- For DO App specs: For DOCR images omit image.registry, set registry_type: DOCR, and pin backend tag to sha-${GITHUB_SHA} in CI with yq.
+- Validate with: yq eval image matrix; doctl apps update --spec ... --wait (or validate-only); doctl apps logs tail for deploy.
+
+## Plan Closure & Docs Discipline
+- Ensure update_plan has no in_progress steps and reflects completion.
+- Confirm docs were updated (docs/*) and env templates synced; include changed paths in OutputSpec.
 
 ## Planning/Reasoning Closure (if used)
 - If Sequential Thinking MCP was employed by the orchestrator, ensure the planning sequence is concluded and key decisions are captured in the relevant spec/task docs.

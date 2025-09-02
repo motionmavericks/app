@@ -1,6 +1,9 @@
-# Plan Product
+# Plan Product (Router-First)
 
-Plan a new product and install Agent OS in its codebase.
+Plan a new product and install Agent OS in its codebase. This entry uses the task router to coordinate subagents.
 
-Refer to the instructions located in this file:
+Use:
+@.claude/agents/task-router.md
+
+Then execute:
 @.agent-os/instructions/core/plan-product.md
