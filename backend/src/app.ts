@@ -241,11 +241,65 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
     }
   });
 
+  // Mock assets endpoint (for frontend compatibility)
+  app.get('/api/assets/:id', async (req, reply) => {
+    const { id } = req.params as { id: string };
+    
+    // Mock asset data for now - replace with real database queries
+    const mockAsset = {
+      id,
+      title: `Asset ${id}`,
+      ready: true,
+      versions: [{
+        master_key: `masters/${id}`,
+        preview_prefix: `previews/${id}`
+      }]
+    };
+    
+    return mockAsset;
+  });
+
+  // Mock preview status endpoint
+  app.get('/api/preview/status', async (req, reply) => {
+    const { prefix } = req.query as { prefix?: string };
+    
+    if (!prefix) {
+      return reply.code(400).send({ error: 'Missing prefix parameter' });
+    }
+    
+    // Mock status - always ready for now
+    return { ready: true, prefix };
+  });
+
+  // Mock preview events endpoint (SSE)
+  app.get('/api/preview/events', async (req, reply) => {
+    const { prefix } = req.query as { prefix?: string };
+    
+    if (!prefix) {
+      return reply.code(400).send({ error: 'Missing prefix parameter' });
+    }
+
+    // Set up SSE headers
+    reply.header('Content-Type', 'text/event-stream');
+    reply.header('Cache-Control', 'no-cache');
+    reply.header('Connection', 'keep-alive');
+    reply.header('Access-Control-Allow-Origin', '*');
+    
+    // Send ready status immediately for now
+    reply.raw.write(`event: status\n`);
+    reply.raw.write(`data: ${JSON.stringify({ ready: true, prefix })}\n\n`);
+    
+    // Close connection after sending the status
+    setTimeout(() => reply.raw.end(), 100);
+  });
+
   // Sign preview URL endpoint
   app.post('/api/sign-preview', async (req, reply) => {
     const body = req.body as any;
-    if (!body.assetId) {
-      return reply.code(400).send({ error: 'Missing assetId' });
+    // Support both assetId and preview_prefix for compatibility
+    const identifier = body.assetId || body.preview_prefix;
+    if (!identifier) {
+      return reply.code(400).send({ error: 'Missing assetId or preview_prefix' });
     }
 
     const edgeUrl = process.env.EDGE_PUBLIC_BASE || 'http://localhost:8080';
@@ -255,9 +309,14 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
       return reply.code(500).send({ error: 'Signing key not configured' });
     }
 
+    // Construct path based on input type
+    const path = body.preview_prefix 
+      ? `${body.preview_prefix}/playlist.m3u8`
+      : `previews/${identifier}/playlist.m3u8`;
+
     // Sign the URL with a 1 hour expiration
     const exp = Math.floor(Date.now() / 1000) + 3600;
-    const signedUrl = signEdgeUrl(edgeUrl, 'previews', `${body.assetId}/playlist.m3u8`, exp, signingKey);
+    const signedUrl = signEdgeUrl(edgeUrl, 'previews', path, exp, signingKey);
     return { url: signedUrl };
   });
 
