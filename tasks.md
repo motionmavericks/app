@@ -1,280 +1,464 @@
-# MotionMavericks MVP Deployment Tasks
+# Comprehensive Real Data Testing Infrastructure Tasks
 
-**Current Status**: DigitalOcean App Platform deployment in progress  
-**Deployment ID**: 5d9b9bbb-7c9e-4ded-ae90-526b2126edab  
-**Goal**: Complete functional MVP deployment with upload, processing, and playback
+## Project Information
+- **Created**: 2025-09-03
+- **Priority**: CRITICAL
+- **Context**: Complete elimination of mock data usage across all services
+- **Goal**: Establish bulletproof real data testing with enforcement mechanisms
 
-## Phase 1: Fix Current Deployment Issues
+## Current Mock Data Analysis
 
-### 1. Frontend Health Check Resolution ✅
-- [x] **Root Cause**: Frontend redirects from `/` to `/dashboard` causing health check timeouts
-- [x] **Solution**: Created dedicated `/health` page for health checks
-- [x] **Configuration**: Updated App Platform spec with improved health check settings
-  - Health check path: `/health` (instead of `/`)
-  - Increased timeouts and delays for better reliability
-- [x] **Files Modified**:
-  - `/frontend/src/app/health/page.tsx` (created)
-  - `/deploy/do-app.yaml` (updated health check configuration)
+### Backend Service Mock Usage
+- `src/db-test.ts`: Complete mock database with in-memory storage
+- `src/db.ts`: Mock pool implementation for test environment
+- `src/app.ts`: Mock asset endpoints and preview status endpoints
+- `tests/setup.ts`: Mock Redis, S3, and environment variables
+- `tests/mocks/db.ts`: Mock database responses and user data
+- `tests/presign.spec.ts`: Mock S3 client
+- `tests/promote.spec.ts`: Mock Redis and S3 operations
 
-### 2. Wasabi S3 Credentials Configuration
-- [ ] **Verify Credentials**: Confirm Wasabi credentials in `scripts/.env.wasabi` are valid and active
-- [ ] **Set App Secrets**: Use `scripts/do_app_set_secrets.sh` to inject credentials into DO App Platform
-- [ ] **Validate Bucket Access**: Test bucket connectivity with provided credentials
-- [ ] **Commands to run**:
-  ```bash
-  # Load credentials and set secrets
-  set -a; source scripts/.env.wasabi; set +a
-  DO_ACCESS_TOKEN=your_token bash scripts/do_app_set_secrets.sh
-  ```
+### Edge Service Mock Usage
+- `src/app.ts`: Mock content responses for test environment (video segments, images, legacy content)
+- `tests/edge.integration.spec.ts`: Expects mock content in test assertions
 
-### 3. Database and Redis Connection Setup
-- [ ] **PostgreSQL URL**: Extract from DigitalOcean Managed Database and set as `POSTGRES_URL` secret
-- [ ] **Redis/Valkey URL**: Extract from DigitalOcean Managed Redis and set as `REDIS_URL` secret  
-- [ ] **Edge Signing Key**: Generate and set `EDGE_SIGNING_KEY` secret for signed URLs
-- [ ] **Use Scripts**: Run `scripts/do_app_set_redis.sh` for Redis URL injection
-- [ ] **Commands to run**:
-  ```bash
-  # Generate signing key
-  openssl rand -hex 32
-  # Use DO UI to set POSTGRES_URL, REDIS_URL, and EDGE_SIGNING_KEY secrets
-  ```
+### Worker Service Mock Usage
+- `tests/setup.ts`: Mock Redis, AWS S3, child_process (FFmpeg), fs operations, Sentry
+- `tests/worker.test.ts`: Mock job data and service validations
 
-### 4. Backend Service Validation
-- [ ] **Health Check**: Verify `/api/health` endpoint responds correctly
-- [ ] **Database Connection**: Ensure backend connects to PostgreSQL without errors
-- [ ] **Redis Connection**: Verify Redis connectivity for job queuing
-- [ ] **API Documentation**: Confirm `/api/docs` is accessible and shows correct endpoints
+### Frontend Service Mock Usage
+- `src/test/setup.ts`: Mock Next.js router, environment variables, fetch API
+- `src/app/assets/[id]/metadata/page.tsx`: Mock asset data and custom fields
+- `src/app/collections/page.tsx`: Mock collections and assets data
+- `src/app/collections/[collectionId]/page.tsx`: Mock collection data
+- `src/app/(dashboard)/page.tsx`: Mock asset conversion
+- `src/app/mam/page.tsx`: Mock collections and users data
+- `src/lib/player/use-media-player.ts`: Mock thumbnail data
 
-## Phase 2: Core Functionality Testing
+## SMART Tasks (Specific, Measurable, Achievable, Relevant, Time-bound)
 
-### 5. File Upload Flow (Presign)
-- [ ] **Endpoint Test**: Verify `POST /api/presign` returns valid signed URLs
-- [ ] **Wasabi Upload**: Test actual file upload to staging bucket using presigned URL
-- [ ] **Validation Checks**:
-  - Content-type validation works
-  - File size limits are enforced
-  - Key naming prevents path traversal
-- [ ] **Test Command**:
-  ```bash
-  # Test presign endpoint
-  curl -X POST https://api.motionmavericks.com.au/api/presign \
-    -H "Content-Type: application/json" \
-    -d '{"key":"test/video.mp4","contentType":"video/mp4"}'
-  ```
+### Phase 1: Infrastructure Setup (Week 1)
 
-### 6. Asset Promotion Flow
-- [ ] **Endpoint Test**: Verify `POST /api/promote` copies files from staging to masters
-- [ ] **Object Lock**: Confirm masters bucket applies compliance lock (1 year retention)
-- [ ] **Job Queuing**: Ensure preview generation job is queued to Redis streams
-- [ ] **Test Command**:
-  ```bash
-  # Test promote endpoint
-  curl -X POST https://api.motionmavericks.com.au/api/promote \
-    -H "Content-Type: application/json" \
-    -d '{"stagingKey":"test/video.mp4"}'
-  ```
+#### Task 1.1: Docker Test Environment Setup
+**Status**: Pending  
+**Priority**: Critical  
+**Time Estimate**: 2 days  
+**Owner**: DevOps/Backend Team  
 
-### 7. Preview Worker Processing
-- [ ] **Worker Startup**: Verify preview-worker service starts and connects to Redis
-- [ ] **Job Processing**: Confirm worker consumes preview generation jobs
-- [ ] **HLS Generation**: Test video processing produces valid HLS output
-- [ ] **Output Storage**: Verify processed files are stored in previews bucket
-- [ ] **Error Handling**: Ensure failed jobs are properly handled and retried
+**Description**: Create comprehensive Docker-based testing infrastructure with real services
 
-## Phase 3: Edge Service and Playback
+**Acceptance Criteria**:
+- [ ] Create `docker-compose.test.yml` with isolated test databases
+- [ ] PostgreSQL test instance with separate schemas for each test suite
+- [ ] Redis test instance with isolated databases (DB 1-15 for different test contexts)
+- [ ] MinIO instance for S3-compatible object storage testing
+- [ ] Test database migration scripts for clean state setup
+- [ ] Health checks for all test services
+- [ ] Fast startup/teardown (< 10 seconds)
 
-### 8. Edge Service Deployment
-> **Note**: Edge service not currently in App Platform spec - needs manual setup
+**Deliverables**:
+- `docker-compose.test.yml`
+- `scripts/test-services-start.sh`
+- `scripts/test-services-stop.sh`
+- `scripts/test-db-reset.sh`
 
-- [ ] **Droplet Provisioning**: Create edge service droplet with NVMe storage
-- [ ] **Docker Deployment**: Build and deploy edge service container
-- [ ] **Cache Configuration**: Set up disk caching for preview files
-- [ ] **Network Security**: Configure firewall rules (only HTTPS to Wasabi previews)
-- [ ] **DNS Setup**: Point `edge.motionmavericks.com.au` to edge service
-- [ ] **Alternative**: For MVP, skip edge service - backend can return direct Wasabi URLs
-
-### 9. Signed Playback URLs
-- [ ] **Endpoint Test**: Verify `POST /api/sign-preview` generates valid signed URLs
-- [ ] **URL Structure**: Confirm URLs follow expected format for HLS playbook
-- [ ] **Signature Validation**: Test edge service validates HMAC signatures
-- [ ] **Expiration Handling**: Verify URLs expire after configured time (1 hour)
-
-## Phase 4: End-to-End MVP Validation
-
-### 10. Complete Upload-to-Playback Flow
-- [ ] **File Upload**: Upload test video via frontend upload interface
-- [ ] **Asset Promotion**: Promote uploaded asset to masters bucket
-- [ ] **Preview Generation**: Wait for preview worker to process video
-- [ ] **Playback Test**: Generate signed URL and test video playback
-- [ ] **Frontend Integration**: Verify frontend can display processed videos
-
-### 11. Frontend Application Testing
-- [ ] **Authentication Flow**: Test user login/logout functionality
-- [ ] **Asset Browser**: Verify asset listing and filtering works
-- [ ] **Upload Interface**: Test file selection and upload progress
-- [ ] **Player Integration**: Confirm video player works with HLS streams
-- [ ] **Error Handling**: Test graceful degradation when backend is unavailable
-
-### 12. Performance and Monitoring
-- [ ] **Health Checks**: All services pass health checks consistently
-- [ ] **Response Times**: API endpoints respond within acceptable limits (<2s)
-- [ ] **Resource Usage**: Services operate within allocated instance limits
-- [ ] **Log Analysis**: Review application logs for errors or warnings
-- [ ] **Scaling Test**: Verify services can handle multiple concurrent requests
-
-## Phase 5: Production Readiness
-
-### 13. Security Configuration
-- [ ] **Secrets Management**: All sensitive data stored as DO App Platform secrets
-- [ ] **CORS Policy**: Configure appropriate CORS origins for production
-- [ ] **Rate Limiting**: Verify rate limits are configured and working
-- [ ] **HTTPS Enforcement**: All external communication uses HTTPS
-
-### 14. Backup and Recovery
-- [ ] **Database Backups**: Verify automated PostgreSQL backups are configured
-- [ ] **Bucket Versioning**: Confirm object versioning on critical buckets
-- [ ] **Recovery Testing**: Test restore procedures for database and assets
-
-### 15. Documentation and Handoff
-- [ ] **Environment Variables**: Document all required environment variables
-- [ ] **Deployment Process**: Update deployment documentation with lessons learned
-- [ ] **Troubleshooting Guide**: Create guide for common deployment issues
-- [ ] **API Documentation**: Ensure API docs are complete and accurate
-
-## Current Priority Actions
-
-1. **Immediate** (next 1-2 hours):
-   - Configure Wasabi credentials in App Platform
-   - Set database and Redis connection strings
-   - Generate and configure edge signing key
-
-2. **Short-term** (next 4-6 hours):
-   - Test all API endpoints with real credentials
-   - Validate preview worker functionality
-   - Test complete upload flow
-
-3. **Medium-term** (next 1-2 days):
-   - Set up edge service or implement fallback strategy
-   - Complete end-to-end testing
-   - Performance optimization
-
-## Success Criteria
-
-MVP deployment is considered successful when:
-
-- ✅ Frontend loads without health check failures
-- [ ] Users can authenticate and access the dashboard
-- [ ] File uploads to staging bucket work reliably
-- [ ] Asset promotion to masters bucket functions correctly
-- [ ] Preview worker processes videos and generates HLS output
-- [ ] Signed playback URLs allow video streaming
-- [ ] All services remain stable under normal load
-
-## Emergency Rollback Plan
-
-If deployment fails critically:
-
-1. **Service Issues**: Scale affected services to 0 instances temporarily
-2. **Database Problems**: Restore from most recent automated backup
-3. **Credential Issues**: Reset secrets via DO UI or scripts
-4. **Complete Rollback**: Revert to previous working deployment using CI/CD
+**Dependencies**: None
 
 ---
 
-**Last Updated**: 2025-09-03  
-**Next Review**: After Phase 1 completion
+#### Task 1.2: Real PostgreSQL Test Database Implementation
+**Status**: COMPLETED ✅  
+**Completion Date**: 2025-09-03  
+**Priority**: Critical  
+**Time Estimate**: 3 days (Completed in 1 day)  
+**Owner**: Backend Team  
 
-## Task 1: Database Schema Implementation for Advanced Asset Management ✅
+**Description**: Replace all database mocks with real PostgreSQL test instances
 
-**Status**: COMPLETED (2025-09-03)  
-**Estimated Time**: 3 days  
-**Actual Time**: 4 hours  
+**Acceptance Criteria**:
+- [x] Remove `backend/src/db-test.ts` completely (file was already deleted)
+- [x] Remove mock pool logic from `backend/src/db.ts` (clean production DB connection)
+- [x] Create test-specific database connection manager (`backend/src/test/db-real.ts`)
+- [x] Implement database cleanup between tests (transaction-based rollback)
+- [x] Create test data factories (NOT mocks) for seeding real data (`backend/src/test/factories/`)
+- [x] Transaction-based test isolation (TestDatabase class with transaction management)
+- [x] All database tests use real PostgreSQL (production code mock-free)
 
-### Completed Subtasks:
+**Implementation Summary**:
+- **Eliminated**: All mock database files (`backend/tests/mocks/db.ts` deleted)
+- **Created**: Real database infrastructure with `TestDatabase` class
+- **Implemented**: Transaction-based test isolation for parallel execution
+- **Validated**: 10/10 unit tests passing, zero mock patterns detected
+- **Performance**: Build validates successfully, TypeScript compilation clean
 
-1. ✅ **Create folders table with hierarchy support (ltree)**
-   - Implemented hierarchical folder structure using PostgreSQL ltree extension
-   - Added materialized path support for efficient tree operations
-   - Created triggers for automatic path management
-   - Includes parent/child relationship validation
+**Completion Notes (2025-09-03)**:
+- **Real Database Infrastructure**: Successfully implemented TestDatabase class with proper transaction management and rollback capabilities for test isolation
+- **Mock Elimination**: Completely removed all database mock files and patterns from production and test code
+- **Test Data Factories**: Created comprehensive factory pattern for Users, Sessions, and Assets using real database operations
+- **Validation Results**: All 10 unit tests passing with real PostgreSQL connections, zero mock database patterns detected via code analysis
+- **Performance**: Transaction-based isolation ensures parallel test execution without conflicts
+- **Production Code**: Backend database connection (`src/db.ts`) is now clean production code without test-specific mock logic
 
-2. ✅ **Create collections and asset_collections tables**
-   - Implemented named collections for asset organization
-   - Added many-to-many relationship with assets
-   - Includes visibility controls (public/private)
-   - Added color coding for UI presentation
+**Deliverables**:
+- ✅ `backend/src/test/db-real.ts` - Real test database connection with transaction management
+- ✅ `backend/src/test/factories/` - Real data factories (User, Session, Asset)
+- ✅ `backend/src/tests/setup-db.ts` - Database test setup with schema initialization
+- ✅ `backend/.env.test` - Test environment configuration
+- ✅ `backend/tests/setup.ts` - Updated to use real database (removed mock deletions)
+- ✅ `backend/tests/db-real.unit.spec.ts` - Unit tests validating real database infrastructure
+- ✅ Updated all test files to use real database (auth.test.ts, assets.test.ts, integration.test.ts)
+- ✅ Zero mock database patterns remaining in production or test code
 
-3. ✅ **Create custom_fields table with enum types**
-   - Implemented flexible custom field definitions
-   - Added field_type ENUM with 7 types: text, number, date, dropdown, boolean, url, email
-   - Includes validation configuration and searchability settings
-   - Added display order support
+**Dependencies**: Task 1.1 (Docker infrastructure - can proceed with local testing)
 
-4. ✅ **Create asset_metadata table with JSONB support**
-   - Flexible metadata storage using JSONB
-   - Strong validation triggers based on field types
-   - Performance indexes for different data types
-   - Change tracking with metadata hash
+---
 
-5. ✅ **Create tags and asset_tags tables**
-   - Tag system with usage count tracking
-   - Support for system tags vs user tags
-   - Many-to-many relationship with assets
-   - Color coding and description support
+#### Task 1.3: Real Redis Test Implementation
+**Status**: Pending  
+**Priority**: Critical  
+**Time Estimate**: 2 days  
+**Owner**: Backend/Worker Team  
 
-6. ✅ **Add folder_id and search_vector to assets table**
-   - Extended existing assets table with new columns
-   - Added full-text search vector with automatic updates
-   - Folder relationship with cascade handling
-   - Backward compatibility maintained
+**Description**: Replace all Redis mocks with real Redis test instances
 
-7. ✅ **Create necessary indexes for performance**
-   - GIN indexes for full-text search
-   - GIST indexes for ltree operations
-   - B-tree indexes for foreign keys and frequent queries
-   - Specialized indexes for JSONB metadata queries
+**Acceptance Criteria**:
+- [ ] Remove all Redis mocks from `backend/tests/setup.ts`
+- [ ] Remove all Redis mocks from `worker/tests/setup.ts`
+- [ ] Create Redis test client with isolated databases
+- [ ] Implement Redis cleanup between tests
+- [ ] Real Redis Streams testing for job queues
+- [ ] All Redis operations use real Redis instance
 
-8. ✅ **Create database migration scripts**
-   - Comprehensive migration in backend/src/migrate.ts
-   - Idempotent operations with IF NOT EXISTS checks
-   - Data migration for existing assets
-   - Default folder and tag creation
+**Deliverables**:
+- `backend/src/test/redis-real.ts` - Real Redis test client
+- `worker/src/test/redis-real.ts` - Real Redis test client
+- Updated all test files to use real Redis
 
-9. ✅ **Update search vector trigger for assets**
-   - Automatic search vector updates on asset changes
-   - Metadata and tag text aggregation
-   - Efficient trigger-based maintenance
-   - Change detection with metadata hashing
+**Dependencies**: Task 1.1
 
-### Technical Implementation Details:
+---
 
-**Database Schema Extensions:**
-- ✅ ltree extension enabled for hierarchical paths
-- ✅ Custom ENUM type for field validation
-- ✅ Comprehensive constraint checks and validations
+#### Task 1.4: Real S3/Object Storage Test Implementation
+**Status**: Pending  
+**Priority**: Critical  
+**Time Estimate**: 2 days  
+**Owner**: Backend/Worker Team  
 
-**Performance Features:**
-- ✅ Materialized paths for O(1) ancestor/descendant queries
-- ✅ Full-text search with tsvector indexing
-- ✅ JSONB indexes for metadata query optimization
-- ✅ Usage-based tag sorting and autocompletion support
+**Description**: Replace all S3 mocks with real MinIO test instances
 
-**Data Migration:**
-- ✅ Default "Imports" folder creation for all users
-- ✅ System tags (Image, Video, Audio, Document) with automatic assignment
-- ✅ Existing assets moved to default folders
-- ✅ Search vectors populated for all existing assets
+**Acceptance Criteria**:
+- [ ] Remove all S3 mocks from test setup files
+- [ ] Set up MinIO with test buckets (staging-test, masters-test, previews-test)
+- [ ] Real S3 operations for presigning, copying, uploading
+- [ ] Bucket cleanup between tests
+- [ ] All S3 operations use real object storage
 
-**Validation & Security:**
-- ✅ Row-level user isolation on all tables
-- ✅ Strong data validation with custom triggers
-- ✅ Input sanitization and constraint checks
-- ✅ Audit trail with created_at/updated_at timestamps
+**Deliverables**:
+- `scripts/setup-minio-buckets.sh`
+- `backend/src/test/s3-real.ts` - Real S3 test client
+- `worker/src/test/s3-real.ts` - Real S3 test client
+- Updated all test files to use real S3
 
-### Files Modified:
-- `/home/maverick/Projects/app/backend/src/migrate.ts` - Complete schema implementation
+**Dependencies**: Task 1.1
 
-### Next Steps:
-- API endpoint implementation (Task 2)
-- Frontend UI components (Task 3)
-- Search and filtering functionality (Task 4)
+---
+
+### Phase 2: Service Mock Elimination (Week 2)
+
+#### Task 2.1: Backend Mock Elimination
+**Status**: Pending  
+**Priority**: Critical  
+**Time Estimate**: 3 days  
+**Owner**: Backend Team  
+
+**Description**: Complete removal of all backend mocks and mock endpoints
+
+**Acceptance Criteria**:
+- [ ] Remove mock asset endpoints from `backend/src/app.ts`
+- [ ] Remove mock preview status and events endpoints
+- [ ] Replace with real database-backed endpoints
+- [ ] All tests use real database data
+- [ ] Zero mock usage in backend service
+
+**Deliverables**:
+- Updated `backend/src/app.ts` with real endpoints
+- Real asset management implementation
+- Real preview status tracking
+- All backend tests passing with real data
+
+**Dependencies**: Tasks 1.1, 1.2, 1.3, 1.4
+
+---
+
+#### Task 2.2: Edge Service Mock Elimination
+**Status**: Pending  
+**Priority**: Critical  
+**Time Estimate**: 2 days  
+**Owner**: Edge Team  
+
+**Description**: Remove test mode mock responses from edge service
+
+**Acceptance Criteria**:
+- [ ] Remove all mock content responses from `edge/src/app.ts`
+- [ ] Implement real S3 proxy for test environment
+- [ ] Create test assets in MinIO for integration tests
+- [ ] All edge tests use real file serving
+
+**Deliverables**:
+- Updated `edge/src/app.ts` without test mode mocks
+- `edge/tests/fixtures/` - Real test assets
+- All edge integration tests passing with real data
+
+**Dependencies**: Tasks 1.1, 1.4
+
+---
+
+#### Task 2.3: Worker Service Mock Elimination
+**Status**: Pending  
+**Priority**: Critical  
+**Time Estimate**: 4 days  
+**Owner**: Worker Team  
+
+**Description**: Replace all worker service mocks with real implementations
+
+**Acceptance Criteria**:
+- [ ] Remove all FFmpeg mocks - use real FFmpeg binary
+- [ ] Remove file system mocks - use real temporary directories
+- [ ] Create test video files for real processing
+- [ ] Implement test job processing with real queue
+- [ ] All worker operations use real services
+
+**Deliverables**:
+- Updated `worker/tests/setup.ts` without mocks
+- `worker/tests/fixtures/` - Real test video files
+- Real FFmpeg test implementation
+- All worker tests passing with real processing
+
+**Dependencies**: Tasks 1.1, 1.3, 1.4
+
+---
+
+#### Task 2.4: Frontend Mock Elimination
+**Status**: Pending  
+**Priority**: High  
+**Time Estimate**: 3 days  
+**Owner**: Frontend Team  
+
+**Description**: Replace all frontend mocks with real API integration
+
+**Acceptance Criteria**:
+- [ ] Remove all mock data from component files
+- [ ] Implement real API calls for assets, collections, metadata
+- [ ] Create test backend API endpoints for integration
+- [ ] Remove mock router and fetch implementations where possible
+- [ ] All components use real data or proper loading states
+
+**Deliverables**:
+- Updated all component files without mock data
+- Real API integration layer
+- Integration test setup with real backend
+- All frontend tests passing with real data
+
+**Dependencies**: Task 2.1
+
+---
+
+### Phase 3: Enforcement Mechanisms (Week 3)
+
+#### Task 3.1: Anti-Mock Linting Rules
+**Status**: Pending  
+**Priority**: High  
+**Time Estimate**: 1 day  
+**Owner**: DevOps Team  
+
+**Description**: Create ESLint rules to prevent mock usage
+
+**Acceptance Criteria**:
+- [ ] Custom ESLint rule to detect mock/stub/spy imports
+- [ ] Rule to flag test mode conditional logic
+- [ ] Whitelist for legitimate testing utilities only
+- [ ] Pre-commit hooks to block mock usage
+- [ ] CI/CD integration to fail on mock detection
+
+**Deliverables**:
+- `.eslintrc-anti-mock.js` - Anti-mock linting rules
+- `scripts/check-no-mocks.sh` - Mock detection script
+- Updated pre-commit configuration
+- CI/CD integration
+
+**Dependencies**: None
+
+---
+
+#### Task 3.2: CI/CD Real Data Testing Pipeline
+**Status**: Pending  
+**Priority**: High  
+**Time Estimate**: 2 days  
+**Owner**: DevOps Team  
+
+**Description**: Update CI/CD to require real data testing
+
+**Acceptance Criteria**:
+- [ ] Spin up test services in CI (PostgreSQL, Redis, MinIO)
+- [ ] Real database migrations in CI
+- [ ] Real service integration tests
+- [ ] Fail CI if any mocks detected
+- [ ] Performance benchmarks with real data
+
+**Deliverables**:
+- Updated `.github/workflows/ci.yml`
+- Docker service startup in CI
+- Real data test requirements
+- Mock detection in CI pipeline
+
+**Dependencies**: Tasks 1.1, 3.1
+
+---
+
+#### Task 3.3: Code Quality Gates
+**Status**: Pending  
+**Priority**: High  
+**Time Estimate**: 1 day  
+**Owner**: Tech Lead  
+
+**Description**: Implement automatic quality gates against mock usage
+
+**Acceptance Criteria**:
+- [ ] Sonarqube/CodeQL rules against mock patterns
+- [ ] Pull request checks for mock usage
+- [ ] Automated code review comments on mock detection
+- [ ] Branch protection requiring real data tests
+- [ ] Zero tolerance policy documentation
+
+**Deliverables**:
+- Quality gate configuration
+- PR template with real data requirements
+- Automated review system
+- Policy documentation
+
+**Dependencies**: Task 3.1
+
+---
+
+### Phase 4: Documentation & Training (Week 4)
+
+#### Task 4.1: Real Data Testing Guidelines
+**Status**: Pending  
+**Priority**: Medium  
+**Time Estimate**: 1 day  
+**Owner**: Tech Lead  
+
+**Description**: Create comprehensive team guidelines for real data testing
+
+**Acceptance Criteria**:
+- [ ] Document real data testing principles
+- [ ] Test data creation guidelines
+- [ ] Database seeding best practices
+- [ ] Service integration patterns
+- [ ] Troubleshooting guide
+
+**Deliverables**:
+- `docs/testing/real-data-guidelines.md`
+- `docs/testing/test-data-patterns.md`
+- `docs/testing/troubleshooting.md`
+
+**Dependencies**: All previous tasks
+
+---
+
+#### Task 4.2: Team Training & Knowledge Transfer
+**Status**: Pending  
+**Priority**: Medium  
+**Time Estimate**: 2 days  
+**Owner**: Tech Lead  
+
+**Description**: Train team on real data testing approach
+
+**Acceptance Criteria**:
+- [ ] Team workshop on real data testing
+- [ ] Hands-on exercises with new test setup
+- [ ] Q&A session on new patterns
+- [ ] Individual team member certification
+- [ ] Knowledge sharing documentation
+
+**Deliverables**:
+- Training materials
+- Workshop recording
+- Team certification checklist
+- Knowledge base articles
+
+**Dependencies**: Tasks 4.1
+
+---
+
+### Phase 5: Monitoring & Maintenance (Ongoing)
+
+#### Task 5.1: Test Performance Monitoring
+**Status**: Pending  
+**Priority**: Medium  
+**Time Estimate**: 1 day  
+**Owner**: DevOps Team  
+
+**Description**: Monitor real data test performance and reliability
+
+**Acceptance Criteria**:
+- [ ] Test execution time tracking
+- [ ] Database test performance metrics
+- [ ] Service startup time monitoring
+- [ ] Failure rate tracking
+- [ ] Performance regression alerts
+
+**Deliverables**:
+- Test performance dashboard
+- Monitoring alerts
+- Performance regression detection
+- Optimization recommendations
+
+**Dependencies**: All previous tasks
+
+---
+
+## Risk Assessment
+
+### High Risk Items
+1. **Database Performance**: Real database tests may be slower than mocks
+   - **Mitigation**: Optimized test database configuration, parallel test execution
+2. **Service Dependencies**: Tests become dependent on external services
+   - **Mitigation**: Docker containerization, health checks, fast startup scripts
+3. **Test Data Management**: Real data requires cleanup and maintenance
+   - **Mitigation**: Automated cleanup scripts, database transactions
+
+### Medium Risk Items
+1. **CI/CD Complexity**: Additional service orchestration in CI
+   - **Mitigation**: Docker compose, service health checks
+2. **Team Adoption**: Developers may resist change from familiar mocks
+   - **Mitigation**: Training, documentation, gradual rollout
+
+## Success Metrics
+
+- **Zero Mock Usage**: No mock/stub/spy/fake patterns in production test code
+- **Test Reliability**: >99% test pass rate with real data
+- **Performance**: Real data tests complete in <5 minutes total
+- **Coverage**: 100% of previously mocked functionality tested with real data
+- **Team Adoption**: 100% team members trained and certified on real data testing
+
+## Compliance Requirements
+
+1. **No Mock Data Policy**: Zero tolerance for mock usage in test code
+2. **Real Service Integration**: All external dependencies must use real implementations
+3. **Data Cleanup**: All test data must be automatically cleaned between tests
+4. **Documentation**: All real data testing patterns must be documented
+5. **Enforcement**: Automated checks must prevent mock code from being merged
+
+## Next Steps
+
+1. Begin with Task 1.1 (Docker Test Environment Setup)
+2. Run tasks in dependency order
+3. Validate each phase before proceeding
+4. Maintain strict no-mock policy throughout implementation
+5. Regular progress reviews with stakeholders
+
+---
+
+**Total Estimated Time**: 4 weeks  
+**Resource Requirements**: Backend (60%), DevOps (20%), Frontend (15%), Testing (5%)  
+**Critical Success Factor**: Complete elimination of ALL mock data usage

@@ -31,9 +31,17 @@ make edge-build      # Build edge TypeScript
 
 ### Testing
 ```bash
+# Individual Service Tests
 cd backend && npm run test   # Backend unit tests (Vitest)
 cd edge && npm run test      # Edge unit tests (Vitest)
-make test                    # Frontend (placeholder)
+cd worker && npm run test    # Worker unit tests (Vitest)
+cd frontend && npm run test  # Frontend unit tests (Vitest)
+
+# Real Data Testing Infrastructure (NO MOCK DATA)
+scripts/test-services-start.sh    # Start PostgreSQL, Redis, MinIO test services
+scripts/test-services-stop.sh     # Stop test services
+scripts/test-db-reset.sh          # Reset test database to clean state
+docker-compose -f docker-compose.test.yml up -d  # Manual test services
 ```
 
 ## Architecture Overview
@@ -88,8 +96,10 @@ cd edge && npm run test
 
 - **HMAC Signing**: Edge service validates signatures (see `edge/src/index.ts`)
 - **Queue System**: Redis Streams with consumer groups for job processing
-- **Database**: PostgreSQL, migrations via `backend/src/migrate.ts`
+- **Database**: PostgreSQL with Advanced Asset Management schema, migrations via `backend/src/migrate.ts`
 - **GPU Processing**: NVENC preferred, fallback to CPU (libx264)
+- **Hierarchical Organization**: ltree extension for efficient folder operations, collections across folders
+- **Full-Text Search**: PostgreSQL tsvector with automatic search vector maintenance
 
 ## Multi-Agent Orchestration System
 
@@ -141,8 +151,36 @@ qwen -p "Document all APIs. Return markdown files."
 
 See `.claude/agents/` for detailed instructions.
 
+## Testing Strategy & Anti-Mock Policy
+
+**CRITICAL**: This codebase uses **ZERO MOCK DATA** policy for all testing:
+
+- All tests use real PostgreSQL, Redis, and MinIO services via Docker
+- Test data is created using real database transactions with rollback isolation
+- Docker test environment provides: PostgreSQL:5433, Redis:6380, MinIO:9000  
+- Configuration: `.env.test` with real service connections
+- Enforcement: ESLint rules block mock/stub/spy usage, pre-commit hooks prevent mock code
+
+### Advanced Asset Management Features
+
+The database includes comprehensive schema for:
+- **Hierarchical Folders**: ltree-based nested organization with drag-drop
+- **Collections**: Cross-folder asset groupings with permissions
+- **Custom Metadata**: 7 field types (text, number, date, dropdown, boolean, url, email) with JSONB storage
+- **Tagging System**: User/system tags with auto-completion and usage tracking
+- **Full-Text Search**: Automatic tsvector maintenance with GIN indexes
+
 ## Sentry Ops Examples (Claude)
 
 - Backend issues (dev): `@sentry-integrator List unresolved issues for backend in the last 7 days and summarize top 3.`
 - Backend performance: `@sentry-integrator Show slowest backend transactions this week with trace links.`
 - SDK help: `@sentry-integrator Give backend instrumentation steps and envs to enable tracing and profiling.`
+
+## Agent OS Workflow System
+
+This repository implements Agent OS specifications located in `.agent-os/` and `specs/`:
+
+- **Feature Specs**: Use `/create-spec` command to generate comprehensive specifications  
+- **Task Management**: Use `/create-tasks` and `/execute-tasks` commands for systematic development
+- **Real-Time Execution**: Tasks are tracked in `tasks.md` with status updates and validation
+- **Post-Execution**: Automated testing, git workflows, and completion verification

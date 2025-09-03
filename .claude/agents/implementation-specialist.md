@@ -21,3 +21,7 @@ WORKFLOW
 SECURITY FOCUS
 - No secrets; proper validation; follow auth patterns; OWASP Top 10 awareness
 
+NO-MOCKS POLICY
+- Do not introduce mock/fake/stub/placeholder code in production files.
+- If a real integration is unavailable, stop and report a blocker rather than fabricating behavior.
+- After changes, run `bash .claude/scripts/validate_no_mocks.sh` and resolve any violations.

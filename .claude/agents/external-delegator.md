@@ -23,10 +23,18 @@ If MCP doesn’t cover a need, document the gap and proceed with the safest alte
 **When to use**: Task planning, architecture, problem analysis
 **How to execute**:
 ```python
-# Always specify expected output format
-Bash(command='codex exec "Analyze X. Return numbered list of issues."')
-Bash(command='codex exec "Design Y. Return architecture diagram as text."')
-Bash(command='codex exec "Debug Z. Return root cause and fix steps."')
+# Step 1: Start codex in background (avoids timeout)
+response = Bash(command='bash .claude/scripts/codex_sync.sh "Analyze X. Return numbered list of issues."', run_in_background=true)
+bash_id = response["bash_id"]
+
+# Step 2: Wait for completion (codex may take 2-10+ minutes)
+output = BashOutput(bash_id=bash_id)
+while output["status"] == "running":
+    # Wait and check again
+    output = BashOutput(bash_id=bash_id)
+
+# Step 3: Process the completed output
+result = output["stdout"]
 ```
 
 **Specific prompts for best results**:
@@ -57,8 +65,16 @@ Bash(command='qwen -p "Document all functions. Return documentation coverage."')
 ### Pattern 1: Codex plans, Qwen executes
 ```python
 # Step 1: Get plan from Codex
-Bash(command='codex exec "List all refactoring tasks needed. Return numbered list."')
+response = Bash(command='bash .claude/scripts/codex_sync.sh "List all refactoring tasks needed. Return numbered list."', run_in_background=true)
+bash_id = response["bash_id"]
+
+# Wait for codex to complete
+output = BashOutput(bash_id=bash_id)
+while output["status"] == "running":
+    output = BashOutput(bash_id=bash_id)
+
 # Output: 1. Rename variables 2. Extract methods 3. Update imports
+plan = output["stdout"]
 
 # Step 2: Execute with Qwen
 Bash(command='qwen -p "Complete refactoring tasks 1-3. Return changed files."')
@@ -67,18 +83,36 @@ Bash(command='qwen -p "Complete refactoring tasks 1-3. Return changed files."')
 
 ### Pattern 2: Parallel analysis and generation
 ```python
-# Run both simultaneously for different aspects
-Bash(command='codex exec "Analyze security vulnerabilities. Return risk list."')
-Bash(command='qwen -p "Generate security tests. Return test files."')
+# Start both simultaneously for different aspects
+codex_response = Bash(command='bash .claude/scripts/codex_sync.sh "Analyze security vulnerabilities. Return risk list."', run_in_background=true)
+qwen_result = Bash(command='qwen -p "Generate security tests. Return test files."')
+
+# Check codex completion
+codex_output = BashOutput(bash_id=codex_response["bash_id"])
+while codex_output["status"] == "running":
+    codex_output = BashOutput(bash_id=codex_response["bash_id"])
+
+# Both results now available
+risks = codex_output["stdout"]
+tests = qwen_result["stdout"]
 ```
 
 ### Pattern 3: Codex for complex, Qwen for simple
 ```python
 # Complex logic to Codex
-Bash(command='codex exec "Design auth flow with OAuth. Return sequence diagram."')
+codex_response = Bash(command='bash .claude/scripts/codex_sync.sh "Design auth flow with OAuth. Return sequence diagram."', run_in_background=true)
 
-# Simple generation to Qwen  
-Bash(command='qwen -p "Generate OAuth config files. Return file names."')
+# Simple generation to Qwen (runs while codex is thinking)
+qwen_result = Bash(command='qwen -p "Generate OAuth config files. Return file names."')
+
+# Wait for codex to complete
+codex_output = BashOutput(bash_id=codex_response["bash_id"])
+while codex_output["status"] == "running":
+    codex_output = BashOutput(bash_id=codex_response["bash_id"])
+
+# Both results ready
+design = codex_output["stdout"]
+configs = qwen_result["stdout"]
 ```
 
 ## OUTPUT REQUIREMENTS FOR EACH TASK:

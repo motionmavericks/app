@@ -1,17 +1,16 @@
 import { vi } from 'vitest';
 
-// Mock environment variables for tests
+// Test environment variables for real database testing
 process.env.NODE_ENV = 'test';
 process.env.JWT_SECRET = 'test-jwt-secret';
 process.env.REFRESH_SECRET = 'test-refresh-secret';
 process.env.PORT = '3000';
 process.env.LOG_LEVEL = 'error';
 
-// IMPORTANT: Remove database and Redis URLs in test mode to force mock usage
-delete process.env.POSTGRES_URL;
-delete process.env.REDIS_URL;
+// REAL DATABASE TESTING: Use actual PostgreSQL test database
+process.env.POSTGRES_TEST_URL = process.env.POSTGRES_TEST_URL || 'postgresql://postgres:postgres@localhost:5433/motionmavericks_test';
 
-// Mock Redis connection
+// Mock Redis connection (still needed for non-database tests)
 vi.mock('ioredis', () => {
   const Redis = vi.fn();
   Redis.prototype.on = vi.fn();
@@ -30,4 +29,4 @@ vi.mock('ioredis', () => {
   return { default: Redis };
 });
 
-// Don't mock the database - let db.ts handle test mode properly
+// Setup real database for all tests (moved to individual test files to avoid vitest global setup issues)

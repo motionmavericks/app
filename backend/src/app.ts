@@ -60,7 +60,7 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
   await app.register(authRoutes);
 
   // Optional DB/Redis wiring (enabled when env is present)
-  const pgUrl = process.env.POSTGRES_URL;
+  const pgUrl = process.env.POSTGRES_URL || (process.env.NODE_ENV === 'test' ? process.env.POSTGRES_TEST_URL : undefined);
   const pool = pgUrl ? new Pool({ connectionString: pgUrl }) : undefined;
   const redisUrl = process.env.REDIS_URL;
   const RedisCtor: any = (IORedis as any);

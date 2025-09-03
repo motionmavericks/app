@@ -144,7 +144,7 @@ export default function AssetMetadataPage() {
   const [validationSchema, setValidationSchema] = useState<string>('none');
 
   const selectedAssets = getSelectedAssets();
-  const assetId = params.id as string;
+  const id = params.id as string;
 
   useEffect(() => {
     // Mock loading delay
@@ -154,7 +154,7 @@ export default function AssetMetadataPage() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [assetId]);
+  }, [id]);
 
   useEffect(() => {
     // Validate metadata against current schema

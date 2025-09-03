@@ -23,6 +23,7 @@ help:
 	@echo "Audits: qwen-audit-backend/worker/edge/frontend/deploy (fast)"
 	@echo "Multi-pass: qwen-audit-overview (areas), *-topics (subareas), qwen-audit-detail (FOCUS=...)"
 	@echo "Claude: claude (REPL), claude-plan (print), claude-audit-* (fast)"
+	@echo "Codex Daemon: codex-daemon (process queued Codex requests; avoids Claude 2m tool timeout)"
 
 install:
 	@echo "Installing frontend dependencies (npm install)"
@@ -139,31 +140,31 @@ claude:
 
 claude-plan:
 	@echo "Claude (non-interactive print) — generating plan"
-	claude -p "Using the entire repository context at ./, produce a prioritized, end-to-end task list to finish coding and deploying all services (frontend, backend, worker, edge). For each task, include: purpose, inputs, files to change, acceptance checks, and dependencies. Respond in concise Markdown bullets." || true
+	bash .claude/scripts/claude_retry.sh -p "Using the entire repository context at ./, produce a prioritized, end-to-end task list to finish coding and deploying all services (frontend, backend, worker, edge). For each task, include: purpose, inputs, files to change, acceptance checks, and dependencies. Respond in concise Markdown bullets. Output only the final artifact. No explanations. No code fences." || true
 
 claude-audit-overview:
 	@echo "Claude audit overview (areas only)";
-	claude -p "List the key areas to review in this monorepo to ensure a fully working system (no details, 8-12 bullets max). Use short area names only, e.g., Backend API, Worker Pipeline, Edge Proxy, Frontend UX, Database Schema, Config/Env, Deploy Spec, Observability, Security, Performance, Docs/Runbooks." || true
+	bash .claude/scripts/claude_retry.sh -p "List the key areas to review in this monorepo to ensure a fully working system (no details, 8-12 bullets max). Use short area names only, e.g., Backend API, Worker Pipeline, Edge Proxy, Frontend UX, Database Schema, Config/Env, Deploy Spec, Observability, Security, Performance, Docs/Runbooks. Output only the final artifact. No explanations. No code fences." || true
 
 claude-audit-backend:
 	@echo "Claude audit: backend";
-	cd backend && claude -p "Audit ONLY the backend service in ./backend. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." || true
+	cd backend && bash ../.claude/scripts/claude_retry.sh -p "Audit ONLY the backend service in ./backend. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise. Output only the final artifact. No explanations. No code fences." || true
 
 claude-audit-worker:
 	@echo "Claude audit: worker";
-	cd worker && claude -p "Audit ONLY the preview worker in ./worker. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." || true
+	cd worker && bash ../.claude/scripts/claude_retry.sh -p "Audit ONLY the preview worker in ./worker. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise. Output only the final artifact. No explanations. No code fences." || true
 
 claude-audit-edge:
 	@echo "Claude audit: edge";
-	cd edge && claude -p "Audit ONLY the edge service in ./edge. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." || true
+	cd edge && bash ../.claude/scripts/claude_retry.sh -p "Audit ONLY the edge service in ./edge. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise. Output only the final artifact. No explanations. No code fences." || true
 
 claude-audit-frontend:
 	@echo "Claude audit: frontend";
-	cd frontend && claude -p "Audit ONLY the frontend in ./frontend. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." || true
+	cd frontend && bash ../.claude/scripts/claude_retry.sh -p "Audit ONLY the frontend in ./frontend. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise. Output only the final artifact. No explanations. No code fences." || true
 
 claude-audit-deploy:
 	@echo "Claude audit: deploy/spec/docs";
-	claude -p "Audit deploy/do-app.yaml and docs/deploy/*.md. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise." || true
+	bash .claude/scripts/claude_retry.sh -p "Audit deploy/do-app.yaml and docs/deploy/*.md. List up to 10 bullets: Finding → Impact → Fix (files) → Acceptance. Be concise. Output only the final artifact. No explanations. No code fences." || true
 
 # Multi-pass audit — pass 2: topics per component
 qwen-audit-backend-topics:
@@ -192,3 +193,6 @@ qwen-audit-detail:
 	@if [ -z "$(AREA)" ] || [ -z "$(FOCUS)" ]; then echo "Usage: make qwen-audit-detail AREA=<backend|worker|edge|frontend|infra> FOCUS=\"<topic>\""; exit 1; fi; \
 	DIR="."; case "$(AREA)" in backend) DIR=backend;; worker) DIR=worker;; edge) DIR=edge;; frontend) DIR=frontend;; infra) DIR=.;; *) echo "Unknown AREA $(AREA)"; exit 1;; esac; \
 	cd $$DIR && timeout 60s npx -y @qwen-code/qwen-code --prompt "Drill-down audit for $(AREA): Focus on $(FOCUS). Output a concise checklist of findings → impact → fixes (files) → acceptance, max 10 bullets. No code edits." --approval-mode default || true
+codex-daemon:
+	@echo "Starting Codex Daemon (processes .codex/requests → .codex/responses). Run in a separate terminal."
+	bash .claude/scripts/codex_daemon.sh
