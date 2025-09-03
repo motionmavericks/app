@@ -18,15 +18,11 @@ process.env = {
 // REAL REDIS TESTING: Use actual Redis test database (no mocks)
 process.env.REDIS_TEST_URL = process.env.REDIS_TEST_URL || 'redis://localhost:6380/1';
 
-// Mock AWS S3
-const mockS3Send = vi.fn().mockResolvedValue({})
-vi.mock('@aws-sdk/client-s3', () => ({
-  S3Client: vi.fn(() => ({
-    send: mockS3Send,
-  })),
-  GetObjectCommand: vi.fn(),
-  PutObjectCommand: vi.fn(),
-}))
+// REAL S3 TESTING: Use actual MinIO test environment (no mocks)
+process.env.S3_TEST_ENDPOINT = process.env.S3_TEST_ENDPOINT || 'http://localhost:9000';
+process.env.S3_TEST_ACCESS_KEY = process.env.S3_TEST_ACCESS_KEY || 'minioadmin';
+process.env.S3_TEST_SECRET_KEY = process.env.S3_TEST_SECRET_KEY || 'minioadmin123';
+process.env.S3_TEST_REGION = process.env.S3_TEST_REGION || 'us-east-1';
 
 // Mock child_process for FFmpeg with proper mock functions
 const mockSpawn = vi.fn()

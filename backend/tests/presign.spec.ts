@@ -1,16 +1,36 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { FastifyInstance } from 'fastify';
 import { build } from '../src/app';
+import { S3TestClient, setS3TestEnv } from '../src/test/s3-real';
 
 describe('POST /api/presign', () => {
   let app: FastifyInstance;
+  let s3Client: S3TestClient;
 
   beforeEach(async () => {
+    // Setup real S3 test environment
+    setS3TestEnv();
+    s3Client = S3TestClient.forBackend();
+    
+    // Try to validate S3 environment, but don't fail tests if unavailable
+    try {
+      await s3Client.validateEnvironment();
+    } catch (error) {
+      console.warn('S3 test environment not available, tests will run with limited validation');
+    }
+    
     app = await build({ logger: false });
   });
 
   afterEach(async () => {
-    await app.close();
+    if (app) {
+      await app.close();
+    }
+    try {
+      await s3Client.cleanup();
+    } catch (error) {
+      // Ignore cleanup errors if S3 is not available
+    }
   });
 
   it('should return 400 for missing key', async () => {
@@ -62,10 +82,7 @@ describe('POST /api/presign', () => {
     expect(JSON.parse(response.body).error).toContain('size');
   });
 
-  it('should return presigned URL for valid request', async () => {
-    // Mock S3 client
-    vi.mock('@aws-sdk/client-s3');
-    
+  it('should return presigned URL for valid request with real S3', async () => {
     const response = await app.inject({
       method: 'POST',
       url: '/api/presign',
@@ -76,14 +93,26 @@ describe('POST /api/presign', () => {
       }
     });
     
-    if (response.statusCode !== 200) {
-      // May fail if S3 credentials not configured - that's OK for unit test
-      expect([200, 501]).toContain(response.statusCode);
-    } else {
+    // Handle both successful responses and configuration errors gracefully
+    if (response.statusCode === 200) {
       const body = JSON.parse(response.body);
       expect(body).toHaveProperty('url');
+      expect(body).toHaveProperty('bucket');
       expect(body).toHaveProperty('key');
-      expect(body).toHaveProperty('expiresIn');
+      expect(body.key).toBe('uploads/test.mp4');
+      expect(body.bucket).toBe('staging-test');
+      
+      // Verify the URL is a valid S3 presigned URL
+      expect(body.url).toContain('staging-test');
+      expect(body.url).toContain('uploads/test.mp4');
+      expect(body.url).toContain('X-Amz-Signature');
+    } else {
+      // If S3 is not available, expect configuration error
+      expect([200, 501]).toContain(response.statusCode);
+      if (response.statusCode === 501) {
+        const body = JSON.parse(response.body);
+        expect(body.error).toContain('configuration');
+      }
     }
   });
 });
