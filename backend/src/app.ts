@@ -241,6 +241,15 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
     }
   });
 
+  // Mock assets list endpoint (for frontend compatibility)
+  app.get('/api/assets', async (req, reply) => {
+    // Mock asset list for now - replace with real database queries
+    const mockAssets = [];
+    
+    // Return empty list for now - frontend will use fallback demo data
+    return { items: mockAssets, total: 0, page: 1, limit: 50 };
+  });
+
   // Mock assets endpoint (for frontend compatibility)
   app.get('/api/assets/:id', async (req, reply) => {
     const { id } = req.params as { id: string };
