@@ -52,7 +52,7 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
     },
   });
   await app.register(swaggerUi, {
-    routePrefix: '/api/docs',
+    routePrefix: '/docs',
     uiConfig: { docExpansion: 'list', deepLinking: false },
   });
 
@@ -67,8 +67,8 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
   const redis = redisUrl ? new RedisCtor(redisUrl) : undefined;
   const previewStream = process.env.PREVIEW_STREAM || 'previews:build';
 
-  // Health check endpoint
-  app.get('/api/health', async (req, reply) => {
+  // Health check endpoint (ingress strips /api prefix)
+  app.get('/health', async (req, reply) => {
     const checks: Record<string, any> = {};
     
     // Check database connection if configured (non-placeholder)
@@ -122,7 +122,7 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
     expires: z.number().int().min(60).max(3600).optional(),
   });
 
-  app.post('/api/presign', {
+  app.post('/presign', {
     config: {
       rateLimit: {
         max: Number(process.env.RL_PRESIGN_MAX || 120),
@@ -174,7 +174,7 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
     metadata: z.record(z.string()).optional()
   });
 
-  app.post('/api/promote', async (req, reply) => {
+  app.post('/promote', async (req, reply) => {
     const parsed = PromoteSchema.safeParse(req.body);
     if (!parsed.success) {
       const errorMessage = parsed.error.errors?.[0]?.message || 'Invalid body';
@@ -242,16 +242,16 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
   });
 
   // Mock assets list endpoint (for frontend compatibility)
-  app.get('/api/assets', async (req, reply) => {
+  app.get('/assets', async (req, reply) => {
     // Mock asset list for now - replace with real database queries
-    const mockAssets = [];
+    const mockAssets: any[] = [];
     
     // Return empty list for now - frontend will use fallback demo data
     return { items: mockAssets, total: 0, page: 1, limit: 50 };
   });
 
   // Mock assets endpoint (for frontend compatibility)
-  app.get('/api/assets/:id', async (req, reply) => {
+  app.get('/assets/:id', async (req, reply) => {
     const { id } = req.params as { id: string };
     
     // Mock asset data for now - replace with real database queries
@@ -269,7 +269,7 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
   });
 
   // Mock preview status endpoint
-  app.get('/api/preview/status', async (req, reply) => {
+  app.get('/preview/status', async (req, reply) => {
     const { prefix } = req.query as { prefix?: string };
     
     if (!prefix) {
@@ -281,7 +281,7 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
   });
 
   // Mock preview events endpoint (SSE)
-  app.get('/api/preview/events', async (req, reply) => {
+  app.get('/preview/events', async (req, reply) => {
     const { prefix } = req.query as { prefix?: string };
     
     if (!prefix) {
@@ -303,7 +303,7 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
   });
 
   // Sign preview URL endpoint
-  app.post('/api/sign-preview', async (req, reply) => {
+  app.post('/sign-preview', async (req, reply) => {
     const body = req.body as any;
     // Support both assetId and preview_prefix for compatibility
     const identifier = body.assetId || body.preview_prefix;
