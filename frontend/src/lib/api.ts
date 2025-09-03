@@ -17,3 +17,28 @@ export async function presign(input: {
   }
   return (await res.json()) as { url: string; bucket: string; key: string; expiresIn: number };
 }
+
+export async function getAsset(id: string) {
+  const res = await fetch(`${API_BASE}/api/assets/${id}`, {
+    method: "GET",
+    headers: { "content-type": "application/json" },
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Get asset failed: ${res.status} ${text}`);
+  }
+  return await res.json();
+}
+
+export async function updateAsset(id: string, data: Record<string, unknown>) {
+  const res = await fetch(`${API_BASE}/api/assets/${id}`, {
+    method: "PUT",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Update asset failed: ${res.status} ${text}`);
+  }
+  return await res.json();
+}
