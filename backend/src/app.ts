@@ -13,7 +13,7 @@ import { z } from 'zod';
 import { S3Client, PutObjectCommand, CopyObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { signEdgeUrl } from './sign.js';
-import { authRoutes } from './auth/routes.js';
+import { authRoutes } from './auth/routes-safe.js';
 
 interface BuildOptions {
   logger?: boolean | object;
@@ -56,7 +56,7 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
     uiConfig: { docExpansion: 'list', deepLinking: false },
   });
 
-  // Register auth routes
+  // Register auth routes (now with safe handling)
   await app.register(authRoutes);
 
   // Optional DB/Redis wiring (enabled when env is present)
