@@ -39,18 +39,18 @@ export async function authRoutes(fastify: FastifyInstance) {
       });
     };
 
-    fastify.post('/api/auth/register', unavailableHandler);
-    fastify.post('/api/auth/login', unavailableHandler);
-    fastify.post('/api/auth/refresh', unavailableHandler);
-    fastify.post('/api/auth/logout', unavailableHandler);
-    fastify.get('/api/auth/me', unavailableHandler);
-    fastify.get('/api/auth/profile', unavailableHandler);
+    fastify.post('/auth/register', unavailableHandler);
+    fastify.post('/auth/login', unavailableHandler);
+    fastify.post('/auth/refresh', unavailableHandler);
+    fastify.post('/auth/logout', unavailableHandler);
+    fastify.get('/auth/me', unavailableHandler);
+    fastify.get('/auth/profile', unavailableHandler);
     
     return; // Exit early without registering full routes
   }
 
   // Register endpoint
-  fastify.post('/api/auth/register', {
+  fastify.post('/auth/register', {
     config: {
       rateLimit: {
         max: 5,
@@ -142,13 +142,13 @@ export async function authRoutes(fastify: FastifyInstance) {
         }
       });
     } catch (error) {
-      fastify.log.error('Registration error:', error);
+      fastify.log.error('Registration error:' + (error instanceof Error ? `: ${error.message}` : `: ${String(error)}`));
       return reply.status(500).send({ error: 'Registration failed' });
     }
   });
   
   // Login endpoint
-  fastify.post('/api/auth/login', {
+  fastify.post('/auth/login', {
     config: {
       rateLimit: {
         max: 5,
@@ -237,13 +237,13 @@ export async function authRoutes(fastify: FastifyInstance) {
         }
       });
     } catch (error) {
-      fastify.log.error('Login error:', error);
+      fastify.log.error('Login error:' + (error instanceof Error ? `: ${error.message}` : `: ${String(error)}`));
       return reply.status(500).send({ error: 'Login failed' });
     }
   });
   
   // Refresh endpoint
-  fastify.post('/api/auth/refresh', async (request, reply) => {
+  fastify.post('/auth/refresh', async (request, reply) => {
     const refreshToken = (request.body as any)?.refreshToken || request.cookies?.rt;
     
     if (!refreshToken) {
@@ -323,13 +323,13 @@ export async function authRoutes(fastify: FastifyInstance) {
         expiresIn: 900
       });
     } catch (error) {
-      fastify.log.error('Token refresh error:', error);
+      fastify.log.error('Token refresh error:' + (error instanceof Error ? `: ${error.message}` : `: ${String(error)}`));
       return reply.status(500).send({ error: 'Token refresh failed' });
     }
   });
   
   // Logout endpoint
-  fastify.post('/api/auth/logout', {
+  fastify.post('/auth/logout', {
     preHandler: authenticateJWT
   }, async (request, reply) => {
     try {
@@ -354,13 +354,13 @@ export async function authRoutes(fastify: FastifyInstance) {
       
       return reply.status(204).send();
     } catch (error) {
-      fastify.log.error('Logout error:', error);
+      fastify.log.error('Logout error:' + (error instanceof Error ? `: ${error.message}` : `: ${String(error)}`));
       return reply.status(500).send({ error: 'Logout failed' });
     }
   });
   
   // Get current user endpoint
-  fastify.get('/api/auth/me', {
+  fastify.get('/auth/me', {
     preHandler: authenticateJWT
   }, async (request, reply) => {
     try {
@@ -379,13 +379,13 @@ export async function authRoutes(fastify: FastifyInstance) {
         roles: request.user!.roles
       });
     } catch (error) {
-      fastify.log.error('Get user error:', error);
+      fastify.log.error('Get user error:' + (error instanceof Error ? `: ${error.message}` : `: ${String(error)}`));
       return reply.status(500).send({ error: 'Failed to get user' });
     }
   });
   
   // Profile endpoint (alias for /me used in tests)
-  fastify.get('/api/auth/profile', {
+  fastify.get('/auth/profile', {
     preHandler: authenticateJWT
   }, async (request, reply) => {
     try {
@@ -408,7 +408,7 @@ export async function authRoutes(fastify: FastifyInstance) {
         }
       });
     } catch (error) {
-      fastify.log.error('Get profile error:', error);
+      fastify.log.error('Get profile error:' + (error instanceof Error ? `: ${error.message}` : `: ${String(error)}`));
       return reply.status(500).send({ error: 'Failed to get profile' });
     }
   });
