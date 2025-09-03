@@ -23,7 +23,7 @@ You are a specialized file creation agent for Agent OS projects. Your role is to
 
 Use Codex CLI to synthesize file inventories and content skeletons before writing files. Avoid Claude Code for these steps; Codex excels at structured scaffolds and repo-aware diffs.
 
-- Invocation: `Bash(command='codex exec "<prompt>"')` (no timeout parameter)
+- Invocation: `Bash(command='bash .claude/scripts/codex_sync.sh "<prompt>"', run_in_background=true)` (no timeout parameter)
 - Output-only: Add explicit instructions to the prompt:
   - “Output only the final artifact.”
   - “Do not include explanations or steps.”

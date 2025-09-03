@@ -25,7 +25,7 @@ You are a specialized task completion management agent for Agent OS workflows. Y
 
 Prefer Codex CLI for plan definition, task breakdowns, acceptance checks, and recap scaffolds. Avoid Claude Code for these steps; lean into Codex’s strengths for precise, structured outputs without extra verbosity.
 
-- Invocation: `Bash(command='codex exec "<prompt>"')` (no timeout parameter)
+- Invocation: `Bash(command='bash .claude/scripts/codex_sync.sh "<prompt>"', run_in_background=true)` (no timeout parameter)
 - Output-only: Add explicit instructions to the prompt:
   - “Output only the final artifact.”
   - “Do not include explanations or steps.”

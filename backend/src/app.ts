@@ -60,7 +60,7 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
   await app.register(authRoutes);
 
   // Optional DB/Redis wiring (enabled when env is present)
-  const pgUrl = process.env.POSTGRES_URL;
+  const pgUrl = process.env.POSTGRES_URL || (process.env.NODE_ENV === 'test' ? process.env.POSTGRES_TEST_URL : undefined);
   const pool = pgUrl ? new Pool({ connectionString: pgUrl }) : undefined;
   const redisUrl = process.env.REDIS_URL;
   const RedisCtor: any = (IORedis as any);
@@ -241,25 +241,86 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
     }
   });
 
-  // Mock assets endpoint (for frontend compatibility)
+  // Real assets endpoint - replaces mock
   app.get('/api/assets/:id', async (req, reply) => {
     const { id } = req.params as { id: string };
     
-    // Mock asset data for now - replace with real database queries
-    const mockAsset = {
-      id,
-      title: `Asset ${id}`,
-      ready: true,
-      versions: [{
-        master_key: `masters/${id}`,
-        preview_prefix: `previews/${id}`
-      }]
-    };
+    if (!pool) {
+      return reply.code(500).send({ error: 'Database not configured' });
+    }
     
-    return mockAsset;
+    try {
+      // Query asset with versions and collections
+      const assetQuery = `
+        SELECT 
+          a.id,
+          a.title,
+          a.staging_key,
+          a.master_key,
+          a.filename,
+          a.original_filename,
+          a.mime_type,
+          a.file_size,
+          a.created_at,
+          a.updated_at,
+          a.folder_id,
+          v.preview_prefix,
+          v.metadata as version_metadata,
+          CASE WHEN v.preview_prefix IS NOT NULL THEN true ELSE false END as ready
+        FROM assets a
+        LEFT JOIN versions v ON a.id = v.asset_id
+        WHERE a.id = $1
+        ORDER BY v.created_at DESC
+        LIMIT 1
+      `;
+      
+      const result = await pool.query(assetQuery, [id]);
+      
+      if (result.rows.length === 0) {
+        return reply.code(404).send({ error: 'Asset not found' });
+      }
+      
+      const asset = result.rows[0];
+      
+      // Get collections for this asset
+      const collectionsQuery = `
+        SELECT c.id, c.name, c.description, c.color
+        FROM collections c
+        JOIN asset_collections ac ON c.id = ac.collection_id
+        WHERE ac.asset_id = $1
+      `;
+      
+      const collectionsResult = await pool.query(collectionsQuery, [id]);
+      
+      // Format response matching frontend expectations
+      const response = {
+        id: asset.id,
+        title: asset.title || asset.filename || asset.original_filename,
+        ready: asset.ready,
+        filename: asset.filename,
+        originalFilename: asset.original_filename,
+        mimeType: asset.mime_type,
+        fileSize: asset.file_size,
+        createdAt: asset.created_at,
+        updatedAt: asset.updated_at,
+        folderId: asset.folder_id,
+        collections: collectionsResult.rows,
+        versions: [{
+          master_key: asset.master_key,
+          preview_prefix: asset.preview_prefix,
+          metadata: asset.version_metadata
+        }].filter(v => v.master_key) // Only include if master exists
+      };
+      
+      return response;
+      
+    } catch (error) {
+      app.log.error(`Database error fetching asset: ${error instanceof Error ? error.message : String(error)}`);
+      return reply.code(500).send({ error: 'Internal server error' });
+    }
   });
 
-  // Mock preview status endpoint
+  // Real preview status endpoint - replaces mock
   app.get('/api/preview/status', async (req, reply) => {
     const { prefix } = req.query as { prefix?: string };
     
@@ -267,11 +328,61 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
       return reply.code(400).send({ error: 'Missing prefix parameter' });
     }
     
-    // Mock status - always ready for now
-    return { ready: true, prefix };
+    if (!pool) {
+      return reply.code(500).send({ error: 'Database not configured' });
+    }
+    
+    try {
+      // Check if preview exists in database
+      const versionQuery = `
+        SELECT preview_prefix, metadata
+        FROM versions
+        WHERE preview_prefix = $1
+      `;
+      
+      const result = await pool.query(versionQuery, [prefix]);
+      
+      if (result.rows.length > 0) {
+        return { ready: true, prefix };
+      }
+      
+      // If not in database, check Redis for active job
+      if (redis) {
+        try {
+          // Check recent entries in the preview stream for this prefix
+          const streamResults = await redis.xrevrange(
+            previewStream,
+            '+',
+            '-',
+            'COUNT', 50
+          );
+          
+          for (const [id, fields] of streamResults) {
+            const fieldMap: Record<string, string> = {};
+            for (let i = 0; i < fields.length; i += 2) {
+              fieldMap[fields[i]] = fields[i + 1];
+            }
+            
+            if (fieldMap.masterKey && fieldMap.masterKey.includes(prefix.replace('previews/', ''))) {
+              // Job exists but preview not ready yet
+              return { ready: false, prefix, processing: true };
+            }
+          }
+        } catch (redisError) {
+          app.log.warn(`Redis error checking preview status: ${redisError instanceof Error ? redisError.message : String(redisError)}`);
+        }
+      }
+      
+      // Preview not found and no active job
+      return { ready: false, prefix };
+      
+    } catch (error) {
+      app.log.error(`Database error checking preview status: ${error instanceof Error ? error.message : String(error)}`);
+      return reply.code(500).send({ error: 'Internal server error' });
+    }
   });
 
-  // Mock preview events endpoint (SSE)
+  // Real preview events endpoint (SSE) - replaces mock
   app.get('/api/preview/events', async (req, reply) => {
     const { prefix } = req.query as { prefix?: string };
     
@@ -285,12 +396,122 @@ export async function build(opts: BuildOptions = {}): Promise<FastifyInstance> {
     reply.header('Connection', 'keep-alive');
     reply.header('Access-Control-Allow-Origin', '*');
     
-    // Send ready status immediately for now
-    reply.raw.write(`event: status\n`);
-    reply.raw.write(`data: ${JSON.stringify({ ready: true, prefix })}\n\n`);
+    if (!redis) {
+      // Send ready status immediately if no Redis (fallback behavior)
+      reply.raw.write(`event: status\n`);
+      reply.raw.write(`data: ${JSON.stringify({ ready: true, prefix })}\n\n`);
+      setTimeout(() => reply.raw.end(), 100);
+      return;
+    }
     
-    // Close connection after sending the status
-    setTimeout(() => reply.raw.end(), 100);
+    try {
+      // First check if preview already exists
+      if (pool) {
+        const versionQuery = `
+          SELECT preview_prefix
+          FROM versions
+          WHERE preview_prefix = $1
+        `;
+        
+        const result = await pool.query(versionQuery, [prefix]);
+        
+        if (result.rows.length > 0) {
+          reply.raw.write(`event: status\n`);
+          reply.raw.write(`data: ${JSON.stringify({ ready: true, prefix })}\n\n`);
+          reply.raw.end();
+          return;
+        }
+      }
+      
+      // Set up Redis stream consumer for real-time updates
+      const consumerGroup = 'preview-events';
+      const consumerName = `consumer-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      
+      // Create consumer group if it doesn't exist
+      try {
+        await redis.xgroup('CREATE', previewStream, consumerGroup, '0', 'MKSTREAM');
+      } catch (err: any) {
+        if (!err.message.includes('BUSYGROUP')) {
+          throw err;
+        }
+      }
+      
+      // Listen for new messages
+      const checkForUpdates = async () => {
+        try {
+          const results = await redis.xreadgroup(
+            'GROUP', consumerGroup, consumerName,
+            'COUNT', 1,
+            'BLOCK', 5000, // 5 second timeout
+            'STREAMS', previewStream, '>'
+          );
+          
+          if (results && results.length > 0) {
+            const [stream, messages] = results[0];
+            
+            for (const [id, fields] of messages) {
+              const fieldMap: Record<string, string> = {};
+              for (let i = 0; i < fields.length; i += 2) {
+                fieldMap[fields[i]] = fields[i + 1];
+              }
+              
+              // Check if this message is for our prefix
+              if (fieldMap.masterKey && fieldMap.masterKey.includes(prefix.replace('previews/', ''))) {
+                // Acknowledge the message
+                await redis.xack(previewStream, consumerGroup, id);
+                
+                // Send progress update
+                reply.raw.write(`event: progress\n`);
+                reply.raw.write(`data: ${JSON.stringify({
+                  jobId: fieldMap.jobId,
+                  prefix,
+                  status: fieldMap.status || 'processing'
+                })}\n\n`);
+                
+                // If job completed, send ready status and close
+                if (fieldMap.status === 'completed') {
+                  reply.raw.write(`event: status\n`);
+                  reply.raw.write(`data: ${JSON.stringify({ ready: true, prefix })}\n\n`);
+                  reply.raw.end();
+                  return;
+                }
+              }
+            }
+          }
+          
+          // Continue listening if connection is still open
+          if (!reply.raw.destroyed) {
+            setTimeout(checkForUpdates, 1000);
+          }
+          
+        } catch (err) {
+          if (!reply.raw.destroyed) {
+            app.log.error(`Redis stream read error: ${err instanceof Error ? err.message : String(err)}`);
+            reply.raw.write(`event: error\n`);
+            reply.raw.write(`data: ${JSON.stringify({ error: 'Stream read error' })}\n\n`);
+            reply.raw.end();
+          }
+        }
+      };
+      
+      // Start listening
+      checkForUpdates();
+      
+      // Send initial status
+      reply.raw.write(`event: status\n`);
+      reply.raw.write(`data: ${JSON.stringify({ ready: false, prefix, processing: true })}\n\n`);
+      
+      // Handle client disconnect
+      req.socket.on('close', () => {
+        reply.raw.destroy();
+      });
+      
+    } catch (error) {
+      app.log.error(`Error setting up preview events stream: ${error instanceof Error ? error.message : String(error)}`);
+      reply.raw.write(`event: error\n`);
+      reply.raw.write(`data: ${JSON.stringify({ error: 'Failed to setup event stream' })}\n\n`);
+      reply.raw.end();
+    }
   });
 
   // Sign preview URL endpoint

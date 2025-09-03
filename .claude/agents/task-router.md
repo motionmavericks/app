@@ -48,6 +48,6 @@ GUARDRAILS
 - Structured edits via yq/jq for YAML/JSON.
 - Hard-fail on drift; rebase/re-plan.
 - Docs discipline: update /docs/* and env templates with links.
+- Codex I/O policy: Never set Codex timeouts; require outcome-only outputs (final artifact only, no explanations, no code fences; JSON → "Return valid JSON only").
 
 Use sequential-thinking to refine plans when ambiguity is high; keep exactly one in_progress step in update_plan.
-

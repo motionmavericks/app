@@ -44,6 +44,19 @@ Entry point: `.claude/agents/task-router.md`
 - Run `make typecheck`, `make lint`, `make build` after code changes
 - Deploy validation: yq image matrix, GitHub workflow watch, `doctl apps update --spec ... --wait` (validate-only varies), `doctl apps logs ... --tail 200`
 
+## Iterative Debug Loop
+- Trigger: A debugging attempt fails validations (tests/typecheck/build/lint).
+- Research: Use MCP-first policy to gather context each loop.
+  - Ref: fetch authoritative docs for implicated libraries/frameworks.
+  - Exa: discover relevant solutions and official guidance using the error signature.
+- Enrich: Synthesize 4–6 actionable Research Notes and attach them to the next Codex prompt.
+- Retry: Delegate back to `@codex-specialist`/`debugger-codex` with Error Summary, Prior Attempt Summary, and Research Notes.
+- Bounds: Max 3 iterations by default; on persistent failure, return a concise report with proposed next steps.
+
+## Codex I/O Policy
+- No timeouts: Subagents must never set timeouts for Codex CLI.
+- Outcome-only: Prompts must require final artifact only, with no explanations and no code fences. For JSON outputs, include: "Return valid JSON only."
+
 ## Neo4j Notes
 - Env: `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD`, optional `NEO4J_DATABASE`
 - Modeling/queries: prefer `EXPLAIN/PROFILE`; avoid Cartesian products; add constraints/indexes

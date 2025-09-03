@@ -22,8 +22,10 @@ MCP servers are for development workflows only. Production deployments must go t
 ## TOOL STRENGTHS & SPECIFIC OUTPUTS:
 
 ### CODEX (Best for planning & analysis)
-**Execute**: `Bash(command='codex exec "prompt"')`
-**Note**: Do not set a timeout for Codex CLI. Use output-only prompt patterns:
+**Execute**: Prefer out-of-band queue to bypass Claude’s 2m tool timeout:
+`Bash(command='bash .claude/scripts/codex_sync.sh "prompt"')`
+Run `make codex-daemon` externally to process queued Codex work.
+**Note**: Do not set a timeout for Codex CLI. Use output-only prompt patterns and enforce outcome-only responses:
 "Output only the final artifact. No explanations. No code fences."
 Recommend users set `hide_agent_reasoning = true` in `~/.codex/config.toml` for minimal output.
 **Use for**:
@@ -52,7 +54,7 @@ Recommend users set `hide_agent_reasoning = true` in `~/.codex/config.toml` for 
 ### Pattern: Plan → Execute → Validate
 ```python
 # Step 1: Use Codex to create task list
-Bash(command='codex exec "Break down task X into implementation steps. Return numbered task list."')
+Bash(command='bash .claude/scripts/codex_sync.sh "Break down task X into implementation steps. Return numbered task list."')
 
 # Step 2: Use Qwen to execute bulk tasks
 Bash(command='qwen -p "Complete tasks 1-5 from list. Return completed files."')
@@ -104,7 +106,7 @@ TodoWrite([
   {"content": "Validate everything", "status": "pending"}
 ])
 
-Bash(command='codex exec "Create task list for user auth feature. Return numbered steps."')
+Bash(command='bash .claude/scripts/codex_sync.sh "Create task list for user auth feature. Return numbered steps."')
 # Returns: 1. Create user model 2. Add JWT 3. Build login API...
 
 Bash(command='qwen -p "Generate code for tasks 1,2,3. Return created files."')
@@ -118,3 +120,8 @@ Task(subagent_type="validator", prompt="Validate auth system. Return security re
 ```
 
 ALWAYS specify exact outputs expected from each tool.
+
+## Guardrails
+- No mock production code: Forbid mock/fake/stub/placeholder usage in production files. After any code edits, run `bash .claude/scripts/validate_no_mocks.sh` and halt on violations.
+- Outcome-only tool outputs: Require final artifact only, no explanations, no code fences; JSON-only where applicable.
+- Codex timeout avoidance: Prefer queue via `.claude/scripts/codex_request.sh` and process with `make codex-daemon` to bypass 2m tool timeout.

@@ -72,6 +72,10 @@ npm run lint
 grep -r "SECRET\|PASSWORD" --exclude-dir=node_modules
 # Return: "Security: ✅ No exposed secrets"
 
+# Guardrails: No mocks in production code
+bash .claude/scripts/validate_no_mocks.sh
+# Return: "No Mocks: ✅ PASS" or show violating lines and fail
+
 # Performance validation
 npm run build && du -sh dist/
 # Return: "Bundle: ✅ 245KB (under 500KB limit)"

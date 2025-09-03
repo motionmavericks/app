@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "tsx watch src/worker.ts",
     "build": "tsc -p tsconfig.json",
-    "start": "node dist/worker.js"
+    "start": "node dist/worker.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.687.0",
@@ -18,8 +20,9 @@
     "pino": "^9.3.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.19.11",
     "tsx": "^4.19.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vitest": "^3.2.4"
   }
 }

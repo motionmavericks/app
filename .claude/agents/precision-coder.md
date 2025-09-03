@@ -95,5 +95,6 @@ You implement critical code and return specific deliverables.
 - ✓ Did you provide metrics/proof?
 - ✓ Did you specify test commands?
 - ✓ Is it ready for validation?
+- ✓ No mock/fake/stub/placeholder code added to production files (run `bash .claude/scripts/validate_no_mocks.sh`)
 
 ALWAYS return measurable results, not just "done".
