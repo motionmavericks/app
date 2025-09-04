@@ -1,0 +1,28 @@
+# Playwright Docker configuration for consistent visual testing environments
+FROM mcr.microsoft.com/playwright:v1.49.0-jammy
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Install Playwright browsers with dependencies
+RUN npx playwright install --with-deps chromium firefox webkit
+
+# Set environment variables for consistent rendering
+ENV NODE_ENV=test
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+ENV DISPLAY=:99
+
+# Create display for headless testing
+RUN apt-get update && apt-get install -y xvfb
+
+# Command to run visual tests
+CMD ["npm", "run", "test:visual"]

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useUploadStore, UploadItem } from '@/lib/stores/upload-store';
-import { presign, API_BASE } from '@/lib/api';
+import { presign, promote } from '@/lib/api';
 
 function sanitizeName(name: string): string {
   // Remove any path separators and restrict to safe chars
@@ -85,18 +85,7 @@ export function useResumableUpload() {
             });
 
             // Promote to masters
-            const promoteRes = await fetch(`${API_BASE}/api/promote`, {
-              method: "POST",
-              headers: { "content-type": "application/json" },
-              body: JSON.stringify({ stagingKey }),
-            });
-
-            if (!promoteRes.ok) {
-              const errorText = await promoteRes.text();
-              throw new Error(`Promotion failed: ${promoteRes.status} ${errorText}`);
-            }
-
-            const result = await promoteRes.json();
+            const result = await promote({ stagingKey });
             const previewPrefix = `previews/${stagingKey.replace(/^staging\//, '')}`;
             const playHref = result.assetId 
               ? `/assets/${result.assetId}` 

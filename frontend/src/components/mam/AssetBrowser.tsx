@@ -41,6 +41,13 @@ import {
   Tag,
   FolderPlus,
 } from 'lucide-react';
+import { 
+  assetBrowserVariants, 
+  flexVariants, 
+  scrollAreaVariants 
+} from '@/lib/design-system/components/layout';
+import { mamButtonPresets } from '@/lib/design-system/components/button';
+import { cn } from '@/lib/utils';
 
 interface AssetBrowserProps {
   assets?: Asset[];
@@ -201,27 +208,43 @@ export function AssetBrowser({
   }
 
   return (
-    <div className="flex h-full">
+    <div className={cn(
+      assetBrowserVariants({ layout: 'responsive', spacing: 'normal' }),
+      'h-full bg-background'
+    )}>
       {/* Search Filters Sidebar */}
       <SearchFilters assets={baseAssets} />
       
-      <div className="flex flex-col flex-1">
+      <div className={cn(
+        flexVariants({ direction: 'col', gap: 'none' }),
+        'flex-1 min-w-0'
+      )}>
         {/* Search Bar */}
-        <div className="p-4 border-b">
+        <div className="p-6 border-b bg-card/20 backdrop-blur-sm">
           <SearchBar onSearch={handleSearch} />
         </div>
 
         {/* Toolbar */}
-        <div className="flex items-center justify-between p-4 border-b">
-        <div className="flex items-center gap-4">
+        <div className={cn(
+          flexVariants({ justify: 'between', align: 'center', gap: 'md' }),
+          'px-6 py-4 border-b bg-card/10',
+          'backdrop-blur-sm sticky top-0 z-10'
+        )}>
+        <div className={cn(
+          flexVariants({ align: 'center', gap: 'md' }),
+          'flex-1 min-w-0'
+        )}>
           {/* Bulk selection */}
-          <div className="flex items-center gap-2">
+          <div className={cn(
+            flexVariants({ align: 'center', gap: 'sm' }),
+            'shrink-0'
+          )}>
             <Checkbox
               checked={allSelected}
               data-indeterminate={someSelected}
               onCheckedChange={handleSelectAll}
             />
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-muted-foreground font-medium">
               {selectedCount > 0 ? `${selectedCount} selected` : `${filteredAssets.length} assets`}
               {hasActiveSearch() && (
                 <span className="text-xs text-muted-foreground ml-2">
@@ -233,11 +256,18 @@ export function AssetBrowser({
 
           {/* Batch actions */}
           {selectedCount > 0 && (
-            <div className="flex items-center gap-2">
+            <div className={cn(
+              flexVariants({ align: 'center', gap: 'sm' }),
+              'ml-auto'
+            )}>
               <Badge variant="secondary">{selectedCount} selected</Badge>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    className={cn(mamButtonPresets.edit, 'h-9')}
+                    variant="outline" 
+                    size="sm"
+                  >
                     <MoreHorizontal className="h-4 w-4 mr-2" />
                     Actions
                   </Button>
@@ -270,7 +300,10 @@ export function AssetBrowser({
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className={cn(
+          flexVariants({ align: 'center', gap: 'sm' }),
+          'shrink-0'
+        )}>
           {/* Sort controls */}
           <Select
             value={`${sortField}-${sortOrder}`}
@@ -329,20 +362,26 @@ export function AssetBrowser({
           </Select>
 
           {/* View toggle */}
-          <div className="flex items-center border rounded-md">
+          <div className="flex items-center border rounded-lg overflow-hidden bg-card/30">
             <Button
-              variant={viewMode === 'grid' ? 'default' : 'ghost'}
+              variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
               size="sm"
               onClick={() => setViewMode('grid')}
-              className="rounded-r-none border-r"
+              className={cn(
+                'rounded-r-none border-r-0 transition-all duration-200',
+                viewMode === 'grid' ? 'shadow-sm' : 'hover:bg-accent/50'
+              )}
             >
               <Grid3X3 className="h-4 w-4" />
             </Button>
             <Button
-              variant={viewMode === 'list' ? 'default' : 'ghost'}
+              variant={viewMode === 'list' ? 'secondary' : 'ghost'}
               size="sm"
               onClick={() => setViewMode('list')}
-              className="rounded-l-none"
+              className={cn(
+                'rounded-l-none border-l-0 transition-all duration-200',
+                viewMode === 'list' ? 'shadow-sm' : 'hover:bg-accent/50'
+              )}
             >
               <List className="h-4 w-4" />
             </Button>
@@ -350,27 +389,34 @@ export function AssetBrowser({
         </div>
       </div>
 
-      {/* Asset grid/list */}
-      <div
-        ref={parentRef}
-        className="flex-1 overflow-auto"
-        style={{ contain: 'strict' }}
-      >
-        {filteredAssets.length === 0 ? (
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <div className="text-muted-foreground mb-2">
-                {hasActiveSearch() ? 'No assets match your search' : 'No assets found'}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                {hasActiveSearch() 
-                  ? 'Try adjusting your search terms or filters'
-                  : 'Try uploading some assets or adjusting your filters'
-                }
+        {/* Asset grid/list */}
+        <div
+          ref={parentRef}
+          className={cn(
+            scrollAreaVariants({ 
+              direction: 'vertical',
+              scrollbar: 'thin', 
+              padding: 'none' 
+            }),
+            'flex-1 bg-background'
+          )}
+          style={{ contain: 'strict' }}
+        >
+          {filteredAssets.length === 0 ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center space-y-3 p-8">
+                <div className="text-lg text-muted-foreground font-medium">
+                  {hasActiveSearch() ? 'No assets match your search' : 'No assets found'}
+                </div>
+                <div className="text-sm text-muted-foreground max-w-md">
+                  {hasActiveSearch() 
+                    ? 'Try adjusting your search terms or filters to find what you\'re looking for.'
+                    : 'Get started by uploading your first assets or adjust your current filters.'
+                  }
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
+          ) : (
           <div
             style={{
               height: virtualizer.getTotalSize(),
@@ -396,7 +442,11 @@ export function AssetBrowser({
                   }}
                 >
                   {viewMode === 'grid' ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+                    <div className={cn(
+                      'grid gap-6 p-6',
+                      'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5',
+                      'auto-rows-max'
+                    )}>
                       {rowAssets.map((asset) => {
                         return (
                           <div key={asset.id} className="w-full">
@@ -415,7 +465,7 @@ export function AssetBrowser({
                       })}
                     </div>
                   ) : (
-                    <div className="space-y-1 px-4">
+                    <div className="space-y-2 px-6">
                       {rowAssets.map((asset) => {
                         return (
                           <AssetCard
@@ -437,7 +487,7 @@ export function AssetBrowser({
               );
             })}
           </div>
-        )}
+          )}
         </div>
       </div>
 

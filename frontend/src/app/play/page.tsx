@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { signPreview } from "@/lib/api";
 
 function useQueryParam(name: string) {
   if (typeof window === "undefined") return undefined as string | undefined;
@@ -16,9 +17,7 @@ export default function PlayPage() {
     (async () => {
       if (!prefix) { setStatus("Missing ?p=<preview_prefix>"); return; }
       try {
-        const res = await fetch(`${apiBase}/api/sign-preview`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ preview_prefix: prefix }) });
-        if (!res.ok) throw new Error(await res.text());
-        const { url } = await res.json();
+        const { url } = await signPreview({ preview_prefix: prefix });
         setStatus("Playing...");
         const v = videoRef.current as HTMLVideoElement;
         if (v.canPlayType('application/vnd.apple.mpegurl')) {

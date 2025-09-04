@@ -7,6 +7,8 @@ import { Topbar } from "@/components/dashboard/topbar";
 import { Footerbar } from "@/components/dashboard/footerbar";
 import { AssetBrowser } from "@/components/mam/AssetBrowser";
 import { Asset } from '@/types/asset';
+import { mamLayoutVariants } from '@/lib/design-system/components/layout';
+import { cn } from '@/lib/utils';
 
 // API Asset response type
 interface ApiAsset {
@@ -156,19 +158,22 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] grid-cols-[18rem_1fr]">
+    <div className={cn(
+      mamLayoutVariants({ layout: 'responsive' }),
+      'bg-background text-foreground'
+    )}>
       {/* Top bar spans full width */}
-      <div className="col-span-2 row-start-1">
+      <div className="col-span-2 row-start-1 lg:col-span-2">
         <Topbar />
       </div>
       
       {/* Sidebar spans remaining height */}
-      <div className="row-span-2 row-start-2">
+      <div className="hidden lg:block row-span-2 row-start-2">
         <Sidebar />
       </div>
       
       {/* Main content area with AssetBrowser */}
-      <main className="col-start-2 row-start-2 overflow-hidden">
+      <main className="col-span-2 lg:col-start-2 row-start-2 overflow-hidden">
         <AssetBrowser
           assets={assets}
           loading={loading}
@@ -178,7 +183,7 @@ export default function HomePage() {
       </main>
       
       {/* Footer spans full width */}
-      <div className="col-span-2 row-start-3">
+      <div className="col-span-2 row-start-3 lg:col-span-2">
         <Footerbar />
       </div>
     </div>
