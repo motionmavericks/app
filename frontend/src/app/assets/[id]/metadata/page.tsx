@@ -37,54 +37,10 @@ import {
   ValidationError,
   validateMetadataStandards
 } from '@/lib/metadata/validation';
+import { getAsset, updateAsset } from '@/lib/api';
 
-// Mock data - replace with actual API calls
-const mockAsset: Asset = {
-  id: '123e4567-e89b-12d3-a456-426614174000',
-  title: 'Corporate Training Video - Q1 2024',
-  description: 'Comprehensive training video covering company policies, safety procedures, and new employee orientation materials for the first quarter of 2024.',
-  type: 'video',
-  status: 'published',
-  stagingKey: 'staging/uploads/training-video-q1-2024.mp4',
-  masterKey: 'masters/2024/01/training-video-q1-2024.mp4',
-  previewUrl: 'https://preview.example.com/training-video-q1-2024.m3u8',
-  thumbnailUrl: 'https://thumbnails.example.com/training-video-q1-2024.jpg',
-  size: 2147483648, // 2GB
-  duration: '00:45:30',
-  dimensions: {
-    width: 1920,
-    height: 1080
-  },
-  tags: ['training', 'corporate', 'q1-2024', 'orientation', 'policies', 'safety'],
-  collections: ['Training Materials', 'Q1 2024 Content'],
-  creator: 'Sarah Johnson',
-  copyright: '© 2024 Acme Corporation. All rights reserved.',
-  location: 'New York Office, Conference Room A',
-  customFields: {
-    'department': 'Human Resources',
-    'training-level': 'Beginner',
-    'languages': 'English, Spanish',
-    'compliance-standard': 'ISO 27001',
-    'review-date': '2024-04-01',
-    'approval-by': 'John Smith - HR Director'
-  },
-  createdAt: '2024-01-15T10:30:00Z',
-  updatedAt: '2024-01-20T14:45:00Z',
-  createdBy: 'sarah.johnson@company.com',
-  updatedBy: 'admin@company.com',
-  version: 2,
-  metadata: {
-    format: 'MP4',
-    codec: 'H.264',
-    bitrate: 5000,
-    framerate: 30,
-    colorSpace: 'Rec. 709',
-    audioChannels: 2,
-    sampleRate: 48000
-  }
-};
-
-const mockCustomFields: CustomFieldDefinition[] = [
+// Define custom fields for metadata validation
+const customFieldsDefinitions: CustomFieldDefinition[] = [
   {
     id: 'department',
     name: 'department',
@@ -138,23 +94,77 @@ export default function AssetMetadataPage() {
   
   const [asset, setAsset] = useState<Asset | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isBulkEditing, setIsBulkEditing] = useState(false);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [validationSchema, setValidationSchema] = useState<string>('none');
 
   const selectedAssets = getSelectedAssets();
-  const assetId = params.id as string;
+  const id = params.id as string;
 
+  // Load asset data from API
   useEffect(() => {
-    // Mock loading delay
-    const timer = setTimeout(() => {
-      setAsset(mockAsset);
-      setIsLoading(false);
-    }, 500);
+    let isMounted = true;
+    
+    const loadAsset = async () => {
+      if (!id) return;
+      
+      try {
+        setIsLoading(true);
+        setError(null);
+        const assetData = await getAsset(id);
+        
+        if (isMounted) {
+          // Transform API response to match Asset interface
+          const transformedAsset: Asset = {
+            id: assetData.id,
+            title: assetData.title || assetData.staging_key || 'Untitled Asset',
+            description: assetData.description || '',
+            type: assetData.type || 'other',
+            status: assetData.status || 'draft',
+            stagingKey: assetData.staging_key,
+            masterKey: assetData.master_key,
+            previewUrl: assetData.preview_url,
+            thumbnailUrl: assetData.thumbnail_url,
+            size: assetData.size,
+            duration: assetData.duration,
+            dimensions: assetData.dimensions,
+            tags: assetData.tags || [],
+            collections: assetData.collections || [],
+            creator: assetData.creator || assetData.created_by,
+            copyright: assetData.copyright,
+            location: assetData.location,
+            customFields: assetData.custom_fields || {},
+            createdAt: assetData.created_at,
+            updatedAt: assetData.updated_at,
+            createdBy: assetData.created_by,
+            updatedBy: assetData.updated_by,
+            version: assetData.version || 1,
+            metadata: assetData.metadata || {}
+          };
+          
+          setAsset(transformedAsset);
+        }
+      } catch (err) {
+        if (isMounted) {
+          const errorMessage = err instanceof Error ? err.message : 'Failed to load asset';
+          setError(errorMessage);
+          console.error('Failed to load asset:', err);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
 
-    return () => clearTimeout(timer);
-  }, [assetId]);
+    loadAsset();
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
   useEffect(() => {
     // Validate metadata against current schema
@@ -179,24 +189,59 @@ export default function AssetMetadataPage() {
   }, [asset, validationSchema]);
 
   const handleSaveMetadata = async (metadata: Partial<Asset>) => {
-    // Mock save operation
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    if (!asset) return;
     
-    if (asset) {
-      const updatedAsset = { 
-        ...asset, 
-        ...metadata, 
-        updatedAt: new Date().toISOString() 
+    try {
+      setIsLoading(true);
+      
+      // Transform metadata to API format
+      const updateData = {
+        title: metadata.title,
+        description: metadata.description,
+        tags: metadata.tags,
+        creator: metadata.creator,
+        copyright: metadata.copyright,
+        location: metadata.location,
+        custom_fields: metadata.customFields
       };
+      
+      const updatedAssetData = await updateAsset(asset.id, updateData);
+      
+      // Update local state with response data
+      const updatedAsset: Asset = {
+        ...asset,
+        ...metadata,
+        updatedAt: updatedAssetData.updated_at || new Date().toISOString(),
+        updatedBy: updatedAssetData.updated_by
+      };
+      
       setAsset(updatedAsset);
       toast.success('Metadata updated successfully');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save metadata';
+      toast.error(`Failed to save metadata: ${errorMessage}`);
+      console.error('Failed to save metadata:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleBulkSave = async (operations: unknown[], assetIds: string[]) => {
-    // Mock bulk save operation
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    toast.success(`Bulk metadata updated for ${assetIds.length} assets`);
+    try {
+      // Implement bulk update operations
+      // This would require a bulk update API endpoint
+      const promises = assetIds.map(assetId => 
+        // For now, update each asset individually
+        updateAsset(assetId, operations[0] as Record<string, unknown>)
+      );
+      
+      await Promise.all(promises);
+      toast.success(`Bulk metadata updated for ${assetIds.length} assets`);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to bulk update metadata';
+      toast.error(`Failed to bulk update metadata: ${errorMessage}`);
+      console.error('Failed to bulk update metadata:', err);
+    }
   };
 
   const handleExport = () => {
@@ -253,6 +298,24 @@ export default function AssetMetadataPage() {
           <div className="h-8 bg-muted rounded w-1/3 mb-4"></div>
           <div className="h-64 bg-muted rounded mb-6"></div>
           <div className="h-96 bg-muted rounded"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto py-8">
+        <div className="text-center">
+          <AlertTriangle className="mx-auto h-16 w-16 text-destructive mb-4" />
+          <h1 className="text-2xl font-semibold mb-2">Error Loading Asset</h1>
+          <p className="text-muted-foreground mb-4">
+            {error}
+          </p>
+          <Button onClick={() => router.back()}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Go Back
+          </Button>
         </div>
       </div>
     );
@@ -431,7 +494,7 @@ export default function AssetMetadataPage() {
           asset={asset}
           onSave={handleSaveMetadata}
           onClose={() => setIsEditing(false)}
-          customFields={mockCustomFields}
+          customFields={customFieldsDefinitions}
           validationSchema={validationSchema}
         />
       )}
@@ -442,7 +505,7 @@ export default function AssetMetadataPage() {
           assets={selectedAssets}
           onSave={handleBulkSave}
           onClose={() => setIsBulkEditing(false)}
-          customFields={mockCustomFields}
+          customFields={customFieldsDefinitions}
         />
       )}
     </div>

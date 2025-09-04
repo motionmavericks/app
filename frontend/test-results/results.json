@@ -1,0 +1,1677 @@
+{
+  "config": {
+    "configFile": "/home/maverick/Projects/app/frontend/playwright.config.ts",
+    "rootDir": "/home/maverick/Projects/app/frontend/tests/visual",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 300000,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 16
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "line",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/maverick/Projects/app/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 16
+        },
+        "id": "chromium-desktop-1920",
+        "name": "chromium-desktop-1920",
+        "testDir": "/home/maverick/Projects/app/frontend/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/maverick/Projects/app/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 16
+        },
+        "id": "chromium-desktop-1366",
+        "name": "chromium-desktop-1366",
+        "testDir": "/home/maverick/Projects/app/frontend/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/maverick/Projects/app/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 16
+        },
+        "id": "firefox-desktop",
+        "name": "firefox-desktop",
+        "testDir": "/home/maverick/Projects/app/frontend/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/maverick/Projects/app/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 16
+        },
+        "id": "webkit-desktop",
+        "name": "webkit-desktop",
+        "testDir": "/home/maverick/Projects/app/frontend/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/maverick/Projects/app/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 16
+        },
+        "id": "tablet-768x1024",
+        "name": "tablet-768x1024",
+        "testDir": "/home/maverick/Projects/app/frontend/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/maverick/Projects/app/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 16
+        },
+        "id": "tablet-1024x768",
+        "name": "tablet-1024x768",
+        "testDir": "/home/maverick/Projects/app/frontend/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/maverick/Projects/app/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 16
+        },
+        "id": "mobile-chrome-375",
+        "name": "mobile-chrome-375",
+        "testDir": "/home/maverick/Projects/app/frontend/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/maverick/Projects/app/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 16
+        },
+        "id": "mobile-chrome-414",
+        "name": "mobile-chrome-414",
+        "testDir": "/home/maverick/Projects/app/frontend/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/maverick/Projects/app/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 16
+        },
+        "id": "mobile-safari",
+        "name": "mobile-safari",
+        "testDir": "/home/maverick/Projects/app/frontend/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 16,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "pages/homepage.spec.ts",
+      "file": "pages/homepage.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Homepage Visual Tests",
+          "file": "pages/homepage.spec.ts",
+          "line": 55,
+          "column": 6,
+          "specs": [
+            {
+              "title": "homepage layout and structure",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop-1920",
+                  "projectName": "chromium-desktop-1920",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 203,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:58:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 58
+                        },
+                        "snippet": "  56 |   test('homepage layout and structure', async ({ page }) => {\n  57 |     const visualTest = new HomepageVisualTest();\n> 58 |     await visualTest.setupTest(page, 'homepage-layout');\n     |                      ^\n  59 |     await visualTest.testHomepageLayout();\n  60 |   });\n  61 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 58
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  56 |   test('homepage layout and structure', async ({ page }) => {\n  57 |     const visualTest = new HomepageVisualTest();\n> 58 |     await visualTest.setupTest(page, 'homepage-layout');\n     |                      ^\n  59 |     await visualTest.testHomepageLayout();\n  60 |   });\n  61 |\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:58:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.593Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f43e7-mepage-layout-and-structure-chromium-desktop-1920/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f43e7-mepage-layout-and-structure-chromium-desktop-1920/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 58
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-bda45c4ca3fa560d4f03",
+              "file": "pages/homepage.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "homepage responsive design",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop-1920",
+                  "projectName": "chromium-desktop-1920",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 178,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:64:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 64
+                        },
+                        "snippet": "  62 |   test('homepage responsive design', async ({ page }) => {\n  63 |     const visualTest = new HomepageVisualTest();\n> 64 |     await visualTest.setupTest(page, 'homepage-responsive');\n     |                      ^\n  65 |     await visualTest.testHomepageResponsive();\n  66 |   });\n  67 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 64
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  62 |   test('homepage responsive design', async ({ page }) => {\n  63 |     const visualTest = new HomepageVisualTest();\n> 64 |     await visualTest.setupTest(page, 'homepage-responsive');\n     |                      ^\n  65 |     await visualTest.testHomepageResponsive();\n  66 |   });\n  67 |\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:64:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.568Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f3bff--homepage-responsive-design-chromium-desktop-1920/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f3bff--homepage-responsive-design-chromium-desktop-1920/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 64
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-ba609bd3f2af942de46a",
+              "file": "pages/homepage.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "homepage theme variations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop-1920",
+                  "projectName": "chromium-desktop-1920",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 188,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:70:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 70
+                        },
+                        "snippet": "  68 |   test('homepage theme variations', async ({ page }) => {\n  69 |     const visualTest = new HomepageVisualTest();\n> 70 |     await visualTest.setupTest(page, 'homepage-themes');\n     |                      ^\n  71 |     await visualTest.testThemeToggle();\n  72 |   });\n  73 | });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 70
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  68 |   test('homepage theme variations', async ({ page }) => {\n  69 |     const visualTest = new HomepageVisualTest();\n> 70 |     await visualTest.setupTest(page, 'homepage-themes');\n     |                      ^\n  71 |     await visualTest.testThemeToggle();\n  72 |   });\n  73 | });\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:70:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.562Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-bed68-s-homepage-theme-variations-chromium-desktop-1920/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-bed68-s-homepage-theme-variations-chromium-desktop-1920/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 70
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-aeb2bd9f3fcb3304f697",
+              "file": "pages/homepage.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "homepage layout and structure",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop-1366",
+                  "projectName": "chromium-desktop-1366",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 178,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:58:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 58
+                        },
+                        "snippet": "  56 |   test('homepage layout and structure', async ({ page }) => {\n  57 |     const visualTest = new HomepageVisualTest();\n> 58 |     await visualTest.setupTest(page, 'homepage-layout');\n     |                      ^\n  59 |     await visualTest.testHomepageLayout();\n  60 |   });\n  61 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 58
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  56 |   test('homepage layout and structure', async ({ page }) => {\n  57 |     const visualTest = new HomepageVisualTest();\n> 58 |     await visualTest.setupTest(page, 'homepage-layout');\n     |                      ^\n  59 |     await visualTest.testHomepageLayout();\n  60 |   });\n  61 |\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:58:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.587Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f43e7-mepage-layout-and-structure-chromium-desktop-1366/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f43e7-mepage-layout-and-structure-chromium-desktop-1366/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 58
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-50eaf70661816d2a2c3d",
+              "file": "pages/homepage.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "homepage responsive design",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop-1366",
+                  "projectName": "chromium-desktop-1366",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 153,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:64:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 64
+                        },
+                        "snippet": "  62 |   test('homepage responsive design', async ({ page }) => {\n  63 |     const visualTest = new HomepageVisualTest();\n> 64 |     await visualTest.setupTest(page, 'homepage-responsive');\n     |                      ^\n  65 |     await visualTest.testHomepageResponsive();\n  66 |   });\n  67 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 64
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  62 |   test('homepage responsive design', async ({ page }) => {\n  63 |     const visualTest = new HomepageVisualTest();\n> 64 |     await visualTest.setupTest(page, 'homepage-responsive');\n     |                      ^\n  65 |     await visualTest.testHomepageResponsive();\n  66 |   });\n  67 |\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:64:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.522Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f3bff--homepage-responsive-design-chromium-desktop-1366/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f3bff--homepage-responsive-design-chromium-desktop-1366/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 64
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-8a48fdefa8c17799fedf",
+              "file": "pages/homepage.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "homepage theme variations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop-1366",
+                  "projectName": "chromium-desktop-1366",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "failed",
+                      "duration": 155,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:70:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 70
+                        },
+                        "snippet": "  68 |   test('homepage theme variations', async ({ page }) => {\n  69 |     const visualTest = new HomepageVisualTest();\n> 70 |     await visualTest.setupTest(page, 'homepage-themes');\n     |                      ^\n  71 |     await visualTest.testThemeToggle();\n  72 |   });\n  73 | });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 70
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  68 |   test('homepage theme variations', async ({ page }) => {\n  69 |     const visualTest = new HomepageVisualTest();\n> 70 |     await visualTest.setupTest(page, 'homepage-themes');\n     |                      ^\n  71 |     await visualTest.testThemeToggle();\n  72 |   });\n  73 | });\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:70:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.584Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-bed68-s-homepage-theme-variations-chromium-desktop-1366/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-bed68-s-homepage-theme-variations-chromium-desktop-1366/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 70
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-14839358e5fb4012d5c2",
+              "file": "pages/homepage.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "homepage layout and structure",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-desktop",
+                  "projectName": "firefox-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.551Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-01b37f86f2b4fce42f95",
+              "file": "pages/homepage.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "homepage responsive design",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-desktop",
+                  "projectName": "firefox-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "failed",
+                      "duration": 1,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.524Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-d98b9c57dfb481f7c12b",
+              "file": "pages/homepage.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "homepage theme variations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-desktop",
+                  "projectName": "firefox-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 8,
+                      "status": "failed",
+                      "duration": 1,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.522Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-8f3bbbbdab7e75319e5b",
+              "file": "pages/homepage.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "homepage layout and structure",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-desktop",
+                  "projectName": "webkit-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 9,
+                      "status": "failed",
+                      "duration": 1,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.648Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-0d18545a80d32ed07c66",
+              "file": "pages/homepage.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "homepage responsive design",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-desktop",
+                  "projectName": "webkit-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 10,
+                      "status": "failed",
+                      "duration": 1,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.531Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-ad478010b9a885c8e2ad",
+              "file": "pages/homepage.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "homepage theme variations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-desktop",
+                  "projectName": "webkit-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 11,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.551Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-85a4f7265d46842853c7",
+              "file": "pages/homepage.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "homepage layout and structure",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet-768x1024",
+                  "projectName": "tablet-768x1024",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 12,
+                      "status": "failed",
+                      "duration": 169,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:58:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 58
+                        },
+                        "snippet": "  56 |   test('homepage layout and structure', async ({ page }) => {\n  57 |     const visualTest = new HomepageVisualTest();\n> 58 |     await visualTest.setupTest(page, 'homepage-layout');\n     |                      ^\n  59 |     await visualTest.testHomepageLayout();\n  60 |   });\n  61 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 58
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  56 |   test('homepage layout and structure', async ({ page }) => {\n  57 |     const visualTest = new HomepageVisualTest();\n> 58 |     await visualTest.setupTest(page, 'homepage-layout');\n     |                      ^\n  59 |     await visualTest.testHomepageLayout();\n  60 |   });\n  61 |\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:58:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.537Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f43e7-mepage-layout-and-structure-tablet-768x1024/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f43e7-mepage-layout-and-structure-tablet-768x1024/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 58
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-26e13e864a50fb123e0b",
+              "file": "pages/homepage.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "homepage responsive design",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet-768x1024",
+                  "projectName": "tablet-768x1024",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 13,
+                      "status": "failed",
+                      "duration": 146,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:64:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 64
+                        },
+                        "snippet": "  62 |   test('homepage responsive design', async ({ page }) => {\n  63 |     const visualTest = new HomepageVisualTest();\n> 64 |     await visualTest.setupTest(page, 'homepage-responsive');\n     |                      ^\n  65 |     await visualTest.testHomepageResponsive();\n  66 |   });\n  67 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 64
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  62 |   test('homepage responsive design', async ({ page }) => {\n  63 |     const visualTest = new HomepageVisualTest();\n> 64 |     await visualTest.setupTest(page, 'homepage-responsive');\n     |                      ^\n  65 |     await visualTest.testHomepageResponsive();\n  66 |   });\n  67 |\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:64:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.655Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f3bff--homepage-responsive-design-tablet-768x1024/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f3bff--homepage-responsive-design-tablet-768x1024/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 64
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-29c3bad38918a6bce75f",
+              "file": "pages/homepage.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "homepage theme variations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet-768x1024",
+                  "projectName": "tablet-768x1024",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 14,
+                      "status": "failed",
+                      "duration": 178,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:70:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 70
+                        },
+                        "snippet": "  68 |   test('homepage theme variations', async ({ page }) => {\n  69 |     const visualTest = new HomepageVisualTest();\n> 70 |     await visualTest.setupTest(page, 'homepage-themes');\n     |                      ^\n  71 |     await visualTest.testThemeToggle();\n  72 |   });\n  73 | });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 70
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  68 |   test('homepage theme variations', async ({ page }) => {\n  69 |     const visualTest = new HomepageVisualTest();\n> 70 |     await visualTest.setupTest(page, 'homepage-themes');\n     |                      ^\n  71 |     await visualTest.testThemeToggle();\n  72 |   });\n  73 | });\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:70:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.655Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-bed68-s-homepage-theme-variations-tablet-768x1024/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-bed68-s-homepage-theme-variations-tablet-768x1024/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 70
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-fb3eafd1d228140ae789",
+              "file": "pages/homepage.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "homepage layout and structure",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet-1024x768",
+                  "projectName": "tablet-1024x768",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 15,
+                      "status": "failed",
+                      "duration": 157,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:58:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 58
+                        },
+                        "snippet": "  56 |   test('homepage layout and structure', async ({ page }) => {\n  57 |     const visualTest = new HomepageVisualTest();\n> 58 |     await visualTest.setupTest(page, 'homepage-layout');\n     |                      ^\n  59 |     await visualTest.testHomepageLayout();\n  60 |   });\n  61 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 58
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  56 |   test('homepage layout and structure', async ({ page }) => {\n  57 |     const visualTest = new HomepageVisualTest();\n> 58 |     await visualTest.setupTest(page, 'homepage-layout');\n     |                      ^\n  59 |     await visualTest.testHomepageLayout();\n  60 |   });\n  61 |\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:58:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.641Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f43e7-mepage-layout-and-structure-tablet-1024x768/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f43e7-mepage-layout-and-structure-tablet-1024x768/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 58
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-1d813fbe4bee0aa1f367",
+              "file": "pages/homepage.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "homepage responsive design",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet-1024x768",
+                  "projectName": "tablet-1024x768",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 8,
+                      "status": "failed",
+                      "duration": 154,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:64:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 64
+                        },
+                        "snippet": "  62 |   test('homepage responsive design', async ({ page }) => {\n  63 |     const visualTest = new HomepageVisualTest();\n> 64 |     await visualTest.setupTest(page, 'homepage-responsive');\n     |                      ^\n  65 |     await visualTest.testHomepageResponsive();\n  66 |   });\n  67 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 64
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  62 |   test('homepage responsive design', async ({ page }) => {\n  63 |     const visualTest = new HomepageVisualTest();\n> 64 |     await visualTest.setupTest(page, 'homepage-responsive');\n     |                      ^\n  65 |     await visualTest.testHomepageResponsive();\n  66 |   });\n  67 |\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:64:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.891Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f3bff--homepage-responsive-design-tablet-1024x768/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-f3bff--homepage-responsive-design-tablet-1024x768/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 64
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-12475fd3aa7ad4a3174b",
+              "file": "pages/homepage.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "homepage theme variations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet-1024x768",
+                  "projectName": "tablet-1024x768",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 7,
+                      "status": "failed",
+                      "duration": 157,
+                      "error": {
+                        "message": "TypeError: visualTest.setupTest is not a function",
+                        "stack": "TypeError: visualTest.setupTest is not a function\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:70:22",
+                        "location": {
+                          "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                          "column": 22,
+                          "line": 70
+                        },
+                        "snippet": "  68 |   test('homepage theme variations', async ({ page }) => {\n  69 |     const visualTest = new HomepageVisualTest();\n> 70 |     await visualTest.setupTest(page, 'homepage-themes');\n     |                      ^\n  71 |     await visualTest.testThemeToggle();\n  72 |   });\n  73 | });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                            "column": 22,
+                            "line": 70
+                          },
+                          "message": "TypeError: visualTest.setupTest is not a function\n\n  68 |   test('homepage theme variations', async ({ page }) => {\n  69 |     const visualTest = new HomepageVisualTest();\n> 70 |     await visualTest.setupTest(page, 'homepage-themes');\n     |                      ^\n  71 |     await visualTest.testThemeToggle();\n  72 |   });\n  73 | });\n    at /home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts:70:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.916Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-bed68-s-homepage-theme-variations-tablet-1024x768/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/maverick/Projects/app/frontend/test-results/pages-homepage-Homepage-Vi-bed68-s-homepage-theme-variations-tablet-1024x768/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/maverick/Projects/app/frontend/tests/visual/pages/homepage.spec.ts",
+                        "column": 22,
+                        "line": 70
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-e9446ab023fcd2e74311",
+              "file": "pages/homepage.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "homepage layout and structure",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome-375",
+                  "projectName": "mobile-chrome-375",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 10,
+                      "status": "failed",
+                      "duration": 1,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.954Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-34aa0011815f3a0bb424",
+              "file": "pages/homepage.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "homepage responsive design",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome-375",
+                  "projectName": "mobile-chrome-375",
+                  "results": [
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 6,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.956Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-c23f792c662265ec9b29",
+              "file": "pages/homepage.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "homepage theme variations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome-375",
+                  "projectName": "mobile-chrome-375",
+                  "results": [
+                    {
+                      "workerIndex": 20,
+                      "parallelIndex": 11,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.956Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-354d0519a20c4fc65884",
+              "file": "pages/homepage.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "homepage layout and structure",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome-414",
+                  "projectName": "mobile-chrome-414",
+                  "results": [
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 9,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:44.995Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-56f608b611a086543e2e",
+              "file": "pages/homepage.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "homepage responsive design",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome-414",
+                  "projectName": "mobile-chrome-414",
+                  "results": [
+                    {
+                      "workerIndex": 22,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 1,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:45.028Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-bc3e24801b16d2b8967c",
+              "file": "pages/homepage.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "homepage theme variations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome-414",
+                  "projectName": "mobile-chrome-414",
+                  "results": [
+                    {
+                      "workerIndex": 23,
+                      "parallelIndex": 12,
+                      "status": "failed",
+                      "duration": 1,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:45.123Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-1587a747cfea55d0b0a5",
+              "file": "pages/homepage.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "homepage layout and structure",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-safari",
+                  "projectName": "mobile-safari",
+                  "results": [
+                    {
+                      "workerIndex": 24,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 1,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:45.121Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-114096f43a553fc2e61a",
+              "file": "pages/homepage.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "homepage responsive design",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-safari",
+                  "projectName": "mobile-safari",
+                  "results": [
+                    {
+                      "workerIndex": 25,
+                      "parallelIndex": 5,
+                      "status": "failed",
+                      "duration": 1,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:45.118Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-23d425fd1d54fa10816c",
+              "file": "pages/homepage.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "homepage theme variations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-safari",
+                  "projectName": "mobile-safari",
+                  "results": [
+                    {
+                      "workerIndex": 26,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 1,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/maverick/.cache/ms-playwright/webkit-2203/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-04T01:18:45.135Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "87efe16c146cd0d1fd8c-ba46fff6f32e4dbf6764",
+              "file": "pages/homepage.spec.ts",
+              "line": 68,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-09-04T01:18:44.185Z",
+    "duration": 971.904,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 27,
+    "flaky": 0
+  }
+}

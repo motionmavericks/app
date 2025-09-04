@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCollectionStore } from '@/lib/stores/collection-store';
 import { Collection, CollectionShare } from '@/types/collection';
 import {
@@ -49,6 +49,7 @@ import {
   Check,
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { createShare as apiCreateShare, listShares, revokeShare as apiRevokeShare } from '@/lib/api';
 
 interface CollectionSharingProps {
   open: boolean;
@@ -73,14 +74,29 @@ export function CollectionSharing({
   const [userEmail, setUserEmail] = useState('');
   const [userRole, setUserRole] = useState('viewer');
   const [copiedLink, setCopiedLink] = useState<string | null>(null);
+  const [apiShares, setApiShares] = useState<CollectionShare[] | null>(null);
+
+  useEffect(() => {
+    if (!collection) return;
+    let ignore = false;
+    (async () => {
+      try {
+        const remote = await listShares({ collectionId: collection.id });
+        if (!ignore) setApiShares(remote);
+      } catch {
+        // ignore errors and keep local store
+      }
+    })();
+    return () => { ignore = true; };
+  }, [collection]);
 
   if (!collection) return null;
 
   const shares = getCollectionShares(collection.id);
-  const linkShares = shares.filter(share => share.type === 'link');
-  const userShares = shares.filter(share => share.type === 'user');
+  const linkShares = (apiShares ?? shares).filter(share => share.type === 'link');
+  const userShares = (apiShares ?? shares).filter(share => share.type === 'user');
 
-  const createPublicLink = () => {
+  const createPublicLink = async () => {
     const expiryDate = newLinkExpiry === 'never' ? undefined : (() => {
       const date = new Date();
       switch (newLinkExpiry) {
@@ -93,14 +109,33 @@ export function CollectionSharing({
       return date.toISOString();
     })();
 
-    createShare(collection.id, {
-      type: 'link',
-      collectionId: collection.id,
-      token: crypto.randomUUID(),
-      expiresAt: expiryDate,
-      permissions: newLinkPermissions,
-      createdBy: 'current-user',
-    });
+    try {
+      const created = await apiCreateShare({ 
+        scope: 'collection' as const, 
+        collectionId: collection.id, 
+        permissions: newLinkPermissions, 
+        expiresAt: expiryDate 
+      });
+      setApiShares((prev) => (prev ? [created, ...prev] : [created]));
+    } catch {
+      createShare(collection.id, {
+        type: 'link',
+        collectionId: collection.id,
+        token: crypto.randomUUID(),
+        expiresAt: expiryDate,
+        permissions: newLinkPermissions,
+        createdBy: 'current-user',
+      });
+    }
+  };
+
+  const handleRevoke = async (id: string) => {
+    try {
+      await apiRevokeShare(id);
+      setApiShares((prev) => (prev ? prev.filter((s) => s.id !== id) : prev));
+    } catch {
+      deleteShare(id);
+    }
   };
 
   const shareWithUser = () => {
@@ -320,7 +355,7 @@ export function CollectionSharing({
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => deleteShare(share.id)}
+                                onClick={() => handleRevoke(share.id)}
                                 className="h-8 w-8 p-0 text-destructive hover:text-destructive"
                               >
                                 <Trash2 className="h-4 w-4" />
@@ -452,7 +487,7 @@ export function CollectionSharing({
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => deleteShare(share.id)}
+                                onClick={() => handleRevoke(share.id)}
                                 className="h-8 w-8 p-0 text-destructive hover:text-destructive"
                               >
                                 <Trash2 className="h-4 w-4" />

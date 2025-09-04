@@ -1,16 +1,27 @@
 name: motionmavericks
 region: syd1
+ingress:
+  rules:
+    - match:
+        path:
+          prefix: "/api"
+      component:
+        name: "backend"
+    - match:
+        path:
+          prefix: "/"
+      component:
+        name: "frontend"
 services:
   - name: frontend
     image:
       registry_type: DOCR
-      repository: mm-motionmav-reg/frontend
+      registry: mm-motionmav-reg
+      repository: frontend
       tag: latest
     http_port: 3001
     instance_count: 1
     instance_size_slug: basic-xxs
-    routes:
-      - path: /
     health_check:
       http_path: /
       initial_delay_seconds: 5
@@ -31,15 +42,14 @@ services:
   - name: backend
     image:
       registry_type: DOCR
-      repository: mm-motionmav-reg/backend
-      tag: latest  # NOTE: CI replaces this with sha-${GITHUB_SHA} during deploy
+      registry: mm-motionmav-reg
+      repository: backend
+      tag: latest
     http_port: 3000
     instance_count: 1
     instance_size_slug: basic-xxs
-    routes:
-      - path: /api
     health_check:
-      http_path: /api/health
+      http_path: /health
       initial_delay_seconds: 5
       period_seconds: 10
       timeout_seconds: 3
@@ -86,58 +96,7 @@ services:
       - key: EDGE_SIGNING_KEY
         type: SECRET
         scope: RUN_TIME
-workers:
-  - name: preview-worker
-    image:
-      registry_type: DOCR
-      repository: mm-motionmav-reg/worker
-      tag: latest
-    instance_count: 1
-    instance_size_slug: basic-xxs
-    run_command: node dist/worker.js
-    envs:
-      # Public configuration
-      - key: PREVIEW_STREAM
-        value: previews:build
-      - key: PREVIEW_CONSUMER_GROUP
-        value: previewers
-      - key: WASABI_ENDPOINT
-        value: https://s3.ap-southeast-2.wasabisys.com
-      - key: WASABI_REGION
-        value: ap-southeast-2
-      - key: MASTERS_BUCKET
-        value: mm-masters-au
-      - key: PREVIEWS_BUCKET
-        value: mm-previews-au
-      - key: PREVIEW_PRESET
-        value: 480p
-      - key: HLS_SEGMENT_SEC
-        value: "4"
-      # Secrets (set via DO UI or scripts)
-      - key: REDIS_URL
-        type: SECRET
-        scope: RUN_TIME
-      - key: WASABI_MASTERS_ACCESS_KEY
-        type: SECRET
-        scope: RUN_TIME
-      - key: WASABI_MASTERS_SECRET
-        type: SECRET
-        scope: RUN_TIME
-      - key: WASABI_PREVIEWS_ACCESS_KEY
-        type: SECRET
-        scope: RUN_TIME
-      - key: WASABI_PREVIEWS_SECRET
-        type: SECRET
-        scope: RUN_TIME
 
-# Managed PostgreSQL database
-databases:
-  - name: motionmav-db
-    engine: PG
-    version: "16"
-    size: db-s-1vcpu-1gb
-    num_nodes: 1
-    production: false
-
-## Note: Managed Redis/Valkey is set up separately through DO console
+## Note: Worker temporarily disabled to deploy ingress configuration
+## Managed PostgreSQL and Redis/Valkey databases exist separately
 ## Secrets are managed via scripts/do_app_set_redis.sh and scripts/do_app_set_secrets.sh
